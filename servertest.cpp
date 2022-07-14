@@ -6,13 +6,21 @@
 #include <sys/time.h>
 #include <netinet/in.h>
 #include <errno.h>
+#include <string.h>
+#include <unistd.h>
 
 #define SERVER_PORT  12345
 
 #define TRUE             1
 #define FALSE            0
 
-main (int argc, char *argv[])
+struct client {
+	public:
+		struct pollfd	fd;
+		std::string		stock;
+};
+
+int main (int argc, char *argv[])
 {
 	int    len, rc, on = 1;
 	int    listen_sd = -1, new_sd = -1;
@@ -21,7 +29,7 @@ main (int argc, char *argv[])
 	char   buffer[80];
 	struct sockaddr_in6   addr;
 	int    timeout;
-	struct pollfd fds[200];
+	std::list<client>	clients;
 	int    nfds = 1, current_size = 0, i, j;
 
 	/*************************************************************/
@@ -323,3 +331,4 @@ main (int argc, char *argv[])
 		if(fds[i].fd >= 0)
 			close(fds[i].fd);
 	}
+}
