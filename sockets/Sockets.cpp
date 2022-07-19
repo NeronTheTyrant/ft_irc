@@ -1,0 +1,115 @@
+#include <cstdint>
+#include <string>
+#include "Sockets.hpp"
+
+/* Socket */
+
+Socket::Socket()
+	: sd(Socket::invalid_socket), has_error(false) {}
+
+Socket::~Socket() {
+	if (sd != Socket::invalid_socket) {
+		close(sd);
+	}
+}
+
+Socket::Socket(Socket & o)
+	:sd (Socket::invalid_socket), has_error(false) {
+	std::swap(sd, o.sd);
+	std::swap(has_error, o.has_error);
+}
+
+Socket::Socket(int sd)
+	: sd(sd) {
+	if (sd == Socket::invalid_socket){
+		throw std::logic_error("Socket initialised with invalid socket descriptor");
+	}
+}
+
+Socket &	Socket::operator=(Socket & o) {
+	std::swap(sd, o.sd);
+	std::swap(has_error, o.has_error);
+	return *this;
+}
+
+const int Socket::invalid_socket = -1;
+
+/* StreamSocket */
+
+
+StreamSocket::StreamSocket()
+	: Socket(socket(AF_INET, SOCK_STREAM, 0)) {}
+
+StreamSocket::StreamSocket(int sd)
+	: Socket(sd) {}
+
+/* DataSocket */
+
+DataSocket::DataSocket()
+	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)) {}
+
+DataSocket::DataSocket(int sd)
+	: StreamSocket(sd) {}
+
+void	DataSocket::send (const char * data, std::size_t len) {
+	std::size_t	sent = 0;
+	while (sent < len) {
+		long int	ret = send(sd, data + sent, len - sent, MSG_NOSIGNAL);
+		if (ret == -1)
+			if (errno == EAGAIN || errno == EWOULDBLOCK)
+				continue;
+			else
+				throw std::runtime_error(std::string("send error: ") + strerror(errno));
+		}
+		sent += ret;
+	}
+}
+
+void	DataSocket::recv (char * data, std::size_t len) {
+	std::size_t received = 0;
+	while (received < len) {
+		long int	ret = recv(sd, data + received, len - received, 0);
+		if (ret == -1)
+			throw std::runtime_error(std::string("recv error: ") + strerror(errno));
+		if (ret == 0)
+			throw std::runtime_error("remote closed");
+		received += ret;
+	}
+}
+
+/* ServerSocket */
+
+ServerSocket::ServerSocket(std::uint16_t port) 
+	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)) {
+	try {
+		const int opt = 1;
+		int ret = setsockopt(sd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
+		if (ret < 0)
+			throw std::runtime_error(std::string("setsockopt failed: ") + strerror(errno));
+		ret = fcntl(sd, F_SETFL, opt | O_NONBLOCK);
+		if (ret != 0)
+			throw std::runtime_error(std::string("fcntl failed: ") + strerror(errno));
+		struct sockaddr_in addr;
+		addr.sin_family = AF_INET;
+		addr.sin_port = htons(port);
+		ret = bind(sd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr));
+		if (ret != 0)
+			throw std::runtime_error(std::string("bind failed: ") + strerror(errno));
+		ret = listen(sd, backlog);
+		if (ret != 0)
+			throw std::runtime_error(std::string("listen failed: ") + strerror(errno));
+	}
+	catch (const std::exception &) {
+		close(sd);
+		throw;
+	}
+}
+
+DataSocket ServerSocket::accept() {
+	struct sockaddr	addr;
+	socklen_t	addrlen = sizeof(addr);
+	int ret = accept(sd, &addr, &addrlen);
+	if (ret < 0)
+		throw std::runtime_error(std::string("accept failed: ") + strerror(errno));
+	return DataSocket(ret);
+}
