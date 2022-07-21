@@ -32,10 +32,16 @@ Socket &	Socket::operator=(Socket & o) {
 	return *this;
 }
 
+bool		Socket::operator==(Socket & o) {
+	if (getsd() == o.getsd)
+		return true;
+	else
+		return false;
+}
+
 const int Socket::invalid_socket = -1;
 
 /* StreamSocket */
-
 
 StreamSocket::StreamSocket()
 	: Socket(socket(AF_INET, SOCK_STREAM, 0)) {}
@@ -51,6 +57,8 @@ DataSocket::DataSocket()
 DataSocket::DataSocket(int sd)
 	: StreamSocket(sd) {}
 
+/* send() wrapper */
+
 void	DataSocket::send (const char * data, std::size_t len) {
 	std::size_t	sent = 0;
 	while (sent < len) {
@@ -64,6 +72,8 @@ void	DataSocket::send (const char * data, std::size_t len) {
 		sent += ret;
 	}
 }
+
+/* recv() wrapper */
 
 void	DataSocket::recv (char * data, std::size_t len) {
 	std::size_t received = 0;
@@ -80,9 +90,16 @@ void	DataSocket::recv (char * data, std::size_t len) {
 /* ServerSocket */
 
 ServerSocket::ServerSocket(std::uint16_t port) 
-	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)) {
+	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)), port(port) {
+}
+
+
+/* setsockopt, fcntl (nonblockable) and bind */
+
+void	ServerSocket::init() {
 	try {
 		const int opt = 1;
+		const int backlog = 128;
 		int ret = setsockopt(sd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 		if (ret < 0)
 			throw std::runtime_error(std::string("setsockopt failed: ") + strerror(errno));
@@ -95,6 +112,18 @@ ServerSocket::ServerSocket(std::uint16_t port)
 		ret = bind(sd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr));
 		if (ret != 0)
 			throw std::runtime_error(std::string("bind failed: ") + strerror(errno));
+	}
+	catch (const std::exception &) {
+		close(sd);
+		throw;
+	}
+}
+
+/* Start listening */
+
+void	ServerSocket::start() {
+	try {
+		const int backlog = 128;
 		ret = listen(sd, backlog);
 		if (ret != 0)
 			throw std::runtime_error(std::string("listen failed: ") + strerror(errno));
@@ -104,6 +133,8 @@ ServerSocket::ServerSocket(std::uint16_t port)
 		throw;
 	}
 }
+
+/* Accept entering connection and return DataSocket */
 
 DataSocket ServerSocket::accept() {
 	struct sockaddr	addr;
