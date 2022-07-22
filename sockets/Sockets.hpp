@@ -63,7 +63,7 @@ public:
 	
 	void	init();
 	void	start();
-	DataSocker accept();
+	int		accept();
 
 	uint16_t	port;
 };

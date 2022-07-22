@@ -16,10 +16,23 @@ public:
 
 private:
 	#define MAX_EVENTS	20;
-	struct epoll_event	events[MAX_EVENTS];
+	struct epoll_event			events[MAX_EVENTS];
+	std::vector<IEventListener>	event_listeners;
 
 	int				epollfd;
 	long int		timeout;
 	ServerSocket	master_socket;
 	bool			running;
+
+	void	handleListenerActivity();
+	void	handleClientActivity(int index);
+	void	disconnectClient(int sd);
+
+	void	addEventListener(IEventListener * listener);
+	void	removeEventListener(IEventListener * listener);
+	void	clearEventListeners();
+
+	void	raiseConnectEvent(int sd);
+	void	raiseDisconnectEvent(int sd);
+	void	raiseReceiveEvent(std::vector<char> data, sd);
 }

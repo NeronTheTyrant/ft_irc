@@ -1,0 +1,163 @@
+
+
+EpollHandler::EpollHandler(long int timeout)
+	: epollfd(-1), timeout(timeout) {};
+
+EpollHandler::~EpollHandler() {
+	if (epollfd > 0)
+		close(epollfd);
+}
+
+void	EpollHandler::initMasterSocket(int16_t port) {
+	try {
+		master_socket = ServerSocket(port);
+		master_socket.init();
+	} catch (const std::exception &e) {
+		std::cout << e.what() << std::endl;
+	}
+}
+
+void	EpollHandler::start() {
+	// if master_socket is not set
+	if (master_socket->getsd() == -1)
+		throw std::logic_error("EpollHandler: Master socket initialised with invalid socket descriptor");
+
+	// start listening for new connections
+	master_socket.start();
+
+	// init epoll instance
+	epollfd = epoll_create1(0);
+	if (epollfd < 0)
+		throw std::runtime_error("Could not create epoll instance");
+
+	// set master socket events
+	struct epoll_event	ev;
+	ev.data.fd = master_socket->getsd();
+	ev.events = EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP;
+
+	// add master socket to epoll interest list
+	int ret = epoll_ctl(epollfd, EPOLL_CTL_ADD, master_socket->getsd(), &ev);
+	if (ret < 0)
+		throw std::runtime_error("Could not add master socket to epoll interest list");
+
+	// event loop
+	running = 1;
+	while (running) {
+
+		// check for new events
+		int nfds = epoll_wait(epollfd, events, MAX_EVENTS, timeout);
+		if (nfds == -1)
+			throw std::runtime_error("epoll_wait() failed to wait for events");
+
+		for (int n = 0; n < nfds; n++) {
+			if (events[n].data.fd == master_socket->getsd())
+				handleListenerActivity();
+			else
+				handleClientActivity(n);
+		}
+	}
+}
+
+
+// function called when epoll signals an event on master_socket / listener
+
+void	EpollHandler::handleListenerActivity() {
+
+	// TODO add epoll event error handler?? Maybe an extra function
+
+	// user ServerSocket wrapper to accept connection
+	int	sd = master_socket.accept();
+
+	// add possible events to new client sd
+	struct epoll_event	ev;
+	ev.data.fd = sd;
+	ev.events = EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP;
+
+	// add new client to epoll interest list
+	int ret = epoll_ctl(epollfd, EPOLL_CTL_ADD, sd, &ev);
+	if (ret < 0)
+		throw std::runtime_error("Could not add master socket to epoll interest list");
+
+	raiseConnectEvent(sd);
+}
+
+// function called when epoll signals an event on client socket
+
+void	EpollHandler::handleClientActivity(int index) {
+
+	if (events[index].events & EPOLLIN) {
+		
+		//if file descriptor is invalid
+		if (events[index].data.fd < 0)
+			throw std::logic_error("Invalid client file descriptor");
+
+		// Read data from socket
+		char buffer[512];
+		int	received = recv(events[index].data.fd, buffer, sizeof(buffer), 0);
+
+		if (received < 0) {
+			if (errno != EAGAIN && errno != EWOULDBLOCK) {
+				close(events[index].data.fd);
+				throw std::runtime_error("recv() failed");
+		}
+		else if (received == 0) // Connection was closed remotely
+			disconnectClient(events[index].data.fd);
+		else {
+			std::vector<char> data(buffer, buffer + received);
+			raiseReceiveEvent(data, events[index].data.fd);
+		}
+	}
+	if (events[index].events & EPOLLOUT) {
+		// ToDo Implement
+		std::cout << "EPOLLOUT" << std::endl;
+	}
+	if (events[index].events & EPOLLRDHUP) {
+		// ToDo Implement
+		std::cout << "EPOLLRDHUP" << std::endl;
+	}
+	if (events[index].events & EPOLLHUP) {
+		// ToDo Implement
+		std::cout << "EPOLLHUP" << std::endl;
+	}
+}
+
+void	EpollHandler::disconnectClient(int sd) {
+	struct epoll_events	ev;
+	int ret = epoll_ctl(epollfd, EPOLL_CTL_DEL, sd, &ev);
+	raiseDisconnectEvent(sd);
+}
+
+void	EpollHandler::raiseConnectEvent(int sd) {
+	for (int i = 0; i < event_listeners.size(); i++)
+		event_listeners[i]->onConnect(sd);
+}
+
+void	EpollHandler::raiseDisconnectEvent(int sd) {
+	for (int i = 0; i < event_listeners.size(); i++)
+		event_listeners[i]->onDisconnect(sd);
+}
+
+void	EpollHandler::raiseReceiveEvent(int sd) {
+	for (int i = 0; i < event_listeners.size(); i++)
+		event_listeners[i]->onReceive(sd);
+}
+
+void	EpollHandler::addEventListener(IEventListener * listener) {
+	event_listeners.push_back(listener);
+}
+
+void	EpollHandler::removeEventListener(IEventListener * listener) {
+	if (event_listeners.size() == 0)
+		return;
+	for (std::vector<IEventListener>::iterator it = event_listeners.begin();
+		it != event_listeners.end(); it++) {
+		if (*it == listener) {
+			event_listeners.erase(it);
+			break;
+		}
+	}
+}
+
+void	EpollHandler::clearEventListeners() {
+	event_listeners.clear();
+}

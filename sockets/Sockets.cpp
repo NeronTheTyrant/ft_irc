@@ -136,11 +136,11 @@ void	ServerSocket::start() {
 
 /* Accept entering connection and return DataSocket */
 
-DataSocket ServerSocket::accept() {
+int ServerSocket::accept() {
 	struct sockaddr	addr;
 	socklen_t	addrlen = sizeof(addr);
 	int ret = accept(sd, &addr, &addrlen);
 	if (ret < 0)
 		throw std::runtime_error(std::string("accept failed: ") + strerror(errno));
-	return DataSocket(ret);
+	return ret;
 }
