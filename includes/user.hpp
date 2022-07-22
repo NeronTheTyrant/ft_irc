@@ -10,8 +10,7 @@ class	User
 		std::string	_nickname;
 		std::string	_realname;
 		std::string	_hostname;
-		std::string	_password;
-		int			_mod;
+		int			_mode;
 		bool		_is_op;
 
 	public:
@@ -20,34 +19,40 @@ class	User
 			_is_op = false;
 		};
 
-		void	 setUsername(std::string username)
-		{
-			_username = username;
-		};
 
-		void	setNickname(std::string nickname)
+		/** Getter
+		 */
+		std::string	getNickname(void) const { return (_nickname); }
+		std::string	getUsername(void) const { return (_username); }
+		std::string	getRealname(void) const { return (_realname); }
+		std::string	getHostname(void) const { return (_hostname); }
+		int			getMode(void) const		{ return (_mode); }
+		bool		getOp(void) const		{ return (_is_op); }
+
+
+		/** Setter
+		 */
+		void	setUsername(std::string username)	{ _username = username; }
+		void	setNickname(std::string nickname)	{ _nickname = nickname; }
+		void	setOpStatus(bool status)			{ _is_op = status; }
+
+
+		bool	operator==(User &rhs)
 		{
-			_nickname = nickname;
+			if (this->_nickname != rhs._nickname)
+				return (false);
+			if (this->_username != rhs._username)
+				return (false);
+			if (this->_realname != rhs._realname)
+				return (false);
+			if (this->_hostname != rhs._hostname)
+				return (false);
+			return (true);
 		}
 
-		void	setPassword(std::string pass)
+		bool	operator!=(User &rhs)
 		{
-			_password = pass;
-		}
-
-		void	changeOpStatus(bool status)
-		{
-			_is_op = status;
-		}
-
-		std::string	getNickname(void)	const
-		{
-			return (_nickname);
-		}
-
-		std::string	getUsername(void)	const
-		{
-			return (_username);
+			return (!(rhs == *this));
 		}
 
 };
