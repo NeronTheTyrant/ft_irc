@@ -1,4 +1,11 @@
+#ifndef EPOLLHANDLER_HPP
+#define EPOLLHANDLER_HPP
+
 #include "Sockets.hpp"
+#include <vector>
+#include <sys/epoll.h>
+#include "IEventListener.hpp"
+#include <iostream>
 
 /* I want this class to init the server socket by itself, and regularly call
  * accept() and whatever and epoll_ctl to add stuff. I also want to add automated
@@ -8,16 +15,20 @@
 
 class EpollHandler {
 public:
-	EpollHandler(long int timeout)
+	EpollHandler(int16_t port, long int timeout);
 	~EpollHandler();
 
-	void	initMasterSocket(int16_t port);
-	void	start()
+	void	initMasterSocket();
+	void	start();
+
+	void	addEventListener(IEventListener * listener);
+	void	removeEventListener(IEventListener * listener);
+	void	clearEventListeners();
 
 private:
-	#define MAX_EVENTS	20;
+	#define MAX_EVENTS	20
 	struct epoll_event			events[MAX_EVENTS];
-	std::vector<IEventListener>	event_listeners;
+	std::vector<IEventListener *>	event_listeners;
 
 	int				epollfd;
 	long int		timeout;
@@ -28,11 +39,9 @@ private:
 	void	handleClientActivity(int index);
 	void	disconnectClient(int sd);
 
-	void	addEventListener(IEventListener * listener);
-	void	removeEventListener(IEventListener * listener);
-	void	clearEventListeners();
-
 	void	raiseConnectEvent(int sd);
 	void	raiseDisconnectEvent(int sd);
-	void	raiseReceiveEvent(std::vector<char> data, sd);
-}
+	void	raiseReceiveEvent(std::string data, int sd);
+};
+
+#endif

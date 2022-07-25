@@ -1,5 +1,8 @@
+#ifndef SOCKETS_HPP
+#define SOCKETS_HPP
+
 #include <cstdint>
-#include "EpollHandler.hpp"
+//#include "EpollHandler.hpp"
 
 /* Classes and Features:
  *
@@ -28,7 +31,7 @@ public:
 protected:
 	explicit Socket(int sd);
 
-	int	getsd() const {return sd:;}
+	int	getsd() const {return sd;}
 
 	const static int	invalid_socket;
 	int			sd;
@@ -67,3 +70,5 @@ public:
 
 	uint16_t	port;
 };
+
+#endif
