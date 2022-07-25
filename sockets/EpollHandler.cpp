@@ -113,6 +113,10 @@ void	EpollHandler::handleClientActivity(int index) {
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, events[index].data.fd);
+			if (data == "close\n") {
+				epoll_ctl(epollfd, EPOLL_CTL_DEL, events[index].data.fd, NULL);
+				close(events[index].data.fd);
+			}
 		}
 	}
 	if (events[index].events & EPOLLOUT) {
