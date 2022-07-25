@@ -31,6 +31,14 @@ class UserList {};
 ```
 int returnValue;
 ```
+- Variables privees et protegees avec un underscore "_" avant le nom
+```
+class SomeClass {
+private:
+  int   _privateInt;
+  char  _privateChar;
+}
+```
 - les noms de TOUT avec le format suivant:
   - action (get, set, start, init, flush, parse) en 1er
   - objet en toutes lettres (Command et pas cmd, Socket et pas sock...) en 2eme
