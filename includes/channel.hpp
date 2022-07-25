@@ -23,19 +23,22 @@ class Channel
 			_user_list.push_back(&the_maker);
 		}
 
-		/** Getters
+		/**
+		 *	Getters
 		 */
 		std::string	getName(void) const		{ return (_chan_name); }
 		std::string	getPassword(void) const	{ return (_password); }
 
 
-		/** Setters
+		/**
+		 *	Setters
 		 */
 		void	setName(std::string name)			{ _chan_name = name; }
 		void	setPassword(std::string password)	{ _password = password; }
 
 
-		/** Methods
+		/**
+		 *	Methods
 		 */
 		bool	removeUser(std::string nickname) {
 			for (user_iterator it = _user_list.begin(); it != _user_list.end(); ++it) {
