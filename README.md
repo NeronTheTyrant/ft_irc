@@ -58,7 +58,12 @@ if (condition) {
  - Des commentaires pour expliquer (au moins brievement) ce que votre fonction fait (inutile sur un constructeur par defaut ou un get/set simple)
   - Les commentaires DANS une fonction sont apprecies, mais surtout quand le code est tres technique et difficile a comprendre.
 ```
-// Executes NICK command as per RFC 2812
+/**
+ *  @Brief Executes NICK command as per RFC 2812
+ *
+ *
+ *  longer description[...]
+*/
 bool  doNick (User * U, std::string data) {
   ...
   // returns false if nickname is already in use
