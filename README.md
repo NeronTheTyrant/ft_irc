@@ -59,7 +59,7 @@ if (condition) {
   - Les commentaires DANS une fonction sont apprecies, mais surtout quand le code est tres technique et difficile a comprendre.
 ```
 /**
- *  @Brief Executes NICK command as per RFC 2812
+ *  @brief Executes NICK command as per RFC 2812
  *
  *
  *  longer description[...]
