@@ -17,8 +17,7 @@ class Channel
 		std::list<User*>	_ban_list;
 
 	public:
-		Channel(std::string chan_name, User the_maker, std::list<User*> operators)
-		{
+		Channel(std::string chan_name, User the_maker, std::list<User*> operators) {
 			_chan_name = chan_name;
 			_op_list = operators;
 			_user_list.push_back(&the_maker);
@@ -38,12 +37,9 @@ class Channel
 
 		/** Methods
 		 */
-		bool	removeUser(std::string nickname)
-		{
-			for (user_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
-			{
-				if ((*it)->getNickname() == nickname)
-				{
+		bool	removeUser(std::string nickname) {
+			for (user_iterator it = _user_list.begin(); it != _user_list.end(); ++it) {
+				if ((*it)->getNickname() == nickname) {
 					_user_list.erase(it);
 					return (true);
 				}
@@ -51,12 +47,9 @@ class Channel
 			return (false);
 		}
 
-		bool	removeOperator(std::string nickname)
-		{
-			for (user_iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-			{
-				if ((*it)->getNickname() == nickname)
-				{
+		bool	removeOperator(std::string nickname) {
+			for (user_iterator it = _op_list.begin(); it != _op_list.end(); ++it) {
+				if ((*it)->getNickname() == nickname) {
 					_op_list.erase(it);
 					return (true);
 				}
@@ -71,35 +64,28 @@ class Channel
 		 *				 /_____ \
 		 *	NEED TO FIND A PROPER WAY TO DO THIS.
 		 */
-		bool	removeBanUser(/* ?????????? */)
-		{
+		bool	removeBanUser(/* ?????????? */) {
 			return (false);
 		}
 
-		bool	isUser(User user)
-		{
-			for (user_iterator it = _user_list.begin(); it != _user_list.end(); ++it)
-			{
+		bool	isUser(User user) {
+			for (user_iterator it = _user_list.begin(); it != _user_list.end(); ++it) {
 				if ((*it)->getNickname() == user.getNickname())
 					return (true);
 			}
 			return (false);
 		}
 
-		bool	isOp(User user)
-		{
-			for (user_iterator it = _op_list.begin(); it != _op_list.end(); ++it)
-			{
+		bool	isOp(User user) {
+			for (user_iterator it = _op_list.begin(); it != _op_list.end(); ++it) {
 				if ((*it)->getNickname() == user.getNickname())
 					return (true);
 			}
 			return (false);
 		}
 
-		bool	isBan(User user)
-		{
-			for (user_iterator it = _ban_list.begin(); it != _ban_list.end(); ++it)
-			{
+		bool	isBan(User user) {
+			for (user_iterator it = _ban_list.begin(); it != _ban_list.end(); ++it) {
 				if ((*it)->getNickname() == user.getNickname())
 					return (true);
 			}

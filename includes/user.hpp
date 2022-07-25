@@ -3,8 +3,7 @@
 
 # include <iostream>
 
-class	User
-{
+class	User {
 	private:
 		std::string	_username;
 		std::string	_nickname;
@@ -14,8 +13,7 @@ class	User
 		bool		_is_op;
 
 	public:
-		User()
-		{
+		User() {
 			_is_op = false;
 		};
 
@@ -37,8 +35,7 @@ class	User
 		void	setOpStatus(bool status)			{ _is_op = status; }
 
 
-		bool	operator==(User &rhs)
-		{
+		bool	operator==(User &rhs) {
 			if (this->_nickname != rhs._nickname)
 				return (false);
 			if (this->_username != rhs._username)
@@ -50,8 +47,7 @@ class	User
 			return (true);
 		}
 
-		bool	operator!=(User &rhs)
-		{
+		bool	operator!=(User &rhs) {
 			return (!(rhs == *this));
 		}
 
