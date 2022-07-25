@@ -61,8 +61,7 @@ if (condition) {
 /**
  *  @brief Executes NICK command as per RFC 2812
  *
- *
- *  longer description[...]
+ *  longer description if needed[...]
 */
 bool  doNick (User * U, std::string data) {
   ...
