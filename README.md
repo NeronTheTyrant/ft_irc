@@ -18,7 +18,7 @@
 - Gardez une norme commune (voir Norme plus bas)
 - Pour tout changement dans la structure principale, communiquez et assurez-vous que vos changement ne cassent pas le code des autres
 - Gardez la branche master vide sauf pour la structure principale et le EpollHandler (et ses dependances), jusqu'a ce qu'une feature soit finie
-- Une branche par feature? Une branche par personne? Je vous laisse decider, je prefere une branche par feature pour que ce soit clair.
+- Une branche par feature.
 - On est en C++, du coup on peut s'amuser avec des classes partout et des interactions marrantes je pense. Beaucoup de wrapper, pas beaucoup de code en dur (le parsing dans une classe par exemple)
 
 # Norme
