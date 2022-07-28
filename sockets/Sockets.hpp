@@ -1,7 +1,11 @@
+#ifndef SOCKETS_HPP
+#define SOCKETS_HPP
+
 #include <cstdint>
+//#include "EpollHandler.hpp"
 
 /* Classes and Features:
- * 
+ *
  * - Socket : contains a socket descriptor, not initialized by default. Member variable sd is compared to non-member variable invalid_socket to know if sd is invalid
  *
  * - StreamSocket: inherits Socket, and will initialize Socket's sd as a STREAM_SOCKET using a call to socket()
@@ -9,7 +13,7 @@
  * - DataSocket : inherits StreamSocket, features wrappers to send() and recv() functions to handle incomplete calls and various errors
  *
  * - ServerSocket: inherits StreamSocket, initialized with a port, features wrapper to accept() call to first assign address to inbound connection, before returning a DataSocket instance	
-*/ 
+*/
 
 /* Base socket class, only has a socket descriptor and checks for invalid descriptors */
 
@@ -17,17 +21,22 @@ class Socket {
 public:
 	Socket();
 	virtual ~Socket();
-	
+
 	Socket(Socket & o);
-	Socket & operator=(Socket & o);
-	int	getsd() const {return sd:;}
+	Socket &	operator=(Socket & o);
+	bool		operator==(Socket & o);
+
 	bool	has_error;
 
 protected:
 	explicit Socket(int sd);
 
+	int	getsd() const {return sd;}
+
 	const static int	invalid_socket;
 	int			sd;
+
+	friend class EpollHandler;
 };
 
 /* Stream Socket class, initialises socket as STEAM_SOCKET using socket() */
@@ -54,10 +63,12 @@ public:
 class ServerSocket : public StreamSocket {
 public:
 	ServerSocket(std::uint16_t port);
+	
+	void	init();
+	void	start();
+	int		accept();
 
-	DataSocker accept();
-
-protected:
-	const static int	backlog = 128;
-	std::uint16_t		port;
+	uint16_t	port;
 };
+
+#endif
