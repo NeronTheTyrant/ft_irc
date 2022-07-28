@@ -5,8 +5,8 @@
 #include <unistd.h>
 #include <stdexcept>
 
-EpollHandler::EpollHandler(int16_t port, long int timeout)
-	: epollfd(-1), master_socket(port), timeout(timeout) {};
+EpollHandler::EpollHandler(int16_t port)
+	: epollfd(-1), master_socket(port) {};
 
 EpollHandler::~EpollHandler() {
 	if (epollfd > 0)
@@ -21,7 +21,7 @@ void	EpollHandler::initMasterSocket() {
 	}
 }
 
-void	EpollHandler::start() {
+void	EpollHandler::run() {
 	// if master_socket is not set
 	if (master_socket.getsd() == -1)
 		throw std::logic_error("EpollHandler: Master socket initialised with invalid socket descriptor");
@@ -49,7 +49,7 @@ void	EpollHandler::start() {
 	while (running) {
 
 		// check for new events
-		int nfds = epoll_wait(epollfd, events, MAX_EVENTS, timeout);
+		int nfds = epoll_wait(epollfd, events, MAX_EVENTS, 60 * 3 * 1000);
 		if (nfds == -1)
 			throw std::runtime_error("epoll_wait() failed to wait for events");
 
@@ -109,6 +109,7 @@ void	EpollHandler::handleClientActivity(int index) {
 		}
 		else if (received == 0) { // Connection was closed remotey
 			disconnectClient(events[index].data.fd);
+			raiseDisconnectEvent(sd);
 		}
 		else {
 			std::string	data(buffer);
@@ -136,7 +137,6 @@ void	EpollHandler::handleClientActivity(int index) {
 void	EpollHandler::disconnectClient(int sd) {
 	struct epoll_event	ev;
 	int ret = epoll_ctl(epollfd, EPOLL_CTL_DEL, sd, &ev);
-	raiseDisconnectEvent(sd);
 }
 
 void	EpollHandler::raiseConnectEvent(int sd) {

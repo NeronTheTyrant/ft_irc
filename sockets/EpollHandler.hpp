@@ -15,11 +15,11 @@
 
 class EpollHandler {
 public:
-	EpollHandler(int16_t port, long int timeout);
+	EpollHandler(int16_t port);
 	~EpollHandler();
 
 	void	initMasterSocket();
-	void	start();
+	void	run();
 
 	void	addEventListener(IEventListener * listener);
 	void	removeEventListener(IEventListener * listener);
@@ -31,7 +31,6 @@ private:
 	std::vector<IEventListener *>	event_listeners;
 
 	int				epollfd;
-	long int		timeout;
 	ServerSocket	master_socket;
 	bool			running;
 

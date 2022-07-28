@@ -6,10 +6,13 @@
 #include <iostream>
 
 class IRCEventListener : public IEventListener {
-
+public:
 	void	onConnect(int sd);
 	void	onDisconnect(int sd);
 	void	onReceive(std::string data, int sd);
+
+private:
+	IRCServer & server;
 };
 
 #endif
