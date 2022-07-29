@@ -4,25 +4,38 @@ Network::Network() {};
 
 Network::~Network() {};
 
-void	add(User * user) {
+Network::Users &	Network::users() {
+	return _users;
+}
+
+Network::Channels &	Network::channels() {
+	return _channels;
+}
+
+Network::UserSockets & Network::userSockets() {
+	return _userSockets;
+}
+
+void	Network::add(User * user) {
 	_userSockets[user->sd()] = user;
 	if (user->nickname().size())
 		_users[user->nickname()] = user;
 }
 
-void	add(Channel * channel) {
+void	Network::add(Channel * channel) {
 	_channels[channel->name()] = channel;
 }
 
-void	remove(User * user) {
+void	Network::remove(User * user) {
 	_users.erase(user->nickname());
+	_userSockets.erase(user->sd());
 }
 
-void	remove(Channel * channel) {
+void	Network::remove(Channel * channel) {
 	_channels.erase(channel->name());
 }
 
-User *	getUserByName(std::string const nickname) {
+User *	Network::getUserByName(std::string const nickname) {
 	Users::iterator it = _users.find(nickname);
 	if (it == _users.end())
 		return nullptr;
@@ -30,7 +43,7 @@ User *	getUserByName(std::string const nickname) {
 		return it->second;
 }
 
-User *	getUserBySocket(int sd) {
+User *	Network::getUserBySocket(int sd) {
 	UserSockets::iterator it = _userSockets.find(sd);
 	if (it == _userSockets.end())
 		return nullptr;
@@ -38,7 +51,7 @@ User *	getUserBySocket(int sd) {
 		return it->second;
 }
 
-Channel *	getChannelByName(std::string const channelName) {
+Channel *	Network::getChannelByName(std::string const channelName) {
 	Channels::iterator it = _channels.find(channelName);
 	if (it == _channels.end())
 		return nullptr;
