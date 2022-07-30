@@ -1,23 +1,30 @@
 #ifndef PARSER_HPP
 # define PARSER_HPP
-# include <string>
+
 # include "Command.hpp"
+# include <string>
 
 class Parser {
 
 	public :
+
 		Parser( std::string input = std::string() );
-		˜Parser();
+		~Parser();
+
 		std::string	input() const;
 		void		setInput( std::string newInput );
+
 		std::string	output() const;
 		void		setOutput( std::string newOutput );
-		Command &	command() const;
+
+		void	parseInput();
+		Command	command() const;
 
 	private :
 
-		std::string input;
-		Command		command;
-		std::string	output;
+		std::string	_input;
+		Command		_command;
+		std::string	_output;
 };
+
 #endif
