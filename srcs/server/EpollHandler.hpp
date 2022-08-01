@@ -1,11 +1,11 @@
 #ifndef EPOLLHANDLER_HPP
 #define EPOLLHANDLER_HPP
 
-#include "Sockets.hpp"
 #include <vector>
 #include <sys/epoll.h>
 #include "IEventListener.hpp"
 #include <iostream>
+#include "ServerSocket.hpp"
 
 /* I want this class to init the server socket by itself, and regularly call
  * accept() and whatever and epoll_ctl to add stuff. I also want to add automated

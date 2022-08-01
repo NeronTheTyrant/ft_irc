@@ -2,6 +2,20 @@
 #define SOCKETS_HPP
 
 #include <cstdint>
+#include <cstdint>
+#include <string>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#include <netinet/in.h>
+#include <stdexcept>
+# include <iostream>
+
+//#include "EpollHandler.hpp"
+//#include "Client.hpp"
 //#include "EpollHandler.hpp"
 
 /* Classes and Features:
@@ -17,6 +31,9 @@
 
 /* Base socket class, only has a socket descriptor and checks for invalid descriptors */
 
+class EpollHandler;
+class Client;
+
 class Socket {
 public:
 	Socket();
@@ -26,7 +43,6 @@ public:
 	Socket &	operator=(Socket & o);
 	bool		operator==(Socket & o);
 
-	bool	has_error;
 
 protected:
 	explicit Socket(int sd);
@@ -37,38 +53,9 @@ protected:
 	int			sd;
 
 	friend class EpollHandler;
+	friend class Client;
 };
 
-/* Stream Socket class, initialises socket as STEAM_SOCKET using socket() */
 
-class StreamSocket : public Socket {
-public:
-	StreamSocket();
-	explicit StreamSocket(int sd);
-};
-
-/* DataSocket, can send and receive data on socket descriptor, assuming there is an active connection */
-
-class DataSocket : public StreamSocket {
-public:
-	DataSocket();
-	explicit DataSocket(int sd);
-
-	void	send (const char * data, std::size_t len);
-	void	recv (char * data, std::size_t len);
-};
-
-/* Server socket that can accept connections */
-
-class ServerSocket : public StreamSocket {
-public:
-	ServerSocket(std::uint16_t port);
-	
-	void	init();
-	void	start();
-	int		accept();
-
-	uint16_t	port;
-};
 
 #endif

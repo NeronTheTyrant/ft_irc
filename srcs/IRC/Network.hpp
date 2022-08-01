@@ -3,6 +3,8 @@
 
 #include "User.hpp"
 #include "Channel.hpp"
+#include <map>
+# include <iostream>
 
 class Network { // Stores User and Channel maps, has methods to add and remove user and channels
 public:
@@ -12,6 +14,10 @@ public:
 
 	Network();
 	~Network();
+
+	Users &			users();
+	Channels &		channels();
+	UserSockets &	userSockets();
 
 	void	add(User * user);
 	void	add(Channel * channel);
