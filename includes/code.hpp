@@ -1,5 +1,5 @@
-#ifndef COMMANDRESPONSES_HPP
-# define COMMANDRESPONSES_HPP
+#ifndef CODE_HPP
+# define CODE_HPP
 
 # define CODE_RPL_WELCOME 1
 # define CODE_RPL_YOURHOST 2

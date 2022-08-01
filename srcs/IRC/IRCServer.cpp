@@ -1,4 +1,3 @@
-
 #include "IRCServer.hpp"
 
 IRCServer::IRCServer(int16_t port) :
@@ -14,6 +13,10 @@ void	IRCServer::start() {
 	IRCEventListener *	irc_event_listener = new IRCEventListener(*this);
 	_epollHandler.addEventListener(irc_event_listener);
 	_epollHandler.run();
+}
+
+std::string	IRCServer::name() {
+	return _name;
 }
 
 Network &	IRCServer::network() {

@@ -1,6 +1,7 @@
 #include "../../includes/commandResponses.hpp"
 #include "../../includes/utils.hpp"
 #include "../IRC/User.hpp"
+#include "../IRC/IRCServer.hpp"
 #include <iostream>
 #include <map>
 
@@ -72,6 +73,17 @@ std::string		serverMessageBuilder(User user, std::string content)
 	message += ":" + user.nickname();
 	message += "!" + user.username();
 	message += "@" + user.hostname();
+	message += " ";
+	message += content;
+	message += "\r\n";
+	return (message);
+}
+
+std::string		serverMessageBuilder(IRCServer server, std::string content)
+{
+	std::string message("");
+
+	message += ":" + server.name();
 	message += " ";
 	message += content;
 	message += "\r\n";
