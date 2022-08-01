@@ -50,7 +50,6 @@ class	User {
 		bool	operator!=(User &rhs) {
 			return (!(rhs == *this));
 		}
-
 };
 
 #endif
