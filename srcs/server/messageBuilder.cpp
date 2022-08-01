@@ -6,7 +6,7 @@
 #include <map>
 
 std::string		commandMessageBuilder(const	short code,
-		std::string const arg1, std::string const arg2, std::string const arg3, std::string const arg4) {
+		std::string const arg1 = std::string(), std::string const arg2 = std::string(), std::string const arg3 = std::string(), std::string const arg4 = std::string()) {
 	std::string		ret;
 	std::string		strCode;
 
