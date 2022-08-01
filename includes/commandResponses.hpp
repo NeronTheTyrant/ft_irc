@@ -13,7 +13,6 @@
 # define RPL_ENDOFWHO(name) (name + " :End of WHO list\r\n") //315
 # define RPL_WHOISIDLE(pseudo, idle, signon) (pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n") //317
 # define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n") //318
-# define RPL_CHANNELMODEIS(channel, mode, mode_params) (channel + " " + mode + " " + mode_params + "\r\n" //324
 # define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n") //331
 # define RPL_TOPIC(channel, topic) (channel + " :" + topic + "\r\n") //332
 # define RPL_NAMREPLY(channel, nick_list) (channel + " :" + nick_list + "\r\n") //353
@@ -22,7 +21,6 @@
 /**
  *  ERRORS
 */
-
 # define ERR_NOSUCHNICK(nick) (nick + " :No such nick/channel\r\n") //401
 # define ERR_CANNOTSENDTOCHAN(channel) (channel + " :Cannot send to channel\r\n") //404
 # define ERR_NORECIPIENT(command) (":No recipient given " + command + "\r\n") //411

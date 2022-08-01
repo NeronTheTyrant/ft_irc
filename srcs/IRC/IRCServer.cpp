@@ -14,11 +14,12 @@ void	IRCServer::start() {
 	IRCEventListener *	irc_event_listener = new IRCEventListener(*this);
 	_epollHandler.addEventListener(irc_event_listener);
 	_epollHandler.run();
+}
 
 Network &	IRCServer::network() {
 	return _network;
 }
 
-EpollHandler &	epollHandler() {
+EpollHandler &	IRCServer::epollHandler() {
 	return _epollHandler;
 }

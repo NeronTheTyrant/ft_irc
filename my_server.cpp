@@ -1,5 +1,4 @@
-#include "sockets/EpollHandler.hpp"
-#include "sockets/IRCEventListener.hpp"
+#include "IRCServer.hpp"
 
 int	main (void) {
 

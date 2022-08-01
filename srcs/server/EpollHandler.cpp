@@ -109,14 +109,12 @@ void	EpollHandler::handleClientActivity(int index) {
 		}
 		else if (received == 0) { // Connection was closed remotey
 			disconnectClient(events[index].data.fd);
-			raiseDisconnectEvent(sd);
 		}
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, events[index].data.fd);
 			if (data == "close\n") {
-				epoll_ctl(epollfd, EPOLL_CTL_DEL, events[index].data.fd, NULL);
-				close(events[index].data.fd);
+				disconnectClient(events[index].data.fd);
 			}
 		}
 	}
@@ -137,21 +135,24 @@ void	EpollHandler::handleClientActivity(int index) {
 void	EpollHandler::disconnectClient(int sd) {
 	struct epoll_event	ev;
 	int ret = epoll_ctl(epollfd, EPOLL_CTL_DEL, sd, &ev);
+	if (ret < 0)
+		std::cout << "Could not delete client from epoll interest list" << std::endl;
+	raiseDisconnectEvent(sd);
 }
 
 void	EpollHandler::raiseConnectEvent(int sd) {
-	for (int i = 0; i < event_listeners.size(); i++)
+	for (std::size_t i = 0; i < event_listeners.size(); i++)
 		event_listeners[i]->onConnect(sd);
 }
 
 void	EpollHandler::raiseDisconnectEvent(int sd) {
-	for (int i = 0; i < event_listeners.size(); i++)
+	for (std::size_t i = 0; i < event_listeners.size(); i++)
 		event_listeners[i]->onDisconnect(sd);
 }
 
 void	EpollHandler::raiseReceiveEvent(std::string data, int sd) {
 	std::cout << "In event listner" << std::endl;
-	for (int i = 0; i < event_listeners.size(); i++)
+	for (std::size_t i = 0; i < event_listeners.size(); i++)
 		event_listeners[i]->onReceive(data, sd);
 }
 
