@@ -12,7 +12,7 @@ O_DIR			=	bin/obj/
 # COMPILE
 CC			=	g++
 CFLAGS		=	-Werror -Wextra -Wall -I$(S_DIR)$(S_IRC_DIR) -I$(S_DIR)$(S_SERVER_DIR)
-LDFLAGS		=	
+LDFLAGS		=
 DBGFLAGS	=	-g3
 FDBGFLAGS	=	-g3 -fsanitize=address
 

@@ -1,13 +1,14 @@
-#include "../includes/commandResponses.hpp"
-#include "../includes/utils.hpp"
-#include "../includes/user.hpp"
+#include "../../includes/commandResponses.hpp"
+#include "../../includes/utils.hpp"
+#include "../IRC/User.hpp"
 #include <iostream>
 #include <map>
 
-std::string		commandMessageBuilder(const	short code, std::map<std::string, User *>::iterator itUser,
+std::string		commandMessageBuilder(const	short code,
 		std::string const arg1, std::string const arg2, std::string const arg3, std::string const arg4) {
 	std::string		ret;
 	std::string		strCode;
+
 	strCode = ft_itos(code);
 	if (code < 10)
 		strCode = std::string(2, '0').append(ft_itos(code));
@@ -64,16 +65,13 @@ std::string		commandMessageBuilder(const	short code, std::map<std::string, User 
 	}
 }
 
-std::string		serverMessageBuilder(std::map<std::string, User *>::iterator itUser, std::string content)
+std::string		serverMessageBuilder(User user, std::string content)
 {
 	std::string message("");
 
-	message += ":";
-	message += itUser->nickname();
-	message+= "!";
-	message += itUser->username();
-	message += "@";
-	message += itUser->hostname();
+	message += ":" + user.nickname();
+	message += "!" + user.username();
+	message += "@" + user.hostname();
 	message += " ";
 	message += content;
 	message += "\r\n";
