@@ -7,7 +7,7 @@
 #include <vector>
 #include <iostream>
 
-void	nickErro(std::string nickname) {
+void	nickError(std::string nickname) {
 	if (isCharset(nickname[0], SPECIAL) == false
 			&& isCharset(nickname[0], LETTER) == false)
 		return (
