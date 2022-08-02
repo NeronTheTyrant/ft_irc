@@ -13,10 +13,12 @@ public:
 	~IRCServer();
 
 	void		start();
+	std::string	name();
 	Network &	network();
 	EpollHandler &	epollHandler();
 
 private:
+	std::string			_name;
 	Network				_network;
 	EpollHandler		_epollHandler;
 	IRCEventListener *	_eventListener;
