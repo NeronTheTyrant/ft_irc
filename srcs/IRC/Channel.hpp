@@ -16,7 +16,6 @@ private:
 		std::string			_password;
 		std::list<User*>	_userList;
 		std::list<User*>	_opList;
-		std::list<User*>	_banList;
 
 public:
 		Channel(std::string chan_name, User * creator, std::list<User*> operators);
@@ -39,17 +38,8 @@ public:
 		bool	removeUser(std::string nickname);
 		bool	removeOperator(std::string nickname);
 
-		/**
-		 *					/\
-		 *				   /  \
-		 *				  / !! \
-		 *				 /_____ \
-		 *	NEED TO FIND A PROPER WAY TO DO THIS.
-		 */
-		bool	removeBanUser();
 		bool	isUser(User * user);
 		bool	isOp(User * user);
-		bool	isBan(User * user);
 
 };
 

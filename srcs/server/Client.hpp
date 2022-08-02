@@ -18,9 +18,9 @@ public:
 	int	sd() const;
 
 	void		receive(std::string data);
-	void		send(std::string data);
+	void		send(std::string data) const;
 	bool		crlf() const;
-	std::string	line();
+	std::string	line() const;
 	void		clearLine();
 
 };

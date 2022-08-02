@@ -1,6 +1,6 @@
 #include "IRCServer.hpp"
 
-IRCServer::IRCServer(int16_t port) :
+IRCServer::IRCServer(uint16_t port) :
 	_epollHandler(port) {};
 
 IRCServer::~IRCServer() {

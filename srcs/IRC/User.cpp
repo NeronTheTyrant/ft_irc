@@ -16,7 +16,7 @@ User::~User() {}
  * Operators
  */
 
-bool	User::operator==(User &rhs) {
+bool	User::operator==(User &rhs) const {
 	if (this->_nickname != rhs._nickname)
 		return (false);
 	if (this->_username != rhs._username)
@@ -28,7 +28,7 @@ bool	User::operator==(User &rhs) {
 	return (true);
 }
 
-bool	User::operator!=(User &rhs) {
+bool	User::operator!=(User &rhs) const {
 	return (!(rhs == *this));
 }
 
@@ -75,8 +75,3 @@ void	User::setNickname(std::string nickname) {
 void	User::setOpStatus(bool status) {
 	_isOp = status;
 }
-
-/**
- * Methods
- */
-

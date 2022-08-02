@@ -17,8 +17,8 @@ public:
 	User(int sd);
 	~User();
 
-	bool	operator==(User &rhs);
-	bool	operator!=(User &rhs);
+	bool	operator==(User &rhs) const;
+	bool	operator!=(User &rhs) const;
 
 /**
  * Getters

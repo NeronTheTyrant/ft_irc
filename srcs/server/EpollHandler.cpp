@@ -97,13 +97,13 @@ void	EpollHandler::handleClientActivity(int index) {
 			throw std::logic_error("Invalid client file descriptor");
 
 		// Read data from socket
-		char buffer[512] = {0};
+		char buffer[512] = {};
 		int	received = recv(events[index].data.fd, buffer, sizeof(buffer), 0);
 		std::cout << received << std::endl;
 
 		if (received < 0) {
 			if (errno != EAGAIN && errno != EWOULDBLOCK) {
-				close(events[index].data.fd);
+				disconnectClient(events[index].data.fd);
 				throw std::runtime_error("recv() failed");
 			}
 		}

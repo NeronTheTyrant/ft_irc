@@ -9,7 +9,7 @@ class IRCEventListener;
 
 class IRCServer {
 public:
-	IRCServer(int16_t port);
+	IRCServer(uint16_t port);
 	~IRCServer();
 
 	void		start();

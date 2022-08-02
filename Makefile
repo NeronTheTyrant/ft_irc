@@ -10,7 +10,7 @@ BIN_DIR			=	bin/
 O_DIR			=	bin/obj/
 
 # COMPILE
-CC			=	g++
+CC			=	c++
 CFLAGS		=	-Werror -Wextra -Wall -I$(S_DIR)$(S_IRC_DIR) -I$(S_DIR)$(S_SERVER_DIR) -g3
 LDFLAGS		=	
 DBGFLAGS	=	-g3

@@ -58,10 +58,6 @@ bool	Channel::removeOperator(std::string nickname) {
 	return (false);
 }
 
-bool	removeBanUser() {
-	return false;
-}
-
 
 bool	Channel::isUser(User * user) {
 	for (user_iterator it = _userList.begin(); it != _userList.end(); ++it) {
@@ -78,16 +74,3 @@ bool	Channel::isOp(User * user) {
 	}
 	return (false);
 }
-
-bool	Channel::isBan(User * user) {
-	for (user_iterator it = _banList.begin(); it != _banList.end(); ++it) {
-		if ((*it)->nickname() == user->nickname())
-			return (true);
-	}
-	return (false);
-}
-/*
-	int	main(void) {
-		std::cout << "prout" << std::endl;
-}
-*/
