@@ -20,7 +20,7 @@ void	Client::send(std::string data) const {
 }
 
 bool	Client::crlf() const {
-	if (stock.find("\r\n") != std::string::npos)
+	if (stock.find_any_of("\r\n") != std::string::npos)
 		return true;
 	else
 		return false;
@@ -29,13 +29,13 @@ bool	Client::crlf() const {
 std::string	Client::line() const {
 	if (!crlf())
 		return std::string("\r\n");
-	size_t	pos = stock.find("\r\n");
-	return stock.substr(0, pos + 2);
+	size_t	pos = stock.find_any_of("\r\n");
+	return stock.substr(0, pos + 1);
 }
 
 void	Client::clearLine() {
 	if (!crlf())
 		return ;
-	size_t	pos = stock.find("\r\n");
-	stock.erase(0, pos + 2);
+	size_t	pos = stock.find_any_of("\r\n");
+	stock.erase(0, pos + 1);
 }

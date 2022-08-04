@@ -31,6 +31,8 @@ DEPEND_SERVER	=	$(addprefix $(S_DIR)$(S_SERVER_DIR), \
 					StreamSocket.hpp \
 					DataSocket.hpp \
 					ServerSocket.hpp \
+					Command.hpp \
+					Parser.hpp \
 					Client.hpp)
 
 DEPEND_UTILS	=	$(addprefix $(S_DIR)$(S_UTILS_DIR), \
@@ -55,6 +57,8 @@ SERVER_SOURCES	=	EpollHandler.cpp \
 					StreamSocket.cpp \
 					DataSocket.cpp \
 					ServerSocket.cpp \
+					Command.cpp \
+					Parser.cpp \
 					Client.cpp
 
 SERVER_SRCS		=	$(addprefix $(S_DIR)$(S_SERVER_DIR), $(SERVER_SOURCES))
