@@ -8,6 +8,10 @@ Flag::Flag(uint32_t flags)
 
 Flag::~Flag() {}
 
+uint32_t	Flag::flags() const {
+	return _flags;
+}
+
 bool	Flag::isSet(uint32_t bitMask) const {
 	if (_flags & bitMask)
 		return true;

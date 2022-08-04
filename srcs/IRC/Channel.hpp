@@ -1,30 +1,72 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-# include "User.hpp"
-# include <list>
 # include <iostream>
 # include <string>
+# include <map>
+
+# include "User.hpp"
+# include "Flag.hpp"
+
+class ChannelMode : public Flag {
+public:
+	enum Mode {
+		/* Unknown Mode */
+		ERROR = 0,
+		/* 'm' - moderated channel */
+		MODERATED = 1,
+		/* 't' - only channel creator can set topic */
+		TOPIC = 1 << 1,
+	};
+
+	ChannelMode(uint32_t flag = 0);
+	virtual ~ChannelMode();
+
+	static Mode	translate(char c);
+	static char	translate(Mode m);
+};
+
+class MemberStatus : public Flag {
+public:
+	enum Status {
+		/* Unknown status */
+		ERROR = 0,
+		/* 'O' - channel creator */
+		CREATOR = 1,
+		/* 'o' - channel operator */
+		OPERATOR = 1 << 1,
+		/* 'v' - member can speak in moderated or restricted channel */
+		VOICE = 1 << 2,
+	};
+
+	MemberStatus(uint32_t flag = 0);
+	virtual ~MemberStatus();
+
+	static Status translate(char c);
+	static char translate(Status s);
+};
+
 
 class Channel {
 public:
-	typedef	typename std::list<User*>::iterator			user_iterator;
-	typedef	typename std::list<User*>::const_iterator	const_user_iterator;
+	typedef std::map<User *, MemberStatus>	Users;
 
 private:
 		std::string			_name;
 		std::string			_password;
-		std::list<User*>	_userList;
-		std::list<User*>	_opList;
+		ChannelMode			_mode;
+		Users				_users;
 
 public:
-		Channel(std::string chan_name, User * creator, std::list<User*> operators);
+		Channel(std::string name, User * creator);
 
 		/**
 		 *	Getters
 		 */
 		std::string	name() const;
 		std::string	password() const;
+		Users &	users();
+		MemberStatus	userStatus(User * u);
 
 		/**
 		 *	Setters
@@ -35,11 +77,19 @@ public:
 		/**
 		 *	Methods
 		 */
-		bool	removeUser(std::string nickname);
-		bool	removeOperator(std::string nickname);
+		void	addUser(User * u, MemberStatus s = MemberStatus(0));
+		void	removeUser(User * u);
+		bool	isUser(User * u);
 
-		bool	isUser(User * user);
-		bool	isOp(User * user);
+		void	setStatus(User * u, char c);
+		void	unsetStatus(User * u, char c);
+		bool	isStatusSet(User * u, char c);
+
+		void	setMode(char c);
+		void	unsetMode(char c);
+		bool	isModeSet(char c);
+
+
 
 };
 

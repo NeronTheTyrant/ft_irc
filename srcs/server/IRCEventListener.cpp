@@ -8,7 +8,7 @@ IRCEventListener::~IRCEventListener() {}
 
 void	IRCEventListener::onConnect(int sd) {
 	std::cout << "New user connected: " << sd << std::endl;
-	User *	user = new User(sd);
+	User *	user = new User(sd, UserRequirement::ALL);
 	server.network().add(user);
 }
 
