@@ -14,7 +14,7 @@ class IRCServer {
 	typedef	std::map<std::string, void	(IRCServer::*) (User &, std::vector<std::string>)>	mapCommand;
 
 public:
-	IRCServer(int16_t port);
+	IRCServer(uint16_t port);
 	~IRCServer();
 
 	void		start();
