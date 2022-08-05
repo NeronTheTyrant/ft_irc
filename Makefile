@@ -12,7 +12,7 @@ O_DIR			=	bin/obj/
 
 # COMPILE
 CC			=	c++
-CFLAGS		=	-Werror -Wextra -Wall -I$(S_DIR)$(S_IRC_DIR) -I$(S_DIR)$(S_SERVER_DIR) -I$(S_DIR)$(S_UTILS_DIR) -g3
+CFLAGS		=	-Werror -Wextra -Wall -std=c++98 -I$(S_DIR)$(S_IRC_DIR) -I$(S_DIR)$(S_SERVER_DIR) -I$(S_DIR)$(S_UTILS_DIR) -g3
 LDFLAGS		=	
 DBGFLAGS	=	-g3
 FDBGFLAGS	=	-g3 -fsanitize=address
@@ -101,22 +101,22 @@ $(NAME)			:	$(OBJS) $(IRC_OBJS) $(SERVER_OBJS) $(UTILS_OBJS)
 $(OBJS)			:	$(O_DIR)%.opp: %.cpp $(DEPENDS)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(IRC_OBJS)		:	$(O_DIR)%.opp: $(S_DIR)$(S_IRC_DIR)%.cpp $(DEPEND_IRC)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(SERVER_OBJS)	:	$(O_DIR)%.opp: $(S_DIR)$(S_SERVER_DIR)%.cpp $(DEPEND_SERVER)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(UTILS_OBJS)	:	$(O_DIR)%.opp: $(S_DIR)$(S_UTILS_DIR)%.cpp $(DEPEND_UTILS)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 clean			:
 				@echo "$(NAME): cleaning objs"

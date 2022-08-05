@@ -17,14 +17,16 @@ class Parser {
 		std::string	output() const;
 		void		setOutput( std::string newOutput );
 
-		void	parseInput();
-		Command	command() const;
+		void		parseInput();
+		Command		command() const;
 
 	private :
 
 		std::string	_input;
 		Command		_command;
 		std::string	_output;
+
+		bool	commandValid() const;
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdexcept>
+#include <cerrno>
 
 EpollHandler::EpollHandler(int16_t port)
 	: epollfd(-1), master_socket(port) {};
@@ -113,8 +114,9 @@ void	EpollHandler::handleClientActivity(int index) {
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, events[index].data.fd);
-			if (data == "close\n") {
+			if (data == "close\r\n") {
 				disconnectClient(events[index].data.fd);
+				running = 0;
 			}
 		}
 	}

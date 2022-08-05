@@ -10,24 +10,23 @@ void		Parser::setInput( std::string newInput ) { _input = newInput; }
 
 std::string	Parser::output() const { return _output; }
 void		Parser::setOutput( std::string newOutput ) { _output = newOutput; }
+
 void	Parser::parseInput() {
-	if (_input.size() == 0) {
-		_command.setSyntaxError(true);
+
+	size_t index = _input.find_first_not_of(" ");
+	if (index == std::string::npos) {
 		return;
 	}
 
-	size_t index = 0;
-	while (index < _input.size() && _input.at(index) == ' ') {
-		index++;
-	}
-
-	if (index == _input.size()){
-		_command.setSyntaxError(true);
-		return;
-	}
 	size_t nextSpace = _input.find(" ", index);
 	if (nextSpace == std::string::npos) {
 		nextSpace = _input.size() - 1;
+	}
+
+	std::string	toAdd = _input.substr(index, nextSpace - index);
+	if (!commandValid()) {
+		_command.setSyntaxError(true);
+		return;
 	}
 	_command.setCommand(_input.substr(index, nextSpace - index));
 	index = nextSpace;
@@ -54,4 +53,10 @@ void	Parser::parseInput() {
 		}
 	}
 }
-Command	Parser::command() const { return _command; }
+
+Command		Parser::command() const { return _command; }
+
+bool	Parser::commandValid() const {
+
+	return true;
+}
