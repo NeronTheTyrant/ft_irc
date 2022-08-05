@@ -122,17 +122,35 @@ void	User::setNickname(std::string nickname) {
 void	User::setMode(char c) {
 	UserMode::Mode m = UserMode::translate(c);
 	if (m != UserMode::ERROR)
-		_requirements.set(m);
+		_mode.set(m);
+}
+
+void	User::setMode(UserMode::Mode m) {
+	if (m != UserMode::ERROR)
+		_mode.set(m);
 }
 
 void	User::unsetMode(char c) {
 	UserMode::Mode m = UserMode::translate(c);
 	if (m != UserMode::ERROR)
-		_requirements.unset(m);
+		_mode.unset(m);
+}
+
+void	User::unsetMode(UserMode::Mode m) {
+	if (m != UserMode::ERROR)
+		_mode.set(m);
+}
+
+bool	User::isModeSet(char c) {
+	UserMode::Mode m = UserMode::translate(c);
+	if (m != UserMode::ERROR && _mode.isSet(m))
+		return true;
+	else
+		return false;
 }
 
 bool	User::isModeSet(UserMode::Mode m) {
-	if (_mode.isSet(m))
+	if (m != UserMode::ERROR && _mode.isSet(m))
 		return true;
 	else
 		return false;

@@ -77,8 +77,13 @@ public:
  * Methods
  */
 	void	setMode(char c);
+	void	setMode(UserMode::Mode m);
+
 	void	unsetMode(char c);
-	bool	isModeSet(UserMode::Mode	m);
+	void	unsetMode(UserMode::Mode m);
+
+	bool	isModeSet(char c);
+	bool	isModeSet(UserMode::Mode m);
 
 	void	setRequirement(UserRequirement::Requirement r);
 	void	unsetRequirement(UserRequirement::Requirement r);

@@ -1,7 +1,7 @@
 #include "IRCServer.hpp"
 
-IRCServer::IRCServer(uint16_t port) :
-	_epollHandler(port) {};
+IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password) :
+	_name(name), _password(password), _epollHandler(port) {};
 
 IRCServer::~IRCServer() {
 	if (_eventListener)
@@ -17,6 +17,10 @@ void	IRCServer::start() {
 
 std::string	IRCServer::name() {
 	return _name;
+}
+
+std::string IRCServer::password() {
+	return _password;
 }
 
 Network &	IRCServer::network() {
