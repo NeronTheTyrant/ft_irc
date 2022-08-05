@@ -1,7 +1,7 @@
 #include "IRCServer.hpp"
 
-IRCServer::IRCServer(int16_t port) :
-	_epollHandler(port) {
+IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password) :
+	_name(name), _password(password), _epollHandler(port) {;
 	_commands["PASS"]		= &IRCServer::pass;
 	_commands["NICK"]		= &IRCServer::nick;
 	_commands["USER"]		= &IRCServer::user;
@@ -37,6 +37,10 @@ void	IRCServer::start() {
 
 std::string	IRCServer::name() {
 	return _name;
+}
+
+std::string IRCServer::password() {
+	return _password;
 }
 
 Network &	IRCServer::network() {

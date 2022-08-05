@@ -139,8 +139,26 @@ void	Channel::setStatus(User * u, char c) {
 	}
 }
 
+void	Channel::setStatus(User * u, MemberStatus::Status s) {
+	if (s == MemberStatus::ERROR)
+		return;
+	Users::iterator it = _users.find(u);
+	if (it != _users.end()) {
+		it->second.set(s);
+	}
+}
+
 void	Channel::unsetStatus(User * u, char c) {
 	MemberStatus::Status s = MemberStatus::translate(c);
+	if (s == MemberStatus::ERROR)
+		return ;
+	Users::iterator it = _users.find(u);
+	if (it != _users.end()) {
+		it->second.unset(s);
+	}
+}
+
+void	Channel::unsetStatus(User * u, MemberStatus::Status s) {
 	if (s == MemberStatus::ERROR)
 		return ;
 	Users::iterator it = _users.find(u);
@@ -160,9 +178,25 @@ bool	Channel::isStatusSet(User * u, char c) {
 	return false;
 }
 
+bool	Channel::isStatusSet(User * u, MemberStatus::Status s) {
+	if (s == MemberStatus::ERROR)
+		return false;
+	Users::iterator it = _users.find(u);
+	if (it != _users.end()) {
+		return it->second.isSet(s);
+	}
+	return false;
+}
+
 
 void	Channel::setMode(char c) {
 	ChannelMode::Mode m = ChannelMode::translate(c);
+	if (m == ChannelMode::ERROR)
+		return ;
+	_mode.set(m);
+}
+
+void	Channel::setMode(ChannelMode::Mode m) {
 	if (m == ChannelMode::ERROR)
 		return ;
 	_mode.set(m);
@@ -175,6 +209,12 @@ void	Channel::unsetMode(char c) {
 	_mode.unset(m);
 }
 
+void	Channel::unsetMode(ChannelMode::Mode m) {
+	if (m == ChannelMode::ERROR)
+		return ;
+	_mode.unset(m);
+}
+
 bool	Channel::isModeSet(char c) {
 	ChannelMode::Mode m = ChannelMode::translate(c);
 	if (m == ChannelMode::ERROR)
@@ -182,4 +222,8 @@ bool	Channel::isModeSet(char c) {
 	return _mode.isSet(m);
 }
 
-
+bool	Channel::isModeSet(ChannelMode::Mode m) {
+	if (m == ChannelMode::ERROR)
+		return false;
+	return _mode.isSet(m);
+}

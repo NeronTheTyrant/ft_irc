@@ -5,7 +5,7 @@ NAME		=	ft_irc
 # DIR
 S_DIR			=	srcs/
 S_IRC_DIR		=	IRC/
-S_SERVER_DIR	=	server/
+S_SERVER_DIR		=	server/
 S_UTILS_DIR		=	utils/
 BIN_DIR			=	bin/
 O_DIR			=	bin/obj/
@@ -16,7 +16,7 @@ CFLAGS		=	-Werror -Wextra -Wall -I$(S_DIR)$(S_IRC_DIR) -I$(S_DIR)$(S_SERVER_DIR)
 LDFLAGS		=	
 DBGFLAGS	=	-g3
 FDBGFLAGS	=	-g3 -fsanitize=address
-
+    
 DEPEND_IRC		=	$(addprefix $(S_DIR)$(S_IRC_DIR), \
 					Channel.hpp \
 					IRCServer.hpp \
