@@ -30,6 +30,7 @@ void	privmsgCommand(User *user, vector<std::string> params, IRCServer const &ser
 	if (target != u_nullptr)
 	{
 		target.send(serverMessageBuilder(serv, paramsToString(params)));
-		if (target
+		if (target.isModeSet('a'))
+			user.send(serv, commandMessageBuilder(CODE_RPL_AWAY, target->getAwayMessage()));
 	}
 }
