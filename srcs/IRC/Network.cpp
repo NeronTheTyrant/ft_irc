@@ -1,4 +1,5 @@
 #include "Network.hpp"
+#include "u_nullptr.hpp"
 
 Network::Network() {};
 
@@ -38,7 +39,7 @@ void	Network::remove(Channel * channel) {
 User *	Network::getUserByName(std::string const nickname) {
 	Users::iterator it = _users.find(nickname);
 	if (it == _users.end())
-		return nullptr;
+		return u_nullptr;
 	else
 		return it->second;
 }
@@ -46,7 +47,7 @@ User *	Network::getUserByName(std::string const nickname) {
 User *	Network::getUserBySocket(int sd) {
 	UserSockets::iterator it = _userSockets.find(sd);
 	if (it == _userSockets.end())
-		return nullptr;
+		return u_nullptr;
 	else
 		return it->second;
 }
@@ -54,7 +55,7 @@ User *	Network::getUserBySocket(int sd) {
 Channel *	Network::getChannelByName(std::string const channelName) {
 	Channels::iterator it = _channels.find(channelName);
 	if (it == _channels.end())
-		return nullptr;
+		return u_nullptr;
 	else
 		return it->second;
 }

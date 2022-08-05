@@ -4,6 +4,16 @@
 #include "../IRC/IRCServer.hpp"
 #include <iostream>
 #include <map>
+#include <vector>
+
+std::string		paramsToString(vector<std::string> params)
+{
+	std::string ret("");
+
+	for (vector<std::string>::iterator it = params.begin(); it != params.end(); ++it)
+		ret += it + " ";
+	return (ret);
+}
 
 std::string		commandMessageBuilder(const	short code,
 		std::string const arg1 = std::string(), std::string const arg2 = std::string(), std::string const arg3 = std::string(), std::string const arg4 = std::string()) {
