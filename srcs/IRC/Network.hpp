@@ -1,10 +1,11 @@
 #ifndef NETWORK_HPP
 #define NETWORK_HPP
 
-#include "User.hpp"
-#include "Channel.hpp"
-#include <map>
+# include <map>
 # include <iostream>
+# include <list>
+# include "User.hpp"
+# include "Channel.hpp"
 
 class Network { // Stores User and Channel maps, has methods to add and remove user and channels
 public:
@@ -24,9 +25,10 @@ public:
 	void	remove(User * user);
 	void	remove(Channel * channel);
 
-	User *		getUserByName(std::string const nickname);
-	User *		getUserBySocket(int sd);
-	Channel *	getChannelByName(std::string const channelName);
+	User *					getUserByName(std::string const nickname);
+	User *					getUserBySocket(int sd);
+	Channel *				getChannelByName(std::string const channelName);
+	std::list<Channel *>	getUserChannelList(User * u);
 
 private:
 	Users		_users;

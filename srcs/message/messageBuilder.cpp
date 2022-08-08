@@ -1,18 +1,13 @@
-#include "../../includes/commandResponses.hpp"
-#include "../../includes/utils.hpp"
-#include "../IRC/User.hpp"
-#include "../IRC/IRCServer.hpp"
-#include <iostream>
-#include <map>
+#include "messageBuilder.hpp"
 
 std::string		commandMessageBuilder(const	short code,
-		std::string const arg1 = std::string(), std::string const arg2 = std::string(), std::string const arg3 = std::string(), std::string const arg4 = std::string()) {
+		std::string const arg1 , std::string const arg2, std::string const arg3, std::string const arg4) {
 	std::string		ret;
 	std::string		strCode;
 
-	strCode = ft_itos(code);
+	strCode = ft_itos<short>(code);
 	if (code < 10)
-		strCode = std::string(2, '0').append(ft_itos(code));
+		strCode = std::string(2, '0').append(ft_itos<short>(code));
 	switch (code)
 	{
 		case 1:

@@ -66,6 +66,7 @@ public:
 	UserRequirement &	requirements();
 	UserMode &			mode();
 	bool				isRegistered() const;
+	std::string			prefix() const;
 
 /**
  * Setters

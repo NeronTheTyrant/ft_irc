@@ -104,6 +104,10 @@ bool	User::isRegistered() const {
 	return !_requirements.flags();
 }
 
+std::string	User::prefix() const {
+	return std::string(":") + _nickname + "!" + _username + "@" + _hostname;
+}
+
 /**
  * Setter
  */

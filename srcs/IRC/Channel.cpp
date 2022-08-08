@@ -227,3 +227,11 @@ bool	Channel::isModeSet(ChannelMode::Mode m) {
 		return false;
 	return _mode.isSet(m);
 }
+
+void	Channel::send(std::string message, User * sender) {
+	for (Users::iterator it = users().begin(); it != users().end(); it++) {
+		if (sender == NULL || it->first != sender) {
+			it->first->send(message);
+		}
+	}
+}

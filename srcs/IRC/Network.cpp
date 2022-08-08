@@ -58,3 +58,14 @@ Channel *	Network::getChannelByName(std::string const channelName) {
 	else
 		return it->second;
 }
+
+std::list<Channel *>	Network::getUserChannelList(User * u) {
+	std::list<Channel *>	channelList;
+	for (Channels::iterator it = channels().begin(); it != channels().end(); it++) {
+		if (it->second->isUser(u)) {
+			channelList.push_back(it->second);
+		}
+	}
+	return channelList;
+}
+

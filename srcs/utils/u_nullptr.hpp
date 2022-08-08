@@ -1,6 +1,6 @@
 #ifndef U_NULLPTR_HPP
 # define U_NULLPTR_HPP
-
+/*
 static class u_nullptr_t
 {
     public:
@@ -15,5 +15,5 @@ static class u_nullptr_t
                void operator&() const;
 
 } u_nullptr = {};
-
+*/
 #endif

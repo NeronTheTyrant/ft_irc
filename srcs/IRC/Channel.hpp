@@ -99,7 +99,7 @@ public:
 		bool	isModeSet(char c);
 		bool	isModeSet(ChannelMode::Mode m);
 
-
+		void	send(std::string message, User * sender = NULL);
 
 };
 
