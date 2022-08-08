@@ -45,7 +45,7 @@ char	UserMode::translate(UserMode::Mode m) {
  * Constructors & Destructors
  */
 
-User::User(int sd, uint32_t requirementFlags) 
+User::User(int sd, uint32_t requirementFlags)
 	: Client(sd), _requirements(requirementFlags) {
 };
 
@@ -76,7 +76,7 @@ bool	User::operator!=(User const & rhs) const {
  * Getters
  */
 
-std::string	User::nickname() const { 
+std::string	User::nickname() const {
 	return (_nickname);
 }
 
@@ -90,6 +90,10 @@ std::string	User::realname() const {
 
 std::string	User::hostname() const {
 	return (_hostname);
+}
+
+std::string	User::awayMessage() const {
+	return (_awayMessage);
 }
 
 UserRequirement &	User::requirements() {
