@@ -36,7 +36,7 @@ void	EpollHandler::run() {
 		throw std::runtime_error("Could not create epoll instance");
 
 	// set master socket events
-	struct epoll_event	ev;
+	struct epoll_event	ev = {};
 	ev.data.fd = master_socket.getsd();
 	ev.events = EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP;
 
@@ -74,7 +74,7 @@ void	EpollHandler::handleListenerActivity() {
 	int	sd = master_socket.accept();
 
 	// add possible events to new client sd
-	struct epoll_event	ev;
+	struct epoll_event	ev = {};
 	ev.data.fd = sd;
 	ev.events = EPOLLIN;
 
@@ -114,7 +114,7 @@ void	EpollHandler::handleClientActivity(int index) {
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, events[index].data.fd);
-			if (data == "close\r\n") {
+			if (data == "close\r\n" || data == "close") {
 				disconnectClient(events[index].data.fd);
 				running = 0;
 			}

@@ -1,6 +1,7 @@
 #include "Parser.hpp"
 #include "Command.hpp"
 #include <string>
+#include <algorithm>
 
 Parser::Parser( std::string input ) : _input(input) {}
 Parser::~Parser(){}
@@ -10,6 +11,8 @@ void		Parser::setInput( std::string newInput ) { _input = newInput; }
 
 std::string	Parser::output() const { return _output; }
 void		Parser::setOutput( std::string newOutput ) { _output = newOutput; }
+
+#include <iostream>
 
 void	Parser::parseInput() {
 
@@ -24,39 +27,64 @@ void	Parser::parseInput() {
 	}
 
 	std::string	toAdd = _input.substr(index, nextSpace - index);
-	if (!commandValid()) {
+	if (!commandValid(toAdd)) {
 		_command.setSyntaxError(true);
 		return;
 	}
-	_command.setCommand(_input.substr(index, nextSpace - index));
-	index = nextSpace;
-	while (index < _input.size() && _input.at(index) == ' ') {
-		index++;
+	_command.setCommand(toAdd);
+	if (nextSpace >= _input.size()) {
+		return;
 	}
+	index = _input.find_first_not_of(" ", nextSpace);
 	while (index < _input.size()) {
 		nextSpace = _input.find(" ", index);
 		if (_input.at(index) == ':' || nextSpace == std::string::npos) {
 			nextSpace = _input.size() - 1;
 		}
-		if (_input.at(index) == ':') {
-			index++;
-		}
-		if (index < _input.size()) {
-			_command.addArgument(_input.substr(index, nextSpace - index));
+		if (_input.at(index) != ':') {
+			if (index != nextSpace) {
+				toAdd = _input.substr(index, nextSpace - index);
+				std::cout << "nextSpace:" << nextSpace << "index:" << index << "\nadding '" << toAdd << "'" << std::endl;
+				if (std::find(toAdd.begin(), toAdd.end(), '\0') != toAdd.end()) {
+					_command.setSyntaxError(true);
+					return ;
+				}
+				_command.addArgument(toAdd);
+			}
 		}
 		else {
-			_command.addArgument("");
+			index++;
+			if (index < _input.size()) {
+				toAdd = _input.substr(index, nextSpace - index);
+				if (std::find(toAdd.begin(), toAdd.end(), '\0') != toAdd.end()) {
+					_command.setSyntaxError(true);
+					return ;
+				}
+				_command.addArgument(toAdd);
+				std::cout << "nextSpace:" << nextSpace << "index:" << index << "\nadding '" << toAdd << "'" << std::endl;
+			}
+		}
+		if (nextSpace >= _input.size()) {
+			break;
 		}
 		index = nextSpace + 1;
-		while (index < _input.size() && _input.at(index) == ' ') {
-			index++;
-		}
 	}
 }
 
 Command		Parser::command() const { return _command; }
 
-bool	Parser::commandValid() const {
+bool	myIsAlpha(char c) {
+	return std::isalpha(c);
+}
 
-	return true;
+bool	myIsDigit(char c) {
+	return std::isdigit(c);
+}
+
+bool	Parser::commandValid(std::string command) const {
+
+	if (command.size() == 3 && myAllOf(command.begin(), command.end(), myIsDigit)) {
+		return true;
+	}
+	return myAllOf(command.begin(), command.end(), myIsAlpha);
 }

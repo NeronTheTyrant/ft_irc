@@ -26,7 +26,17 @@ class Parser {
 		Command		_command;
 		std::string	_output;
 
-		bool	commandValid() const;
+		bool	commandValid(std::string command) const;
 };
 
+template<class InputIterator>
+bool	myAllOf(InputIterator first, InputIterator last, bool(*pred)(char)) {
+	while (first != last) {
+		if (!pred(*first)) {
+			return false;
+		}
+		++first;
+	}
+	return true;
+}
 #endif

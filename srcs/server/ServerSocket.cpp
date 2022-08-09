@@ -19,7 +19,7 @@ void	ServerSocket::init() {
 		ret = fcntl(sd, F_SETFL, opt | O_NONBLOCK);
 		if (ret != 0)
 			throw std::runtime_error(std::string("fcntl failed: ") + strerror(errno));
-		struct sockaddr_in addr;
+		struct sockaddr_in addr = {};
 		addr.sin_family = AF_INET;
 		addr.sin_port = htons(port);
 		ret = bind(sd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr));
