@@ -1,4 +1,5 @@
 # include "messageBuilder.hpp"
+# include "IRCServer.hpp"
 
 #define RPLMESSAGE(code) serverMessageBuilder(*this, commandMessageBuilder(code))
 

@@ -6,6 +6,7 @@
 # include <list>
 # include "User.hpp"
 # include "Channel.hpp"
+# include "utils.hpp"
 
 class Network { // Stores User and Channel maps, has methods to add and remove user and channels
 public:

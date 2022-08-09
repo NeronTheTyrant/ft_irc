@@ -21,6 +21,8 @@ void	ServerSocket::init() {
 		struct sockaddr_in addr;
 		addr.sin_family = AF_INET;
 		addr.sin_port = htons(port);
+		std::cout << "IM GONNA BIND BRO!!" << std::endl;
+		std::cout << "sd = " << sd << std::endl;
 		ret = bind(sd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr));
 		if (ret != 0)
 			throw std::runtime_error(std::string("bind failed: ") + strerror(errno));

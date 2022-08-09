@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <map>
+# include <vector>
 
 # include "commandResponses.hpp"
 # include "code.hpp"

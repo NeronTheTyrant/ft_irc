@@ -31,6 +31,8 @@ public:
 		RESTRICTED = 1 << 2,
 		/* 'o' - User has operator privileges */
 		OPERATOR = 1 << 3,
+		/* 'w' - User receives wallops (see WALLOPS command) */
+		WALLOPS = 1 << 4;
 	};
 
 	UserMode(uint32_t flag = 0);
@@ -74,6 +76,7 @@ public:
  * Setters
  */
 	void	setUsername(std::string username);
+	void	setRealname(std::string realname);
 	void	setNickname(std::string nickname);
 	void	setAwayMessage(std::string message);
 
