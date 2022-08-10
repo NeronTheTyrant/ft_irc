@@ -92,7 +92,7 @@ public:
 
 		void	setMode(char c);
 		void	setMode(ChannelMode::Mode m);
-				
+
 		void	unsetMode(char c);
 		void	unsetMode(ChannelMode::Mode m);
 
