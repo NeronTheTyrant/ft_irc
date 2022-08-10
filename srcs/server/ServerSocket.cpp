@@ -1,8 +1,9 @@
 #include "ServerSocket.hpp"
+#include <cerrno>
 
 /* ServerSocket */
 
-ServerSocket::ServerSocket(std::uint16_t port) 
+ServerSocket::ServerSocket(uint16_t port) 
 	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)), port(port) {
 }
 

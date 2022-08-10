@@ -34,22 +34,36 @@ void	Client::send(std::string data) const {
 }
 
 bool	Client::crlf() const {
-	if (_stock.find("\r\n") != std::string::npos)
+	if (stock.find_first_of("\r\n") != std::string::npos)
 		return true;
 	else
 		return false;
 }
 
+/*
+ * returns 
+ * 	-either an empty string 
+ * 	-either an inputted command (amputed from its terminators)
+ * 	depending on if the command's input include terminators
+ *
+*/
 std::string	Client::line() const {
 	if (!crlf())
-		return std::string("\r\n");
-	size_t	pos = _stock.find("\r\n");
-	return _stock.substr(0, pos + 2);
+		return std::string("");
+	size_t	pos = stock.find_first_of("\r\n");
+	return stock.substr(0, pos + 1);
 }
 
+/*
+ * notes 
+ * 	clear an inputted command (INCLUDING its terminators)
+ * 	does nothing if no terminators were inputted
+ *
+*/
 void	Client::clearLine() {
 	if (!crlf())
 		return ;
-	size_t	pos = _stock.find("\r\n");
-	_stock.erase(0, pos + 2);
+	size_t	pos = stock.find_first_of("\r\n");
+	bool	secondTerminator = (pos + 1 < stock.size() && (stock.at(pos + 1) == '\n' || stock.at(pos + 1) == '\r'));
+	stock.erase(0, pos + 1 + secondTerminator);
 }

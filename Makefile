@@ -33,6 +33,8 @@ DEPEND_SERVER	=	$(addprefix $(S_DIR)$(S_SERVER_DIR), \
 					StreamSocket.hpp \
 					DataSocket.hpp \
 					ServerSocket.hpp \
+					Command.hpp \
+					Parser.hpp \
 					Client.hpp)
 
 DEPEND_UTILS	=	$(addprefix $(S_DIR)$(S_UTILS_DIR), \
@@ -73,6 +75,8 @@ SERVER_SOURCES	=	EpollHandler.cpp \
 					StreamSocket.cpp \
 					DataSocket.cpp \
 					ServerSocket.cpp \
+					Command.cpp \
+					Parser.cpp \
 					Client.cpp
 SERVER_SRCS		=	$(addprefix $(S_DIR)$(S_SERVER_DIR), $(SERVER_SOURCES))
 
@@ -119,12 +123,12 @@ $(NAME)			:	$(OBJS) $(IRC_OBJS) $(CMD_OBJS) $(SERVER_OBJS) $(MESSAGE_OBJS) $(UTI
 $(OBJS)			:	$(O_DIR)%.opp: %.cpp $(DEPENDS)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(IRC_OBJS)		:	$(O_DIR)%.opp: $(S_DIR)$(S_IRC_DIR)%.cpp $(DEPEND_IRC)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(CMD_OBJS)		:	$(O_DIR)%.opp: $(S_DIR)$(S_CMD_DIR)%.cpp $(DEPEND_CMD)
 				@echo "Compiling $<"
@@ -134,12 +138,12 @@ $(CMD_OBJS)		:	$(O_DIR)%.opp: $(S_DIR)$(S_CMD_DIR)%.cpp $(DEPEND_CMD)
 $(SERVER_OBJS)	:	$(O_DIR)%.opp: $(S_DIR)$(S_SERVER_DIR)%.cpp $(DEPEND_SERVER)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(UTILS_OBJS)	:	$(O_DIR)%.opp: $(S_DIR)$(S_UTILS_DIR)%.cpp $(DEPEND_UTILS)
 				@echo "Compiling $<"
 				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
+				$(CC) $(CFLAGS) -c $< -o $@
 
 $(MESSAGE_OBJS)	:	$(O_DIR)%.opp: $(S_DIR)$(S_MESSAGE_DIR)%.cpp $(DEPEND_MESSAGE)
 				@echo "Compiling $<"

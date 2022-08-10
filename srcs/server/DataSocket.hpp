@@ -3,7 +3,6 @@
 
 /* DataSocket, can send and receive data on socket descriptor, assuming there is an active connection */
 
-#include <cstdint>
 #include <string>
 #include <sys/types.h>
 #include <sys/socket.h>

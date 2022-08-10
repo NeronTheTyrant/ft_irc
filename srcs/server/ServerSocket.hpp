@@ -1,7 +1,6 @@
 #ifndef SERVERSOCKET_HPP
 #define SERVERSOCKET_HPP
 
-#include <cstdint>
 #include <string>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -20,7 +19,7 @@
 
 class ServerSocket : public StreamSocket {
 public:
-	ServerSocket(std::uint16_t port);
+	ServerSocket(uint16_t port);
 	
 	void	init();
 	void	start();
