@@ -20,6 +20,8 @@ UserMode::Mode	UserMode::translate(char c) {
 			return RESTRICTED;
 		case 'o':
 			return OPERATOR;
+		case 'w':
+			return WALLOPS;
 		default:
 			return ERROR;
 	}
@@ -35,6 +37,8 @@ char	UserMode::translate(UserMode::Mode m) {
 			return 'r';
 		case OPERATOR :
 			return 'o';
+		case WALLOPS :
+			return 'w';
 		case ERROR :
 			return '\0';
 	}
@@ -46,7 +50,7 @@ char	UserMode::translate(UserMode::Mode m) {
  */
 
 User::User(int sd, uint32_t requirementFlags)
-	: Client(sd), _requirements(requirementFlags) {
+	: Client(sd), _requirements(requirementFlags), _channelCount(0) {
 };
 
 
@@ -112,6 +116,10 @@ std::string	User::prefix() const {
 	return std::string(":") + _nickname + "!" + _username + "@" + _hostname;
 }
 
+unsigned int	User::channelCount() const {
+	return _channelCount;
+}
+
 /**
  * Setter
  */
@@ -119,8 +127,16 @@ void	User::setUsername(std::string username) {
 	_username = username;
 }
 
+void	User::setRealname(std::string realname) {
+	_realname = realname;
+}
+
 void	User::setNickname(std::string nickname) {
 	_nickname = nickname;
+}
+
+void	User::setChannelCount(unsigned int c) {
+	_channelCount = c;
 }
 
 /**

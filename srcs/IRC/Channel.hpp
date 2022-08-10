@@ -56,6 +56,7 @@ private:
 		std::string			_password;
 		ChannelMode			_mode;
 		Users				_users;
+		unsigned int		_userCount;
 
 public:
 		Channel(std::string name, User * creator);
@@ -63,10 +64,11 @@ public:
 		/**
 		 *	Getters
 		 */
-		std::string	name() const;
-		std::string	password() const;
-		Users &	users();
+		std::string		name() const;
+		std::string		password() const;
+		Users &			users();
 		MemberStatus	userStatus(User * u);
+		unsigned int	userCount() const;
 
 		/**
 		 *	Setters

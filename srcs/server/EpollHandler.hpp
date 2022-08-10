@@ -1,11 +1,11 @@
 #ifndef EPOLLHANDLER_HPP
-#define EPOLLHANDLER_HPP
-
-#include <vector>
-#include <sys/epoll.h>
-#include "IEventListener.hpp"
-#include <iostream>
-#include "ServerSocket.hpp"
+# define EPOLLHANDLER_HPP
+ 
+# include <vector>
+# include <sys/epoll.h>
+# include <iostream>
+# include "IEventListener.hpp"
+# include "ServerSocket.hpp"
 
 /* I want this class to init the server socket by itself, and regularly call
  * accept() and whatever and epoll_ctl to add stuff. I also want to add automated
@@ -24,6 +24,7 @@ public:
 	void	addEventListener(IEventListener * listener);
 	void	removeEventListener(IEventListener * listener);
 	void	clearEventListeners();
+	void	disconnectClient(int sd, std::string notification);
 
 private:
 	#define MAX_EVENTS	20
@@ -36,10 +37,9 @@ private:
 
 	void	handleListenerActivity();
 	void	handleClientActivity(int index);
-	void	disconnectClient(int sd);
 
 	void	raiseConnectEvent(int sd);
-	void	raiseDisconnectEvent(int sd);
+	void	raiseDisconnectEvent(int sd, std::string notification);
 	void	raiseReceiveEvent(std::string data, int sd);
 };
 

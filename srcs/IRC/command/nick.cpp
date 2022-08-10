@@ -1,4 +1,5 @@
 # include "messageBuilder.hpp"
+# include "IRCServer.hpp"
 
 #define RPLMESSAGE(code) serverMessageBuilder(*this, commandMessageBuilder(code))
 
@@ -32,6 +33,10 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	user->setNickname(params[0]);
 	network().add(user);
 	if (user->isRequirementSet(UserRequirement::NICK)) {
+		if (user->isRequirementSet(UserRequirement::PASS)) {
+			user->send(RPLMESSAGE(CODE_ERR_PASSWDMISMATCH));
+			disconnect(user, "Wrong Password");
+		}
 		user->unsetRequirement(UserRequirement::NICK);
 		if (user->isRegistered()) {
 			user->send(RPLMESSAGE(CODE_RPL_WELCOME));
@@ -40,7 +45,7 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	else {
 		std::list<Channel *> channelList = network().getUserChannelList(user);
 		for (std::list<Channel *>::iterator it = channelList.begin(); it != channelList.end(); it++) {
-			(*it)->send(message);
+			(*it)->send(message, user);
 		}
 	}
 }

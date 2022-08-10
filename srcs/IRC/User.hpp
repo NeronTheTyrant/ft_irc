@@ -12,7 +12,7 @@ public:
 		NICK = 1 << 1,
 		USER = 1 << 2,
 		SKIP_PASS = NICK | USER,
-		ALL = PASS | NICK | USER,
+		ALL = PASS | NICK | USER
 	};
 
 	UserRequirement(uint32_t flag = 0);
@@ -31,6 +31,8 @@ public:
 		RESTRICTED = 1 << 2,
 		/* 'o' - User has operator privileges */
 		OPERATOR = 1 << 3,
+		/* 'w' - User receives wallops (see WALLOPS command) */
+		WALLOPS = 1 << 4
 	};
 
 	UserMode(uint32_t flag = 0);
@@ -49,6 +51,7 @@ private:
 	std::string			_awayMessage;
 	UserRequirement		_requirements;
 	UserMode			_mode;
+	unsigned int		_channelCount;
 
 public:
 	User(int sd, uint32_t requirementFlags);
@@ -69,13 +72,16 @@ public:
 	UserMode &			mode();
 	bool				isRegistered() const;
 	std::string			prefix() const;
+	unsigned int		channelCount() const;
 
 /**
  * Setters
  */
 	void	setUsername(std::string username);
+	void	setRealname(std::string realname);
 	void	setNickname(std::string nickname);
 	void	setAwayMessage(std::string message);
+	void	setChannelCount(unsigned int c);
 
 /**
  * Methods

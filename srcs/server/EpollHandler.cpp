@@ -35,7 +35,7 @@ void	EpollHandler::run() {
 		throw std::runtime_error("Could not create epoll instance");
 
 	// set master socket events
-	struct epoll_event	ev;
+	struct epoll_event	ev = {};
 	ev.data.fd = master_socket.getsd();
 	ev.events = EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP;
 
@@ -103,18 +103,18 @@ void	EpollHandler::handleClientActivity(int index) {
 
 		if (received < 0) {
 			if (errno != EAGAIN && errno != EWOULDBLOCK) {
-				disconnectClient(events[index].data.fd);
+				disconnectClient(events[index].data.fd, "Error receiving data packet");
 				throw std::runtime_error("recv() failed");
 			}
 		}
 		else if (received == 0) { // Connection was closed remotey
-			disconnectClient(events[index].data.fd);
+			disconnectClient(events[index].data.fd, "Connection closed remotely");
 		}
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, events[index].data.fd);
 			if (data == "close\n") {
-				disconnectClient(events[index].data.fd);
+				disconnectClient(events[index].data.fd, "DEBUG CLOSING");
 			}
 		}
 	}
@@ -132,12 +132,12 @@ void	EpollHandler::handleClientActivity(int index) {
 	}
 }
 
-void	EpollHandler::disconnectClient(int sd) {
-	struct epoll_event	ev;
-	int ret = epoll_ctl(epollfd, EPOLL_CTL_DEL, sd, &ev);
-	if (ret < 0)
-		std::cout << "Could not delete client from epoll interest list" << std::endl;
-	raiseDisconnectEvent(sd);
+void	EpollHandler::disconnectClient(int sd, std::string notification) {
+//	struct epoll_event	ev;
+//	int ret = epoll_ctl(epollfd, EPOLL_CTL_DEL, sd, &ev);
+//	if (ret < 0)
+//		std::cout << "Could not delete client from epoll interest list" << std::endl;
+	raiseDisconnectEvent(sd, notification);
 }
 
 void	EpollHandler::raiseConnectEvent(int sd) {
@@ -145,9 +145,9 @@ void	EpollHandler::raiseConnectEvent(int sd) {
 		event_listeners[i]->onConnect(sd);
 }
 
-void	EpollHandler::raiseDisconnectEvent(int sd) {
+void	EpollHandler::raiseDisconnectEvent(int sd, std::string notification) {
 	for (std::size_t i = 0; i < event_listeners.size(); i++)
-		event_listeners[i]->onDisconnect(sd);
+		event_listeners[i]->onDisconnect(sd, notification);
 }
 
 void	EpollHandler::raiseReceiveEvent(std::string data, int sd) {

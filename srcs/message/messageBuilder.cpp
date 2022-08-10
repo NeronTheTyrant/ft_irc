@@ -1,11 +1,11 @@
 #include "messageBuilder.hpp"
 
-std::string		paramsToString(vector<std::string> params)
+std::string		paramsToString(std::vector<std::string> params)
 {
 	std::string ret("");
 
-	for (vector<std::string>::iterator it = params.begin(); it != params.end(); ++it)
-		ret += it + " ";
+	for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it)
+		ret += *it + " ";
 	return (ret);
 }
 
@@ -70,7 +70,7 @@ std::string		commandMessageBuilder(const	short code,
 	}
 }
 
-std::string		serverMessageBuilder(User user, std::string content)
+std::string		serverMessageBuilder(User & user, std::string content)
 {
 	std::string message("");
 
@@ -83,7 +83,7 @@ std::string		serverMessageBuilder(User user, std::string content)
 	return (message);
 }
 
-std::string		serverMessageBuilder(IRCServer server, std::string content)
+std::string		serverMessageBuilder(IRCServer & server, std::string content)
 {
 	std::string message("");
 
