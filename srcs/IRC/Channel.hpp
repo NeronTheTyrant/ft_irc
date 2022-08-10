@@ -66,6 +66,7 @@ public:
 		 */
 		std::string		name() const;
 		std::string		password() const;
+		std::string		userNickList() const;
 		Users &			users();
 		MemberStatus	userStatus(User * u);
 		unsigned int	userCount() const;

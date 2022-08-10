@@ -6,7 +6,7 @@ void	privmsgCommand(User *sender, vector<std::string> params, IRCServer const &s
 	Channel	*chan;
 
 	if (params.size < 3) {
-		user.send(serverMessageBuilder(serv, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "PRIMSG")));
+		user.send(serverMessageBuilder(serv, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "PRIVMSG")));
 		return ;
 	}
 	chan = serv.network().getChannelByName(params[1]);

@@ -113,7 +113,7 @@ void	Channel::setPassword(std::string password) {
 
 /**
  * Methods
- */ 
+ */
 
 void	Channel::addUser(User * u, MemberStatus s /*= MemberStatus(0)*/) {
 	_users[u] = s;

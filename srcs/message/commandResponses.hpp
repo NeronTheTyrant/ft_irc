@@ -34,6 +34,7 @@
 # define ERR_NEEDMOREPARAMS(command)  (command + " :Not enough parameters\r\n") //461
 # define ERR_ALREADYREGISTRED() ":Unauthorized command (already registered)\r\n" //462
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n") //464
+# define ERR_RESTRICTED() (":Your coonnection is resticted!\r\n") //484
 
 
 #endif
