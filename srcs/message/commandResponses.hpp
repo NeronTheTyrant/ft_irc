@@ -16,8 +16,8 @@
 # define RPL_CHANNELMODEIS(channel, mode, params) (channel + " " + mode + " " + params + "\r\n") //324
 # define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n") //331
 # define RPL_TOPIC(channel, topic) (channel + " :" + topic + "\r\n") //332
-# define RPL_NAMREPLY(channel, nick_list) (channel + " :" + nick_list + "\r\n") //353
-# define RPL_ENDOFNAMES(channel) (channel + " :End of NAMES list\r\n") //366
+# define RPL_NAMREPLY(nick, channel, nick_list) (nick = channel + " :" + nick_list + "\r\n") //353
+# define RPL_ENDOFNAMES(nick, channel) (nick + " " + channel + " :End of NAMES list\r\n") //366
 
 /**
  *  ERRORS

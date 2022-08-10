@@ -86,6 +86,8 @@ std::string	Channel::userNickList() const {
 	Users::iterator it = _users.begin();
 
 	for (; it != _users.end(); ++it) {
+		if (isStatusSet(it->first, 'o'))
+			ret += "@";
 		ret += it->first->nickname();
 		if (it + 1 != _users.end())
 			ret += " ";

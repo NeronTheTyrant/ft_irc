@@ -1,6 +1,8 @@
 #include "utils.hpp"
 #include "Network.hpp"
 #include "IRCServer.hpp"
+#include <vector>
+#include <iostream>
 
 void	IRCServer::privmsg(User *sender, vector<std::string> params) {
 	User	*target;
