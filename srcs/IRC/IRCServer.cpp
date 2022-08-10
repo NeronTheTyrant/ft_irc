@@ -2,9 +2,9 @@
 
 IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password) :
 	_name(name), _password(password), _epollHandler(port) {;
-//	_commands["PASS"]		= &IRCServer::pass;
+	_commands["PASS"]		= &IRCServer::pass;
 	_commands["NICK"]		= &IRCServer::nick;
-//	_commands["USER"]		= &IRCServer::user;
+	_commands["USER"]		= &IRCServer::user;
 //	_commands["QUIT"]		= &IRCServer::quit;
 //	_commands["PRIVMSG"]	= &IRCServer::privmsg;
 //	_commands["NOTICE"]		= &IRCServer::notice;
@@ -49,4 +49,24 @@ Network &	IRCServer::network() {
 
 EpollHandler &	IRCServer::epollHandler() {
 	return _epollHandler;
+}
+
+void	IRCServer::disconnect(User * u, std::string quitReason) {
+	epollHandler().disconnectClient(u->sd(), quitReason);
+}
+
+void	IRCServer::clearUser(User * u, std::string quitReason) {
+	std::string	quitMessage = serverMessageBuilder(*u, "QUIT :") + quitReason;
+
+	// iterate through channels, kick user from each channel
+	std::list<Channel *> chanList = network().getUserChannelList(u);
+	for (std::list<Channel *>::iterator it = chanList.begin(); u->channelCount() && it != chanList.end(); it++) {
+		(*it)->send(quitMessage, u);
+		(*it)->removeUser(u);
+		// if channel is empty after this, delete channel
+		if (!(*it)->userCount()) {
+			network().remove(*it);
+		}
+	}
+	u->send(std::string("ERROR :") + "(" + quitReason + ")");
 }

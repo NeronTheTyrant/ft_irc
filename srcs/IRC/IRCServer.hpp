@@ -25,6 +25,11 @@ public:
 	Network &	network();
 	EpollHandler &	epollHandler();
 
+
+	void	disconnect(User * u, std::string quitReason);
+	void	clearUser(User * u, std::string quitReason);
+
+
 	/**
 	 * COMMAND FUNCTION
 	*/

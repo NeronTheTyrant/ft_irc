@@ -65,7 +65,7 @@ char	MemberStatus::translate(MemberStatus::Status s) {
  */
 
 Channel::Channel(std::string name, User * creator)
-	: _name(name) {
+	: _name(name), _userCount(0) {
 	addUser(creator, MemberStatus(MemberStatus::CREATOR));
 }
 
@@ -95,6 +95,10 @@ MemberStatus	Channel::userStatus(User * u) {
 	}
 }
 
+unsigned int	Channel::userCount() const {
+	return _userCount;
+}
+
 /**
  * Setters
  */
@@ -113,10 +117,14 @@ void	Channel::setPassword(std::string password) {
 
 void	Channel::addUser(User * u, MemberStatus s /*= MemberStatus(0)*/) {
 	_users[u] = s;
+	_userCount++;
+	u->setChannelCount(u->channelCount() + 1);
 }
 
 void	Channel::removeUser(User * u) {
 	_users.erase(u);
+	_userCount--;
+	u->setChannelCount(u->channelCount() - 1);
 }
 
 bool	Channel::isUser(User * u) {
@@ -228,7 +236,7 @@ bool	Channel::isModeSet(ChannelMode::Mode m) {
 	return _mode.isSet(m);
 }
 
-void	Channel::send(std::string message, User * sender) {
+void	Channel::send(std::string message, User * sender /* = NULL*/) {
 	for (Users::iterator it = users().begin(); it != users().end(); it++) {
 		if (sender == NULL || it->first != sender) {
 			it->first->send(message);

@@ -33,6 +33,7 @@ void	Network::remove(User * user) {
 
 void	Network::remove(Channel * channel) {
 	_channels.erase(channel->name());
+	delete channel;
 }
 
 User *	Network::getUserByName(std::string const nickname) {

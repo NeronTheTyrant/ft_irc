@@ -50,7 +50,7 @@ char	UserMode::translate(UserMode::Mode m) {
  */
 
 User::User(int sd, uint32_t requirementFlags)
-	: Client(sd), _requirements(requirementFlags) {
+	: Client(sd), _requirements(requirementFlags), _channelCount(0) {
 };
 
 
@@ -116,6 +116,10 @@ std::string	User::prefix() const {
 	return std::string(":") + _nickname + "!" + _username + "@" + _hostname;
 }
 
+unsigned int	User::channelCount() const {
+	return _channelCount;
+}
+
 /**
  * Setter
  */
@@ -129,6 +133,10 @@ void	User::setRealname(std::string realname) {
 
 void	User::setNickname(std::string nickname) {
 	_nickname = nickname;
+}
+
+void	User::setChannelCount(unsigned int c) {
+	_channelCount = c;
 }
 
 /**

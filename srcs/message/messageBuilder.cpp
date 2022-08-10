@@ -70,7 +70,7 @@ std::string		commandMessageBuilder(const	short code,
 	}
 }
 
-std::string		serverMessageBuilder(User user, std::string content)
+std::string		serverMessageBuilder(User & user, std::string content)
 {
 	std::string message("");
 
@@ -83,7 +83,7 @@ std::string		serverMessageBuilder(User user, std::string content)
 	return (message);
 }
 
-std::string		serverMessageBuilder(IRCServer server, std::string content)
+std::string		serverMessageBuilder(IRCServer & server, std::string content)
 {
 	std::string message("");
 
