@@ -46,6 +46,7 @@ private:
 	std::string			_nickname;
 	std::string			_realname;
 	std::string			_hostname;
+	std::string			_awayMessage;
 	UserRequirement		_requirements;
 	UserMode			_mode;
 
@@ -63,6 +64,7 @@ public:
 	std::string			username() const;
 	std::string			realname() const;
 	std::string			hostname() const;
+	std::string			awayMessage() const;
 	UserRequirement &	requirements();
 	UserMode &			mode();
 	bool				isRegistered() const;
@@ -72,13 +74,19 @@ public:
  */
 	void	setUsername(std::string username);
 	void	setNickname(std::string nickname);
+	void	setAwayMessage(std::string message);
 
 /**
  * Methods
  */
 	void	setMode(char c);
+	void	setMode(UserMode::Mode m);
+
 	void	unsetMode(char c);
-	bool	isModeSet(UserMode::Mode	m);
+	void	unsetMode(UserMode::Mode m);
+
+	bool	isModeSet(char c);
+	bool	isModeSet(UserMode::Mode m);
 
 	void	setRequirement(UserRequirement::Requirement r);
 	void	unsetRequirement(UserRequirement::Requirement r);

@@ -82,12 +82,22 @@ public:
 		bool	isUser(User * u);
 
 		void	setStatus(User * u, char c);
+		void	setStatus(User * u, MemberStatus::Status s);
+
 		void	unsetStatus(User * u, char c);
+		void	unsetStatus(User *u, MemberStatus::Status s);
+
 		bool	isStatusSet(User * u, char c);
+		bool	isStatusSet(User * u, MemberStatus::Status s);
 
 		void	setMode(char c);
+		void	setMode(ChannelMode::Mode m);
+				
 		void	unsetMode(char c);
+		void	unsetMode(ChannelMode::Mode m);
+
 		bool	isModeSet(char c);
+		bool	isModeSet(ChannelMode::Mode m);
 
 
 
