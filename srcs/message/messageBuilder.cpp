@@ -45,6 +45,12 @@ std::string		commandMessageBuilder(const	short code,
 			return ret + RPL_ENDOFWHOIS(arg1);
 		case 324:
 			return ret + RPL_CHANNELMODEIS(arg1, arg2, arg3);
+		case 331:
+			return ret + RPL_NOTOPIC(arg1);
+		case 332:
+			return ret + RPL_TOPIC(arg1, arg2);
+		case 353:
+			return ret + RPL_NAMREPLY(arg1, arg2);
 		case 366:
 			return ret + RPL_ENDOFNAMES(arg1);
 		case 401:
@@ -65,6 +71,12 @@ std::string		commandMessageBuilder(const	short code,
 			return ret + ERR_NOTREGISTERED();
 		case 461:
 			return ret + ERR_NEEDMOREPARAMS(arg1);
+		case 462:
+			return ret + ERR_ALREADYREGISTRED();
+		case 464:
+			return ret + ERR_PASSWDMISMATCH();
+		case 484:
+			return ret + ERR_RESTRICTED();
 		default:
 			return std::string("");
 	}

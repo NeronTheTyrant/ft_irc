@@ -66,6 +66,7 @@ public:
 		 */
 		std::string		name() const;
 		std::string		password() const;
+		std::string		userNickList() const;
 		Users &			users();
 		MemberStatus	userStatus(User * u);
 		unsigned int	userCount() const;
@@ -94,7 +95,7 @@ public:
 
 		void	setMode(char c);
 		void	setMode(ChannelMode::Mode m);
-				
+
 		void	unsetMode(char c);
 		void	unsetMode(ChannelMode::Mode m);
 
