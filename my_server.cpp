@@ -2,6 +2,6 @@
 
 int	main (void) {
 
-	IRCServer	server(12345);
+	IRCServer	server(12345, "chaussette.irc.net", "chaussette");
 	server.start();
 }

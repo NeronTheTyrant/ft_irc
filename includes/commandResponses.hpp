@@ -28,6 +28,7 @@
 # define ERR_NOTEXTTOSEND() ":No text tosend\r\n" //412
 # define ERR_UNKNOWNCOMMAND(command) (command + " :Unknown command\r\n") //421
 # define ERR_NONICKNAMEGIVEN() ":No nick given\r\n" //431
+# define ERR_ERRONEUSNICKNAME(nick) (nick + " :Erroneous nickname\r\n" //433
 # define ERR_NICKNAMEINUSE(nick) (nick + " :Nickname is already in use\r\n" //433
 # define ERR_NOTREGISTERED() ":You have not registered\r\n" //451
 # define ERR_NEEDMOREPARAMS(command)  (command + " :Not enough parameters\r\n") //461

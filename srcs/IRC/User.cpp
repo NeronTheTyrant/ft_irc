@@ -45,7 +45,7 @@ char	UserMode::translate(UserMode::Mode m) {
  * Constructors & Destructors
  */
 
-User::User(int sd, uint32_t requirementFlags) 
+User::User(int sd, uint32_t requirementFlags)
 	: Client(sd), _requirements(requirementFlags) {
 };
 
@@ -76,7 +76,7 @@ bool	User::operator!=(User const & rhs) const {
  * Getters
  */
 
-std::string	User::nickname() const { 
+std::string	User::nickname() const {
 	return (_nickname);
 }
 
@@ -90,6 +90,10 @@ std::string	User::realname() const {
 
 std::string	User::hostname() const {
 	return (_hostname);
+}
+
+std::string	User::awayMessage() const {
+	return (_awayMessage);
 }
 
 UserRequirement &	User::requirements() {
@@ -122,17 +126,35 @@ void	User::setNickname(std::string nickname) {
 void	User::setMode(char c) {
 	UserMode::Mode m = UserMode::translate(c);
 	if (m != UserMode::ERROR)
-		_requirements.set(m);
+		_mode.set(m);
+}
+
+void	User::setMode(UserMode::Mode m) {
+	if (m != UserMode::ERROR)
+		_mode.set(m);
 }
 
 void	User::unsetMode(char c) {
 	UserMode::Mode m = UserMode::translate(c);
 	if (m != UserMode::ERROR)
-		_requirements.unset(m);
+		_mode.unset(m);
+}
+
+void	User::unsetMode(UserMode::Mode m) {
+	if (m != UserMode::ERROR)
+		_mode.set(m);
+}
+
+bool	User::isModeSet(char c) {
+	UserMode::Mode m = UserMode::translate(c);
+	if (m != UserMode::ERROR && _mode.isSet(m))
+		return true;
+	else
+		return false;
 }
 
 bool	User::isModeSet(UserMode::Mode m) {
-	if (_mode.isSet(m))
+	if (m != UserMode::ERROR && _mode.isSet(m))
 		return true;
 	else
 		return false;
