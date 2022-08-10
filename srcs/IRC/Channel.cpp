@@ -81,6 +81,18 @@ std::string	Channel::password() const {
 	return _password;
 }
 
+std::string	Channel::userNickList() const {
+	std::string	ret("");
+	Users::iterator it = _users.begin();
+
+	for (; it != _users.end(); ++it) {
+		ret += it->first->nickname();
+		if (it + 1 != _users.end())
+			ret += " ";
+	}
+	return ret;
+}
+
 Channel::Users &	Channel::users() {
 	return _users;
 }
