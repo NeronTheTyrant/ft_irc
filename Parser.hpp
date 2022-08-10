@@ -26,5 +26,17 @@ class Parser {
 		Command		_command;
 		std::string	_output;
 };
-
+namespace lol {
+	template <class InputIterator, class UnaryPredicate>
+	bool	myAllOf<InputIterator, UnaryPredicate>(InputIterator first, InputIterator last, UnaryPredicate pred) {
+	
+		while (first != last) {
+			if (!pred(*first)) {
+				return false;
+			}
+			++first;
+		}
+		return true;
+	}
+}
 #endif
