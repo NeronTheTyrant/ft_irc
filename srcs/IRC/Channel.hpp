@@ -90,8 +90,8 @@ public:
 		void	unsetStatus(User * u, char c);
 		void	unsetStatus(User *u, MemberStatus::Status s);
 
-		bool	isStatusSet(User * u, char c);
-		bool	isStatusSet(User * u, MemberStatus::Status s);
+		bool	isStatusSet(User * u, char c) const;
+		bool	isStatusSet(User * u, MemberStatus::Status s) const;
 
 		void	setMode(char c);
 		void	setMode(ChannelMode::Mode m);
@@ -99,8 +99,8 @@ public:
 		void	unsetMode(char c);
 		void	unsetMode(ChannelMode::Mode m);
 
-		bool	isModeSet(char c);
-		bool	isModeSet(ChannelMode::Mode m);
+		bool	isModeSet(char c) const;
+		bool	isModeSet(ChannelMode::Mode m) const;
 
 		void	send(std::string message, User * sender = NULL);
 

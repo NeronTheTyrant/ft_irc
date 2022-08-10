@@ -12,18 +12,18 @@ bool	validNick(std::string nickname) {
 
 void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	if (user->isRegistered() && user->isModeSet(UserMode::RESTRICTED)) {
-		user->send(RPLMESSAGE(CODE_ERR_RESTRICTED));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_RESTRICTED)));
 	}
 	if (params[0] == "") {
-		user->send(RPLMESSAGE(CODE_ERR_NONICKNAMEGIVEN));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NONICKNAMEGIVEN)));
 		return ;
 	}
 	if (!validNick(params[0])) {
-		user->send(RPLMESSAGE(CODE_ERR_ERRONEUSNICKNAME));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ERRONEUSNICKNAME, params[0])));
 		return ;
 	}
 	if (network().getUserByName(user->nickname())) {
-		user->send(RPLMESSAGE(CODE_ERR_NICKNAMEINUSE));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NICKNAMEINUSE, params[0])));
 		return ;
 	}
 	std::string message = serverMessageBuilder(*user, std::string("NICK ") + params[0]); 
@@ -32,12 +32,12 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	network().add(user);
 	if (user->isRequirementSet(UserRequirement::NICK)) {
 		if (user->isRequirementSet(UserRequirement::PASS)) {
-			user->send(RPLMESSAGE(CODE_ERR_PASSWDMISMATCH));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH)));
 			disconnect(user, "Wrong Password");
 		}
 		user->unsetRequirement(UserRequirement::NICK);
 		if (user->isRegistered()) {
-			user->send(RPLMESSAGE(CODE_RPL_WELCOME));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user->nickname())));
 		}
 	}
 	else {

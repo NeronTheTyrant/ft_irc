@@ -1,7 +1,12 @@
 #include "Client.hpp"
 
 Client::Client(int sd)
-	: socket(new DataSocket(sd)) {}
+	: socket(new DataSocket(sd)) {
+	struct sockaddr_in client_addr = {};
+// Ask getsockname to fill in this socket's local address
+	getsockname(newfd, reinterpret_cast<struct sockaddr*>(&client_addr), &sin_size);
+	_hostname = inet_ntoa(client_addr.sin_addr);
+}
 
 Client::~Client() {
 	delete socket;
@@ -9,6 +14,14 @@ Client::~Client() {
 
 int	Client::sd() const {
 	return socket->getsd();
+}
+
+std::string	Client::hostname() const {
+	return _hostname;
+}
+
+void	Client::setHostname(std::string hostname) {
+	_hostname = hostname;
 }
 
 void	Client::receive(std::string data) {

@@ -10,12 +10,16 @@ class	Client {
 private:
 	DataSocket *	socket;
 	std::string		stock;
+	std::string		_hostname;
 
 public:
 	Client(int sd);
 	~Client();
 
-	int	sd() const;
+	int			sd() const;
+	std::string	hostname() const;
+
+	void	setHostname(std::string);
 
 	void		receive(std::string data);
 	void		send(std::string data) const;

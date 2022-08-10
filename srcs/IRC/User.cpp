@@ -92,10 +92,6 @@ std::string	User::realname() const {
 	return (_realname);
 }
 
-std::string	User::hostname() const {
-	return (_hostname);
-}
-
 std::string	User::awayMessage() const {
 	return (_awayMessage);
 }
