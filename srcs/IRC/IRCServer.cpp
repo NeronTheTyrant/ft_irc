@@ -69,4 +69,5 @@ void	IRCServer::clearUser(User * u, std::string quitReason) {
 		}
 	}
 	u->send(std::string("ERROR :") + "(" + quitReason + ")");
+	network().remove(u);
 }

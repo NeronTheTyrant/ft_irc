@@ -14,7 +14,7 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	if (user->isRegistered() && user->isModeSet(UserMode::RESTRICTED)) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_RESTRICTED)));
 	}
-	if (params[0] == "") {
+	if (!params.size() || params[0] == "") {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NONICKNAMEGIVEN)));
 		return ;
 	}
@@ -34,6 +34,7 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 		if (user->isRequirementSet(UserRequirement::PASS)) {
 			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH)));
 			disconnect(user, "Wrong Password");
+			return ;
 		}
 		user->unsetRequirement(UserRequirement::NICK);
 		if (user->isRegistered()) {
