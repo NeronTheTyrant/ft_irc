@@ -44,7 +44,6 @@ void	Parser::parseInput() {
 		if (_input.at(index) != ':') {
 			if (index != nextSpace) {
 				toAdd = _input.substr(index, nextSpace - index);
-				std::cout << "nextSpace:" << nextSpace << "index:" << index << "\nadding '" << toAdd << "'" << std::endl;
 				if (std::find(toAdd.begin(), toAdd.end(), '\0') != toAdd.end()) {
 					_command.setSyntaxError(true);
 					return ;
@@ -61,7 +60,6 @@ void	Parser::parseInput() {
 					return ;
 				}
 				_command.addArgument(toAdd);
-				std::cout << "nextSpace:" << nextSpace << "index:" << index << "\nadding '" << toAdd << "'" << std::endl;
 			}
 		}
 		if (nextSpace >= _input.size()) {

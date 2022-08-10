@@ -71,3 +71,12 @@ void	IRCServer::clearUser(User * u, std::string quitReason) {
 	u->send(std::string("ERROR :") + "(" + quitReason + ")");
 	network().remove(u);
 }
+
+void	IRCServer::execCommand(User * user, Command command) {
+	Commands::iterator it = _commands.find(command.command());
+	if (it == _commands.end()) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNCOMMAND, command.command())));
+		return;
+	}
+	(this->*(it->second))(user, command.arguments());
+}

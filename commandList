@@ -1,10 +1,15 @@
-PASS
-NICK
-USER
+X = Done
+? = Not sure
+~ = Ongoing
+
+PASS X
+NICK X 
+USER X
 QUIT
-PRIVMSG
-NOTICE
-JOIN
+PRIVMSG ?
+NOTICE ?
+JOIN ~
+PART ~
 LIST
 NAMES
 MODE

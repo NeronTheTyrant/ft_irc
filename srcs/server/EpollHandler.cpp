@@ -100,7 +100,7 @@ void	EpollHandler::handleClientActivity(int index) {
 		// Read data from socket
 		char buffer[512] = {};
 		int	received = recv(events[index].data.fd, buffer, sizeof(buffer), 0);
-		std::cout << received << std::endl;
+		std::cout << "Packet size :" << received << std::endl;
 
 		if (received < 0) {
 			if (errno != EAGAIN && errno != EWOULDBLOCK) {

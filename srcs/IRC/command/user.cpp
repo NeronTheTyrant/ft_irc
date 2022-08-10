@@ -3,7 +3,7 @@
 #include <cstdlib>
 
 void	IRCServer::user(User * user, std::vector<std::string> params) {
-	if (user->isRequirementSet(UserRequirement::USER)) {
+	if (!user->isRequirementSet(UserRequirement::USER)) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ALREADYREGISTRED)));
 		return;
 	}
@@ -25,7 +25,7 @@ void	IRCServer::user(User * user, std::vector<std::string> params) {
 		disconnect(user, "Bad Password");
 		return;
 	}
-	user->setRequirement(UserRequirement::USER);
+	user->unsetRequirement(UserRequirement::USER);
 	if (user->isRegistered()) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user->nickname())));
 	}

@@ -90,12 +90,12 @@ public:
 	void	unsetMode(char c);
 	void	unsetMode(UserMode::Mode m);
 
-	bool	isModeSet(char c);
-	bool	isModeSet(UserMode::Mode m);
+	bool	isModeSet(char c) const;
+	bool	isModeSet(UserMode::Mode m) const;
 
 	void	setRequirement(UserRequirement::Requirement r);
 	void	unsetRequirement(UserRequirement::Requirement r);
-	bool	isRequirementSet(UserRequirement::Requirement r);
+	bool	isRequirementSet(UserRequirement::Requirement r) const;
 
 };
 

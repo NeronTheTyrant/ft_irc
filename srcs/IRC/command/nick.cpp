@@ -5,7 +5,7 @@ bool	validNick(std::string nickname) {
 	if (isCharset(nickname[0], SPECIAL) == false
 			&& isCharset(nickname[0], LETTER) == false)
 		return false;
-	if (nickname.find_first_not_of(std::string(LETTER) + DIGIT + SPECIAL + "-") == std::string::npos)
+	if (nickname.find_first_not_of(std::string(LETTER) + DIGIT + SPECIAL + "-") != std::string::npos)
 		return false;
 	return true;
 }
@@ -22,7 +22,7 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ERRONEUSNICKNAME, params[0])));
 		return ;
 	}
-	if (network().getUserByName(user->nickname())) {
+	if (network().getUserByName(params[0]) != u_nullptr) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NICKNAMEINUSE, params[0])));
 		return ;
 	}

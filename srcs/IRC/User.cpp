@@ -106,6 +106,8 @@ UserMode &	User::mode() {
 
 bool	User::isRegistered() const {
 	return !_requirements.flags();
+//	bool cond = isRequirementSet(UserRequirement::PASS) || isRequirementSet(UserRequirement::USER) || isRequirementSet(UserRequirement::NICK);
+//	return !cond;
 }
 
 std::string	User::prefix() const {
@@ -161,7 +163,7 @@ void	User::unsetMode(UserMode::Mode m) {
 		_mode.set(m);
 }
 
-bool	User::isModeSet(char c) {
+bool	User::isModeSet(char c) const {
 	UserMode::Mode m = UserMode::translate(c);
 	if (m != UserMode::ERROR && _mode.isSet(m))
 		return true;
@@ -169,7 +171,7 @@ bool	User::isModeSet(char c) {
 		return false;
 }
 
-bool	User::isModeSet(UserMode::Mode m) {
+bool	User::isModeSet(UserMode::Mode m) const {
 	if (m != UserMode::ERROR && _mode.isSet(m))
 		return true;
 	else
@@ -184,6 +186,6 @@ void	User::unsetRequirement(UserRequirement::Requirement r) {
 	_requirements.unset(r);
 }
 
-bool	User::isRequirementSet(UserRequirement::Requirement r) {
+bool	User::isRequirementSet(UserRequirement::Requirement r) const {
 	return _requirements.isSet(r);
 }
