@@ -1,5 +1,6 @@
 #include "utils.hpp"
 #include "Network.hpp"
+#include "IRCServer.hpp"
 
 void	IRCServer::privmsg(User *sender, vector<std::string> params) {
 	User	*target;
@@ -9,17 +10,17 @@ void	IRCServer::privmsg(User *sender, vector<std::string> params) {
 		user.send(serverMessageBuilder(this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "PRIVMSG")));
 		return ;
 	}
-	chan = serv.network().getChannelByName(params[1]);
+	chan = this->network().getChannelByName(params[1]);
 	if (chan != u_nullptr) {
-		chan.send(serverMessageBuilder(this, paramsToString(params)), sender);
+		chan.send(serverMessageBuilder(sender, paramsToString(params)), sender);
 		return ;
 	}
-	target = serv.network().getUserByName(params[1])))
+	target = this->network().getUserByName(params[1])))
 	if (target != u_nullptr) {
-		target.send(serverMessageBuilder(serv, paramsToString(params)));
 		if (target.isModeSet('a'))
-			sender.send(serv, commandMessageBuilder(CODE_RPL_AWAY, target->getAwayMessage()));
+			sender.send(serverMessageBuilder(this, commandMessageBuilder(CODE_RPL_AWAY, target->getAwayMessage()));
+		target.send(serverMessageBuilder(sender, paramsToString(params)));
 	}
 	else
-		sender.send(serv, commandMessageBuilder(CODE_ERR_NOSUCHNICK, params[1]);
+		sender.send(this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, params[1]);
 }
