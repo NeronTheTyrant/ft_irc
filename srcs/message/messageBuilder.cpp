@@ -50,9 +50,9 @@ std::string		commandMessageBuilder(const	short code,
 		case 332:
 			return ret + RPL_TOPIC(arg1, arg2);
 		case 353:
-			return ret + RPL_NAMREPLY(arg1, arg2);
+			return ret + RPL_NAMREPLY(arg1, arg2, arg3);
 		case 366:
-			return ret + RPL_ENDOFNAMES(arg1);
+			return ret + RPL_ENDOFNAMES(arg1, arg2);
 		case 401:
 			return ret + ERR_NOSUCHNICK(arg1);
 		case 404:

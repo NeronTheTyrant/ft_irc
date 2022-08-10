@@ -7,7 +7,7 @@ void	IRCServer::pass(User * user, std::vector<std::string> params) {
 		return;
 	}
 	if (params.empty()) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "PASS");
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "PASS")));
 		return;
 	}
 	if (password().empty() || password() == params[0]) {

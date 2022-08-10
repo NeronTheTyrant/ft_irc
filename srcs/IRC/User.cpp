@@ -67,7 +67,7 @@ bool	User::operator==(User const & rhs) const {
 		return (false);
 	if (this->_realname != rhs._realname)
 		return (false);
-	if (this->_hostname != rhs._hostname)
+	if (this->hostname() != rhs.hostname())
 		return (false);
 	return (true);
 }
@@ -109,7 +109,7 @@ bool	User::isRegistered() const {
 }
 
 std::string	User::prefix() const {
-	return std::string(":") + _nickname + "!" + _username + "@" + _hostname;
+	return std::string(":") + _nickname + "!" + _username + "@" + hostname();
 }
 
 unsigned int	User::channelCount() const {

@@ -1,15 +1,17 @@
 #ifndef CLIENT_HPP
-#define CLIENT_HPP
+# define CLIENT_HPP
 
-#include <iostream>
-#include "DataSocket.hpp"
+# include <netinet/in.h>
+# include <arpa/inet.h>
+# include <iostream>
+# include "DataSocket.hpp"
 
 class DataSocket;
 
 class	Client {
 private:
-	DataSocket *	socket;
-	std::string		stock;
+	DataSocket *	_socket;
+	std::string		_stock;
 	std::string		_hostname;
 
 public:
