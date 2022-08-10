@@ -9,6 +9,8 @@
 # include "IRCEventListener.hpp"
 # include "messageBuilder.hpp"
 
+#define RPLMESSAGE(code) serverMessageBuilder(*this, commandMessageBuilder(code))
+
 class IRCEventListener;
 
 class IRCServer {
