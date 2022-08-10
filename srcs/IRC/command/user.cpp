@@ -2,11 +2,9 @@
 #include "IRCServer.hpp"
 #include <cstdlib>
 
-#define RPLMESSAGE(code) serverMessageBuilder(*this, commandMessageBuilder(code))
-
 void	IRCServer::user(User * user, std::vector<std::string> params) {
 	if (user->isRequirementSet(UserRequirement::USER)) {
-		user->send(RPLMESSAGE(CODE_ERR_ALREADYREGISTERED));
+		user->send(RPLMESSAGE(CODE_ERR_ALREADYREGISTRED));
 		return;
 	}
 	if (params.size() < 4) {

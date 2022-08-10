@@ -1,11 +1,9 @@
 # include "messageBuilder.hpp"
 # include "IRCServer.hpp"
 
-# define RPLMESSAGE(code) serverMessageBuilder(*this, commandMessageBuilder(code))
-
 void	IRCServer::pass(User * user, std::vector<std::string> params) {
 	if (user->isRegistered()) {
-		user->send(RPLMESSAGE(CODE_ERR_ALREADYREGISTERED));
+		user->send(RPLMESSAGE(CODE_ERR_ALREADYREGISTRED));
 		return;
 	}
 	if (params.empty()) {

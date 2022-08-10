@@ -1,8 +1,6 @@
 # include "messageBuilder.hpp"
 # include "IRCServer.hpp"
 
-#define RPLMESSAGE(code) serverMessageBuilder(*this, commandMessageBuilder(code))
-
 bool	validNick(std::string nickname) {
 	if (isCharset(nickname[0], SPECIAL) == false
 			&& isCharset(nickname[0], LETTER) == false)
