@@ -34,7 +34,8 @@
 # define ERR_NEEDMOREPARAMS(command)  (command + " :Not enough parameters\r\n") //461
 # define ERR_ALREADYREGISTRED() ":Unauthorized command (already registered)\r\n" //462
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n") //464
-# define ERR_RESTRICTED() (":Your connection is resticted!\r\n") //484
+# define ERR_RESTRICTED() (":Your connection is restricted!\r\n") //484
+# define ERR_USERSDONTMATCH(nick) (nick + ":Cant change mode for other users") //502
 
 
 #endif

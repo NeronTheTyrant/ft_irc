@@ -81,6 +81,8 @@ std::string		commandMessageBuilder(const	short code,
 			return ret + ERR_PASSWDMISMATCH();
 		case 484:
 			return ret + ERR_RESTRICTED();
+		case 502:
+			return ret + ERR_USERSDONTMATCH(arg1);
 		default:
 			return std::string("");
 	}
