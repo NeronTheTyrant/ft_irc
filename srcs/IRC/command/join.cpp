@@ -19,6 +19,6 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 		this->network().add(target);
 	}
 	target->send(serverMessageBuilder(*sender, paramsToString(params)));
-	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, sender, sender->nickname(), target->name(), target->userNickList())));
-	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, sender, sender->nickname(), target->name())));
+	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, sender, target->name(), target->userNickList())));
+	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, sender, target->name())));
 }
