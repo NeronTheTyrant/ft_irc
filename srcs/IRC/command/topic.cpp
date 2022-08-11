@@ -24,7 +24,7 @@ void	IRCServer::topic(User * sender, std::vector<std::string> params) {
 
 	if (checkTopicError(sender, params) == true)
 		return ;
-	target = this->network().getChannelByName(params[1]);
+	target = this->network().getChannelByName(params[0]);
 	if (target->isModeSet('t') && params.size() == 1) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_TOPIC, sender, target->name(), target->topic())));
 		return ;

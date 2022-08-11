@@ -4,6 +4,7 @@
 # include <iostream>
 # include <string>
 # include <map>
+# include <set>
 
 # include "User.hpp"
 # include "Flag.hpp"
@@ -17,6 +18,8 @@ public:
 		MODERATED = 1,
 		/* 't' - only channel creator can set topic */
 		TOPIC = 1 << 1,
+		/* 'o' - invite only */
+		INVITEONLY = 1 << 2,
 	};
 
 	ChannelMode(uint32_t flag = 0);
@@ -50,6 +53,7 @@ public:
 class Channel {
 public:
 	typedef std::map<User *, MemberStatus>	Users;
+	typedef std::set<std::string>			Invitations;
 
 private:
 		std::string			_name;
@@ -58,6 +62,7 @@ private:
 		ChannelMode			_mode;
 		Users				_users;
 		unsigned int		_userCount;
+		Invitations			_invitations;
 
 public:
 		Channel(std::string name, User * creator);
@@ -72,6 +77,7 @@ public:
 		Users &			users();
 		MemberStatus	userStatus(User * u);
 		unsigned int	userCount() const;
+		Invitations &	invitations();
 
 		/**
 		 *	Setters
@@ -106,6 +112,9 @@ public:
 		bool	isModeSet(ChannelMode::Mode m) const;
 
 		void	send(std::string message, User * sender = NULL);
+		
+		void	invite(User * u);
+		bool	isInvited(User * u);
 
 };
 

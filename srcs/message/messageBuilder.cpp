@@ -85,6 +85,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_ALREADYREGISTRED();
 		case 464:
 			return ret + ERR_PASSWDMISMATCH();
+		case 473:
+			return ret + ERR_INVITEONLYCHAN();
 		case 484:
 			return ret + ERR_RESTRICTED();
 		case 502:

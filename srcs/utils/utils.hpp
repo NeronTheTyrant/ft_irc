@@ -2,6 +2,7 @@
 # define IRC_UTILS_HPP
 
 # include <iostream>
+# include <vector>
 
 # include "enable_if.hpp"
 # include "u_nullptr.hpp"
@@ -30,5 +31,7 @@ std::string		ft_itos(T n, typename ft::enable_if<std::is_integral<T>::value, boo
 	return (ret);
 };
 bool			isCharset(char c, std::string charset);
+
+std::vector<std::string>	ft_split(std::string haystack, std::string needle);
 
 #endif
