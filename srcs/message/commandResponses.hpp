@@ -23,6 +23,7 @@
  *  ERRORS
 */
 # define ERR_NOSUCHNICK(nick) (nick + " :No such nick/channel\r\n") //401
+# define ERR_NOSUCHCHANNEL(channel) (channel + " :No such channel\r\n") //403
 # define ERR_CANNOTSENDTOCHAN(channel) (channel + " :Cannot send to channel\r\n") //404
 # define ERR_NORECIPIENT(command) (":No recipient given " + command + "\r\n") //411
 # define ERR_NOTEXTTOSEND() ":No text to send\r\n" //412

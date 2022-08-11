@@ -59,6 +59,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + RPL_ENDOFNAMES(arg1, arg2);
 		case 401:
 			return ret + ERR_NOSUCHNICK(arg1);
+		case 403:
+			return ret + ERR_NOSUCHCHANNEL(arg1);
 		case 404:
 			return ret + ERR_CANNOTSENDTOCHAN(arg1);
 		case 411:

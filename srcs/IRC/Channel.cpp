@@ -81,6 +81,10 @@ std::string	Channel::password() const {
 	return _password;
 }
 
+std::string	Channel::topic() const {
+	return _topic;
+}
+
 std::string	Channel::userNickList() const {
 	std::string	ret("");
 	Users::const_iterator it = _users.begin();
@@ -124,6 +128,10 @@ void	Channel::setName(std::string name) {
 
 void	Channel::setPassword(std::string password) {
 	_password = password;
+}
+
+void	Channel::setTopic(std::string topic) {
+	_topic = topic;
 }
 
 /**
