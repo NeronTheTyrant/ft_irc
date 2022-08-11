@@ -4,11 +4,11 @@
 
 void	IRCServer::user(User * user, std::vector<std::string> params) {
 	if (!user->isRequirementSet(UserRequirement::USER)) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ALREADYREGISTRED)));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ALREADYREGISTRED, user)));
 		return;
 	}
 	if (params.size() < 4) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "USER")));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, user, "USER")));
 		return;
 	}
 	user->setUsername(params[0]);
@@ -21,12 +21,12 @@ void	IRCServer::user(User * user, std::vector<std::string> params) {
 	}
 	user->setRealname(params[3]);
 	if (user->isRequirementSet(UserRequirement::PASS)) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH)));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH, user)));
 		disconnect(user, "Bad Password");
 		return;
 	}
 	user->unsetRequirement(UserRequirement::USER);
 	if (user->isRegistered()) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user->nickname())));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user, user->nickname())));
 	}
 }

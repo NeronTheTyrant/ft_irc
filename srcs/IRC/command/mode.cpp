@@ -3,15 +3,15 @@
 void	IRCServer::mode(User * user, std::vector<std::string> params) {
 
 	if (!user->isRegistered()) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTREGISTERED)));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTREGISTERED, user)));
 		return ;
 	}
 	if (params.size() < 1) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "MODE")));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, user, "MODE")));
 		return ;
 	}
 	if (params[0].size() == 0) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, params[0])));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, user, params[0])));
 		return ;
 	}
 	if (params[0].at(0) == '#') {
@@ -20,11 +20,11 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 	else {
 		user->send("GOT TO HANDLE USER MODE\r\n");
 		if (network().getUserByName(params[0]) == u_nullptr) {
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, params[0])));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, user, params[0])));
 			return ;
 		}
 		else if (user->nickname() != params[0]) {
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_USERSDONTMATCH, params[0])));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_USERSDONTMATCH, user, params[0])));
 			return ;
 		}
 		if (params.size() == 1) {

@@ -8,7 +8,7 @@ void	IRCServer::join(User *sender, vector<std::string> params) {
 	Channel *target;
 
 	if (params.size < 2) {
-		sender.send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "JOIN"));
+		sender.send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, sender, "JOIN"));
 		return ;
 	}
 	target = this->network().getChannelByName(params[1]);
@@ -19,6 +19,6 @@ void	IRCServer::join(User *sender, vector<std::string> params) {
 		this->network().add(target);
 	}
 	target->send(serverMessageBuilder(sender, paramsToString(params));
-	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, sender->nickname(), target->name(), target->userNickList()));
-	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, sender->nickname(), target->name()));
+	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, sender, sender->nickname(), target->name(), target->userNickList()));
+	sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, sender, sender->nickname(), target->name()));
 }

@@ -9,15 +9,17 @@ std::string		paramsToString(std::vector<std::string> params)
 	return (ret);
 }
 
-std::string		commandMessageBuilder(const	short code,
+std::string		commandMessageBuilder(const	short code, User * user,
 		std::string const arg1 , std::string const arg2, std::string const arg3, std::string const arg4) {
 	std::string		ret;
 	std::string		strCode;
-	
+
 	strCode = ft_itos<short>(code);
 	if (code < 10)
 		strCode = std::string(2, '0').append(ft_itos<short>(code));
 	ret = strCode;
+	ret += " ";
+	ret += user->nickname();
 	ret += " ";
 	switch (code)
 	{
