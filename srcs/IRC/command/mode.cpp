@@ -28,7 +28,7 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 			return ;
 		}
 		if (params.size() == 1) {
-			user->send("WITHOUT MODESTRING\r\n");
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_UMODEIS, params[0], "xi")));
 		}
 		else {
 			user->send("WITH MODESTRING(S)\r\n");

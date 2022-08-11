@@ -5,6 +5,7 @@
 # define CODE_RPL_YOURHOST 		2
 # define CODE_RPL_CREATED 		3
 # define CODE_RPL_MYINFO 		4
+# define CODE_RPL_UMODEIS		221
 # define CODE_RPL_AWAY 			301
 # define CODE_RPL_UNAWAY 		305
 # define CODE_RPL_NOWAWAY 		306

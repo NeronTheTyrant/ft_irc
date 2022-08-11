@@ -29,6 +29,8 @@ std::string		commandMessageBuilder(const	short code,
 			return ret + RPL_CREATED(arg1);
 		case 4:
 			return ret + RPL_MYINFO(arg1, arg2, arg3, arg4);
+		case 221:
+			return ret + RPL_UMODEIS(arg1, arg2);
 		case 301:
 			return ret + RPL_AWAY(arg1, arg2);
 		case 305:
