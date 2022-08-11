@@ -75,7 +75,7 @@ void	IRCServer::clearUser(User * u, std::string quitReason) {
 void	IRCServer::execCommand(User * user, Command command) {
 	Commands::iterator it = _commands.find(command.command());
 	if (it == _commands.end()) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNCOMMAND, command.command())));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNCOMMAND, user, command.command())));
 		return;
 	}
 	(this->*(it->second))(user, command.arguments());
