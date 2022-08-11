@@ -1,7 +1,7 @@
 #include "IRCServer.hpp"
 
 IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password) :
-	_name(name), _password(password), _epollHandler(port) {;
+	_name(name), _password(password), _epollHandler(port), _eventListener (NULL) {;
 	_commands["PASS"]		= &IRCServer::pass;
 	_commands["NICK"]		= &IRCServer::nick;
 	_commands["USER"]		= &IRCServer::user;
@@ -11,7 +11,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const 
 //	_commands["JOIN"]		= &IRCServer::join;
 //	_commands["LIST"]		= &IRCServer::list;
 //	_commands["NAMES"]		= &IRCServer::names;
-//	_commands["MODE"]		= &IRCServer::mode;
+	_commands["MODE"]		= &IRCServer::mode;
 //	_commands["OPER"]		= &IRCServer::oper;
 //	_commands["TOPIC"]		= &IRCServer::topic;
 //	_commands["MOTD"]		= &IRCServer::motd;
@@ -30,8 +30,8 @@ IRCServer::~IRCServer() {
 
 void	IRCServer::start() {
 	_epollHandler.initMasterSocket();
-	IRCEventListener *	irc_event_listener = new IRCEventListener(*this);
-	_epollHandler.addEventListener(irc_event_listener);
+	_eventListener = new IRCEventListener(*this);
+	_epollHandler.addEventListener(_eventListener);
 	_epollHandler.run();
 }
 
@@ -69,4 +69,14 @@ void	IRCServer::clearUser(User * u, std::string quitReason) {
 		}
 	}
 	u->send(std::string("ERROR :") + "(" + quitReason + ")");
+	network().remove(u);
+}
+
+void	IRCServer::execCommand(User * user, Command command) {
+	Commands::iterator it = _commands.find(command.command());
+	if (it == _commands.end()) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNCOMMAND, command.command())));
+		return;
+	}
+	(this->*(it->second))(user, command.arguments());
 }

@@ -47,7 +47,6 @@ private:
 	std::string			_username;
 	std::string			_nickname;
 	std::string			_realname;
-	std::string			_hostname;
 	std::string			_awayMessage;
 	UserRequirement		_requirements;
 	UserMode			_mode;
@@ -66,7 +65,6 @@ public:
 	std::string			nickname() const;
 	std::string			username() const;
 	std::string			realname() const;
-	std::string			hostname() const;
 	std::string			awayMessage() const;
 	UserRequirement &	requirements();
 	UserMode &			mode();
@@ -92,12 +90,12 @@ public:
 	void	unsetMode(char c);
 	void	unsetMode(UserMode::Mode m);
 
-	bool	isModeSet(char c);
-	bool	isModeSet(UserMode::Mode m);
+	bool	isModeSet(char c) const;
+	bool	isModeSet(UserMode::Mode m) const;
 
 	void	setRequirement(UserRequirement::Requirement r);
 	void	unsetRequirement(UserRequirement::Requirement r);
-	bool	isRequirementSet(UserRequirement::Requirement r);
+	bool	isRequirementSet(UserRequirement::Requirement r) const;
 
 };
 

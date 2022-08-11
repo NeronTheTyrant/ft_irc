@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdexcept>
+#include <cerrno>
 
 EpollHandler::EpollHandler(int16_t port)
 	: epollfd(-1), master_socket(port) {};
@@ -73,7 +74,7 @@ void	EpollHandler::handleListenerActivity() {
 	int	sd = master_socket.accept();
 
 	// add possible events to new client sd
-	struct epoll_event	ev;
+	struct epoll_event	ev = {};
 	ev.data.fd = sd;
 	ev.events = EPOLLIN;
 
@@ -99,7 +100,7 @@ void	EpollHandler::handleClientActivity(int index) {
 		// Read data from socket
 		char buffer[512] = {};
 		int	received = recv(events[index].data.fd, buffer, sizeof(buffer), 0);
-		std::cout << received << std::endl;
+		std::cout << "Packet size :" << received << std::endl;
 
 		if (received < 0) {
 			if (errno != EAGAIN && errno != EWOULDBLOCK) {
@@ -113,8 +114,9 @@ void	EpollHandler::handleClientActivity(int index) {
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, events[index].data.fd);
-			if (data == "close\n") {
-				disconnectClient(events[index].data.fd, "DEBUG CLOSING");
+			if (data == "close\r\n" || data == "close") {
+				disconnectClient(events[index].data.fd, "DEBUG CLOSE");
+				running = 0;
 			}
 		}
 	}
@@ -133,10 +135,10 @@ void	EpollHandler::handleClientActivity(int index) {
 }
 
 void	EpollHandler::disconnectClient(int sd, std::string notification) {
-//	struct epoll_event	ev;
-//	int ret = epoll_ctl(epollfd, EPOLL_CTL_DEL, sd, &ev);
-//	if (ret < 0)
-//		std::cout << "Could not delete client from epoll interest list" << std::endl;
+	struct epoll_event	ev = {};
+	int ret = epoll_ctl(epollfd, EPOLL_CTL_DEL, sd, &ev);
+	if (ret < 0)
+		std::cout << "Could not delete client from epoll interest list" << std::endl;
 	raiseDisconnectEvent(sd, notification);
 }
 

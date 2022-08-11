@@ -83,13 +83,14 @@ std::string	Channel::password() const {
 
 std::string	Channel::userNickList() const {
 	std::string	ret("");
-	Users::iterator it = _users.begin();
+	Users::const_iterator it = _users.begin();
 
 	for (; it != _users.end(); ++it) {
 		if (isStatusSet(it->first, 'o'))
 			ret += "@";
 		ret += it->first->nickname();
-		if (it + 1 != _users.end())
+		Users::const_iterator temp = it;
+		if (++temp != _users.end())
 			ret += " ";
 	}
 	return ret;
@@ -189,21 +190,21 @@ void	Channel::unsetStatus(User * u, MemberStatus::Status s) {
 	}
 }
 
-bool	Channel::isStatusSet(User * u, char c) {
+bool	Channel::isStatusSet(User * u, char c) const {
 	MemberStatus::Status s = MemberStatus::translate(c);
 	if (s == MemberStatus::ERROR)
 		return false;
-	Users::iterator it = _users.find(u);
+	Users::const_iterator it = _users.find(u);
 	if (it != _users.end()) {
 		return it->second.isSet(s);
 	}
 	return false;
 }
 
-bool	Channel::isStatusSet(User * u, MemberStatus::Status s) {
+bool	Channel::isStatusSet(User * u, MemberStatus::Status s) const {
 	if (s == MemberStatus::ERROR)
 		return false;
-	Users::iterator it = _users.find(u);
+	Users::const_iterator it = _users.find(u);
 	if (it != _users.end()) {
 		return it->second.isSet(s);
 	}
@@ -237,14 +238,14 @@ void	Channel::unsetMode(ChannelMode::Mode m) {
 	_mode.unset(m);
 }
 
-bool	Channel::isModeSet(char c) {
+bool	Channel::isModeSet(char c) const {
 	ChannelMode::Mode m = ChannelMode::translate(c);
 	if (m == ChannelMode::ERROR)
 		return false;
 	return _mode.isSet(m);
 }
 
-bool	Channel::isModeSet(ChannelMode::Mode m) {
+bool	Channel::isModeSet(ChannelMode::Mode m) const {
 	if (m == ChannelMode::ERROR)
 		return false;
 	return _mode.isSet(m);

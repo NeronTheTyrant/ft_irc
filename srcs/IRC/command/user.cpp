@@ -3,12 +3,12 @@
 #include <cstdlib>
 
 void	IRCServer::user(User * user, std::vector<std::string> params) {
-	if (user->isRequirementSet(UserRequirement::USER)) {
-		user->send(RPLMESSAGE(CODE_ERR_ALREADYREGISTRED));
+	if (!user->isRequirementSet(UserRequirement::USER)) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ALREADYREGISTRED)));
 		return;
 	}
 	if (params.size() < 4) {
-		user->send(RPLMESSAGE(CODE_ERR_NEEDMOREPARAMS));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, "USER")));
 		return;
 	}
 	user->setUsername(params[0]);
@@ -21,12 +21,12 @@ void	IRCServer::user(User * user, std::vector<std::string> params) {
 	}
 	user->setRealname(params[3]);
 	if (user->isRequirementSet(UserRequirement::PASS)) {
-		user->send(RPLMESSAGE(CODE_ERR_PASSWDMISMATCH));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH)));
 		disconnect(user, "Bad Password");
 		return;
 	}
-	user->setRequirement(UserRequirement::USER);
+	user->unsetRequirement(UserRequirement::USER);
 	if (user->isRegistered()) {
-		user->send(RPLMESSAGE(CODE_RPL_WELCOME));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user->nickname())));
 	}
 }

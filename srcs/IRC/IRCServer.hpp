@@ -8,6 +8,7 @@
 # include "EpollHandler.hpp"
 # include "IRCEventListener.hpp"
 # include "messageBuilder.hpp"
+# include "Command.hpp"
 
 #define RPLMESSAGE(code) serverMessageBuilder(*this, commandMessageBuilder(code))
 
@@ -15,7 +16,7 @@ class IRCEventListener;
 
 class IRCServer {
 
-	typedef	std::map<std::string, void	(IRCServer::*) (User *, std::vector<std::string>)>	mapCommand;
+	typedef	std::map<std::string, void	(IRCServer::*) (User *, std::vector<std::string>)>	Commands;
 
 public:
 	IRCServer(uint16_t port, std::string const & name, std::string const & password);
@@ -31,6 +32,7 @@ public:
 	void	disconnect(User * u, std::string quitReason);
 	void	clearUser(User * u, std::string quitReason);
 
+	void	execCommand(User * u, Command command);
 
 	/**
 	 * COMMAND FUNCTION
@@ -61,7 +63,7 @@ private:
 	Network				_network;
 	EpollHandler		_epollHandler;
 	IRCEventListener *	_eventListener;
-	mapCommand			_commands;
+	Commands			_commands;
 
 };
 

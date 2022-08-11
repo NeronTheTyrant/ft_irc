@@ -13,10 +13,12 @@ std::string		commandMessageBuilder(const	short code,
 		std::string const arg1 , std::string const arg2, std::string const arg3, std::string const arg4) {
 	std::string		ret;
 	std::string		strCode;
-
+	
 	strCode = ft_itos<short>(code);
 	if (code < 10)
 		strCode = std::string(2, '0').append(ft_itos<short>(code));
+	ret = strCode;
+	ret += " ";
 	switch (code)
 	{
 		case 1:
@@ -50,9 +52,9 @@ std::string		commandMessageBuilder(const	short code,
 		case 332:
 			return ret + RPL_TOPIC(arg1, arg2);
 		case 353:
-			return ret + RPL_NAMREPLY(arg1, arg2);
+			return ret + RPL_NAMREPLY(arg1, arg2, arg3);
 		case 366:
-			return ret + RPL_ENDOFNAMES(arg1);
+			return ret + RPL_ENDOFNAMES(arg1, arg2);
 		case 401:
 			return ret + ERR_NOSUCHNICK(arg1);
 		case 404:
@@ -65,6 +67,8 @@ std::string		commandMessageBuilder(const	short code,
 			return ret + ERR_UNKNOWNCOMMAND(arg1);
 		case 431:
 			return ret + ERR_NONICKNAMEGIVEN();
+		case 432:
+			return ret + ERR_ERRONEUSNICKNAME(arg1);
 		case 433:
 			return ret + ERR_NICKNAMEINUSE(arg1);
 		case 451:
@@ -77,6 +81,8 @@ std::string		commandMessageBuilder(const	short code,
 			return ret + ERR_PASSWDMISMATCH();
 		case 484:
 			return ret + ERR_RESTRICTED();
+		case 502:
+			return ret + ERR_USERSDONTMATCH(arg1);
 		default:
 			return std::string("");
 	}

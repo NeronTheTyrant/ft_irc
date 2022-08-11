@@ -5,25 +5,25 @@ bool	validNick(std::string nickname) {
 	if (isCharset(nickname[0], SPECIAL) == false
 			&& isCharset(nickname[0], LETTER) == false)
 		return false;
-	if (nickname.find_first_not_of(std::string(LETTER) + DIGIT + SPECIAL + "-") == std::string::npos)
+	if (nickname.find_first_not_of(std::string(LETTER) + DIGIT + SPECIAL + "-") != std::string::npos)
 		return false;
 	return true;
 }
 
 void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	if (user->isRegistered() && user->isModeSet(UserMode::RESTRICTED)) {
-		user->send(RPLMESSAGE(CODE_ERR_RESTRICTED));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_RESTRICTED)));
 	}
-	if (params[0] == "") {
-		user->send(RPLMESSAGE(CODE_ERR_NONICKNAMEGIVEN));
+	if (!params.size() || params[0] == "") {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NONICKNAMEGIVEN)));
 		return ;
 	}
 	if (!validNick(params[0])) {
-		user->send(RPLMESSAGE(CODE_ERR_ERRONEUSNICKNAME));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ERRONEUSNICKNAME, params[0])));
 		return ;
 	}
-	if (network().getUserByName(user->nickname())) {
-		user->send(RPLMESSAGE(CODE_ERR_NICKNAMEINUSE));
+	if (network().getUserByName(params[0]) != u_nullptr) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NICKNAMEINUSE, params[0])));
 		return ;
 	}
 	std::string message = serverMessageBuilder(*user, std::string("NICK ") + params[0]); 
@@ -32,12 +32,13 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	network().add(user);
 	if (user->isRequirementSet(UserRequirement::NICK)) {
 		if (user->isRequirementSet(UserRequirement::PASS)) {
-			user->send(RPLMESSAGE(CODE_ERR_PASSWDMISMATCH));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH)));
 			disconnect(user, "Wrong Password");
+			return ;
 		}
 		user->unsetRequirement(UserRequirement::NICK);
 		if (user->isRegistered()) {
-			user->send(RPLMESSAGE(CODE_RPL_WELCOME));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user->nickname())));
 		}
 	}
 	else {
