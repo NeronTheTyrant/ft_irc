@@ -54,6 +54,7 @@ public:
 private:
 		std::string			_name;
 		std::string			_password;
+		std::string			_topic;
 		ChannelMode			_mode;
 		Users				_users;
 		unsigned int		_userCount;
@@ -66,6 +67,7 @@ public:
 		 */
 		std::string		name() const;
 		std::string		password() const;
+		std::string		topic() const;
 		std::string		userNickList() const;
 		Users &			users();
 		MemberStatus	userStatus(User * u);
@@ -75,6 +77,7 @@ public:
 		 *	Setters
 		 */
 		void	setName(std::string name);
+		void	setTopic(std::string topic);
 		void	setPassword(std::string password);
 
 		/**

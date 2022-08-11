@@ -12,33 +12,33 @@ bool	validNick(std::string nickname) {
 
 void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	if (user->isRegistered() && user->isModeSet(UserMode::RESTRICTED)) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_RESTRICTED)));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_RESTRICTED, user)));
 	}
 	if (!params.size() || params[0] == "") {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NONICKNAMEGIVEN)));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NONICKNAMEGIVEN, user)));
 		return ;
 	}
 	if (!validNick(params[0])) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ERRONEUSNICKNAME, params[0])));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ERRONEUSNICKNAME, user, params[0])));
 		return ;
 	}
 	if (network().getUserByName(params[0]) != u_nullptr) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NICKNAMEINUSE, params[0])));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NICKNAMEINUSE, user, params[0])));
 		return ;
 	}
-	std::string message = serverMessageBuilder(*user, std::string("NICK ") + params[0]); 
+	std::string message = serverMessageBuilder(*user, std::string("NICK ") + params[0]);
 	network().remove(user);
 	user->setNickname(params[0]);
 	network().add(user);
 	if (user->isRequirementSet(UserRequirement::NICK)) {
 		if (user->isRequirementSet(UserRequirement::PASS)) {
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH)));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH, user)));
 			disconnect(user, "Wrong Password");
 			return ;
 		}
 		user->unsetRequirement(UserRequirement::NICK);
 		if (user->isRegistered()) {
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user->nickname())));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user, user->nickname())));
 		}
 	}
 	else {

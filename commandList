@@ -1,23 +1,23 @@
 X = Done
+0 = Needs testing
 ? = Not sure
 ~ = Ongoing
 
 PASS X
-NICK X 
+NICK X
 USER X
 QUIT
-PRIVMSG ?
+PRIVMSG 0
 NOTICE ?
-JOIN ~
-PART ~
+JOIN 0
+PART 0
 LIST
 NAMES
 MODE ~
 OPER
 TOPIC
-MOTD
 PING / PONG ?????????
-AWAY
+AWAY 0
 
 --- OPERATOR ---
 RESTART
