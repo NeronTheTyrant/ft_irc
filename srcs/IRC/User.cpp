@@ -45,6 +45,22 @@ char	UserMode::translate(UserMode::Mode m) {
 	return '\0';
 }
 
+std::string UserMode::usermodsToString(User & user) {
+
+	std::string ret;
+	uint32_t i = 1;
+	while (i <= 1u << 31 ) {
+		if (user.isModeSet(static_cast<UserMode::Mode>(i))) {
+			ret += UserMode::translate(static_cast<UserMode::Mode>(i));
+		}
+		if (i == 1u << 31) {
+			break;
+		}
+		i <<= 1;
+	}
+	return ret;
+}
+
 /**
  * Constructors & Destructors
  */

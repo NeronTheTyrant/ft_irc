@@ -5,7 +5,7 @@
 # define RPL_YOURHOST(servername, version) (":Your host is " + servername + ", running version " + version + "\r\n") //2
 # define RPL_CREATED(date) (":This server was created " + date + "\r\n") //3
 # define RPL_MYINFO(servername, version, usr_modes, chann_modes) (":" + servername + " " + version + " " + usr_modes + " " + chann_modes + "\r\n") //4
-# define RPL_UMODEIS(nickname, modes) (nickname + " +" + modes + "\r\n") //221
+# define RPL_UMODEIS(modes) (": +" + modes + "\r\n") //221
 # define RPL_AWAY(pseudo, str) (pseudo + " " + str + "\r\n") //301
 # define RPL_UNAWAY() (":You are no longer marked as being away\r\n") //305
 # define RPL_NOWAWAY() (":You have been marked as being away\r\n") //306
@@ -37,6 +37,8 @@
 # define ERR_ALREADYREGISTRED() ":Unauthorized command (already registered)\r\n" //462
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n") //464
 # define ERR_RESTRICTED() (":Your connection is restricted!\r\n") //484
+# define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag") //502
+
 # define ERR_USERSDONTMATCH(nick) (nick + ":Cant change mode for other users") //502
 
 

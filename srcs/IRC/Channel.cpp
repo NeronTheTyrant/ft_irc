@@ -16,6 +16,22 @@ ChannelMode::Mode	ChannelMode::translate(char c) {
 	}
 }
 
+std::string ChannelMode::channelmodsToString(Channel & channel) {
+
+	std::string ret;
+	uint32_t i = 1;
+	while (i <= 1u << 31 ) {
+		if (channel.isModeSet(static_cast<ChannelMode::Mode>(i))) {
+			ret += ChannelMode::translate(static_cast<ChannelMode::Mode>(i));
+		}
+		if (i == 1u << 31) {
+			break;
+		}
+		i <<= 1;
+	}
+	return ret;
+}
+
 char	ChannelMode::translate(ChannelMode::Mode m) {
 	switch (m) {
 		case MODERATED :

@@ -8,6 +8,8 @@
 # include "User.hpp"
 # include "Flag.hpp"
 
+class Channel;
+
 class ChannelMode : public Flag {
 public:
 	enum Mode {
@@ -24,6 +26,7 @@ public:
 
 	static Mode	translate(char c);
 	static char	translate(Mode m);
+	std::string channelmodsToString(Channel & channel);
 };
 
 class MemberStatus : public Flag {

@@ -32,7 +32,7 @@ std::string		commandMessageBuilder(const	short code, User * user,
 		case 4:
 			return ret + RPL_MYINFO(arg1, arg2, arg3, arg4);
 		case 221:
-			return ret + RPL_UMODEIS(arg1, arg2);
+			return ret + RPL_UMODEIS(arg1);
 		case 301:
 			return ret + RPL_AWAY(arg1, arg2);
 		case 305:
@@ -87,8 +87,10 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_PASSWDMISMATCH();
 		case 484:
 			return ret + ERR_RESTRICTED();
+		case 501:
+			return ret + ERR_UMODEUNKNOWNFLAG();
 		case 502:
-			return ret + ERR_USERSDONTMATCH(arg1);
+			return ret + ERR_USERSDONTMATCH();
 		default:
 			return std::string("");
 	}

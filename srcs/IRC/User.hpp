@@ -5,6 +5,8 @@
 # include "Client.hpp"
 # include "Flag.hpp"
 
+class User;
+
 class UserRequirement: public Flag {
 public:
 	enum Requirement {
@@ -40,6 +42,7 @@ public:
 
 	static Mode	translate(char c);
 	static char	translate(Mode m);
+	static std::string usermodsToString(User & user);
 };
 
 class	User : public Client {
