@@ -2,7 +2,6 @@
 #include "User.hpp"
 
 void	IRCServer::mode(User * user, std::vector<std::string> params) {
-
 	if (!user->isRegistered()) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTREGISTERED, user)));
 		return ;

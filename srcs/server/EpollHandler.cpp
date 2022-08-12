@@ -91,8 +91,6 @@ void	EpollHandler::handleListenerActivity() {
 void	EpollHandler::handleClientActivity(int index) {
 
 	if (events[index].events & EPOLLIN) {
-		std::cout << "Client activity!!" << std::endl;
-
 		//if file descriptor is invalid
 		if (events[index].data.fd < 0)
 			throw std::logic_error("Invalid client file descriptor");
@@ -100,7 +98,6 @@ void	EpollHandler::handleClientActivity(int index) {
 		// Read data from socket
 		char buffer[512] = {};
 		int	received = recv(events[index].data.fd, buffer, sizeof(buffer), 0);
-		std::cout << "Packet size :" << received << std::endl;
 
 		if (received < 0) {
 			if (errno != EAGAIN && errno != EWOULDBLOCK) {
@@ -153,7 +150,6 @@ void	EpollHandler::raiseDisconnectEvent(int sd, std::string notification) {
 }
 
 void	EpollHandler::raiseReceiveEvent(std::string data, int sd) {
-	std::cout << "In event listner" << std::endl;
 	for (std::size_t i = 0; i < event_listeners.size(); i++)
 		event_listeners[i]->onReceive(data, sd);
 }

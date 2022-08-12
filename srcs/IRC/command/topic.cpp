@@ -20,6 +20,10 @@ bool	IRCServer::checkTopicError(User * sender, std::vector<std::string> params) 
 }
 
 void	IRCServer::topic(User * sender, std::vector<std::string> params) {
+	if (!sender->isRegistered()) {
+		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTREGISTERED, sender)));
+		return ;
+	}
 	Channel *target;
 
 	if (checkTopicError(sender, params) == true)

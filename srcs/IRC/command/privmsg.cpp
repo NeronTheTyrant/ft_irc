@@ -5,6 +5,10 @@
 #include <iostream>
 
 void	IRCServer::privmsg(User *sender, std::vector<std::string> params) {
+	if (!sender->isRegistered()) {
+		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTREGISTERED, sender)));
+		return;
+	}
 	User	*target;
 	Channel	*chan;
 

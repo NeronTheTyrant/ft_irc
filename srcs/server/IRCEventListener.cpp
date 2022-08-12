@@ -22,7 +22,8 @@ void	IRCEventListener::onDisconnect(int sd, std::string notification) {
 }
 
 void	IRCEventListener::onReceive(std::string data, int sd) {
-	std::cout << "Data received from " << sd << ": " << data << '\n';
+	std::cout << "Data received from " << sd << ": " << data;
+	std::cout << "Packet size :" << data.size() << "\n\n";
 	User * user = server.network().getUserBySocket(sd);
 	user->receive(data);
 	while (user->crlf()) {
