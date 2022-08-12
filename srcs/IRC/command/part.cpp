@@ -18,7 +18,7 @@ void	IRCServer::part(User *sender, std::vector<std::string> params) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTONCHANNEL, sender, params[1])));
 		return ;
 	}
-	target->send(serverMessageBuilder(*sender, paramsToString(params)));
+	target->send(serverMessageBuilder(*sender, paramsToString(params, 2)));
 	target->removeUser(sender);
 	if (target->userCount() == 0) {
 		this->network().remove(target);

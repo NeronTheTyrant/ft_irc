@@ -1,11 +1,15 @@
 #include "messageBuilder.hpp"
 
-std::string		paramsToString(std::vector<std::string> params)
-{
-	std::string ret("");
+std::string		paramsToString(std::vector<std::string> params, unsigned int n) {
+	std::string							ret("");
+	std::vector<std::string>::iterator	it = params.begin();
+	unsigned int						i = -1;
 
-	for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it)
+	while (++i < n && it != params.end())
+	{
 		ret += *it + " ";
+		it++;
+	}
 	return (ret);
 }
 

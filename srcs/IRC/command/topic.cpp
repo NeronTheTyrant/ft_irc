@@ -34,13 +34,13 @@ void	IRCServer::topic(User * sender, std::vector<std::string> params) {
 		return ;
 	}
 	else if (target->isModeSet('t') == true && params.size() == 2 && params[1] == "") {
-		sender->send(serverMessageBuilder(*sender, paramsToString(params)));
+		sender->send(serverMessageBuilder(*sender, "TOPIC " + params[0] + " :"));
 		target->unsetMode('t');
 		target->setTopic("");
 	}
 	else if (params.size() > 1) {
-		sender->send(serverMessageBuilder(*sender, paramsToString(params)));
-		target->setTopic(paramsToString(std::vector<std::string>(params.begin() + 1, params.end())));
+		sender->send(serverMessageBuilder(*sender, "TOPIC " + paramsToString(params, 2)));
+		target->setTopic(params[1]);
 		if (target->isModeSet('t') == false)
 			target->setMode('t');
 		return ;

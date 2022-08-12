@@ -14,14 +14,14 @@ void	IRCServer::privmsg(User *sender, std::vector<std::string> params) {
 	}
 	chan = network().getChannelByName(params[0]);
 	if (chan != u_nullptr) {
-		chan->send(serverMessageBuilder(*sender, paramsToString(params)), sender);
+		chan->send(serverMessageBuilder(*sender, "PRIVMSG " + paramsToString(params, 2)), sender);
 		return ;
 	}
 	target = network().getUserByName(params[0]);
 	if (target != u_nullptr) {
 		if (target->isModeSet('a'))
 			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_AWAY, target, target->awayMessage())));
-		target->send(serverMessageBuilder(*sender, paramsToString(params)));
+		target->send(serverMessageBuilder(*sender, params[1]));
 	}
 	else
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, sender, params[0])));
