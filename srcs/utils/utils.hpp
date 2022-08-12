@@ -25,7 +25,7 @@ std::string		ft_itos(T n, typename ft::enable_if<std::is_integral<T>::value, boo
 	while (ret.empty() || val > 0)
 	{
 		buffer[0] = val % 10 + '0';
-		ret += buffer;
+		ret.insert(0, buffer);
 		val /= 10;
 	}
 	return (ret);
