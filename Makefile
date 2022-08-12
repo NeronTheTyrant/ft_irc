@@ -66,8 +66,9 @@ IRC_SRCS		=	$(addprefix $(S_DIR)$(S_IRC_DIR), $(IRC_SOURCES))
 
 CMD_SOURCES		=	nick.cpp \
 					pass.cpp \
-					mode.cpp \
 					user.cpp \
+					quit.cpp \
+					mode.cpp \
 					away.cpp \
 					part.cpp \
 					join.cpp \
