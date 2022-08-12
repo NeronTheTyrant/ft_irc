@@ -15,6 +15,10 @@ bool	validChan(std::string chanName) {
 }
 
 void	IRCServer::join(User *sender, std::vector<std::string> params) {
+	if (!sender->isRegistered()) {
+		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTREGISTERED, sender)));
+		return;
+	}
 	if (params.size() < 1) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, sender, "JOIN")));
 		return ;
@@ -30,13 +34,14 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 	}
 	std::vector<std::string> channelList = ft_split(params[0], ",");
 	for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
+		std::cout << *it << "\n";
 		if (!validChan(*it)) {
 			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, sender, *it)));
 			continue;
 		}
 		Channel *	target = this->network().getChannelByName(*it);
 		if (target == u_nullptr) {
-			target = new Channel(params[0], sender);
+			target = new Channel(*it, sender);
 			network().add(target);
 		}
 		else {

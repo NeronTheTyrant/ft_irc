@@ -3,6 +3,10 @@
 #include <iostream>
 
 void	IRCServer::part(User *sender, std::vector<std::string> params) {
+	if (!sender->isRegistered()) {
+		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTREGISTERED, sender)));
+		return ;
+	}
 	Channel *target;
 
 	if (params.size() < 1) {
