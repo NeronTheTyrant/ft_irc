@@ -56,9 +56,9 @@ std::string		commandMessageBuilder(const	short code, User * user,
 		case 332:
 			return ret + RPL_TOPIC(arg1, arg2);
 		case 353:
-			return ret + RPL_NAMREPLY(arg1, arg2, arg3);
+			return ret + RPL_NAMREPLY(arg1, arg2);
 		case 366:
-			return ret + RPL_ENDOFNAMES(arg1, arg2);
+			return ret + RPL_ENDOFNAMES(arg1);
 		case 401:
 			return ret + ERR_NOSUCHNICK(arg1);
 		case 403:
@@ -77,6 +77,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_ERRONEUSNICKNAME(arg1);
 		case 433:
 			return ret + ERR_NICKNAMEINUSE(arg1);
+		case 442:
+			return ret + ERR_NOTONCHANNEL(arg1);
 		case 451:
 			return ret + ERR_NOTREGISTERED();
 		case 461:
@@ -85,6 +87,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_ALREADYREGISTRED();
 		case 464:
 			return ret + ERR_PASSWDMISMATCH();
+		case 473:
+			return ret + ERR_INVITEONLYCHAN();
 		case 484:
 			return ret + ERR_RESTRICTED();
 		case 501:

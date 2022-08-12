@@ -17,8 +17,8 @@
 # define RPL_CHANNELMODEIS(channel, mode, params) (channel + " " + mode + " " + params + "\r\n") //324
 # define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n") //331
 # define RPL_TOPIC(channel, topic) (channel + " :" + topic + "\r\n") //332
-# define RPL_NAMREPLY(nick, channel, nick_list) ("= " + channel + " :" + nick_list + "\r\n") //353
-# define RPL_ENDOFNAMES(nick, channel) (nick + " " + channel + " :End of NAMES list\r\n") //366
+# define RPL_NAMREPLY(channel, nick_list) ("= " + channel + " :" + nick_list + "\r\n") //353
+# define RPL_ENDOFNAMES(channel) (channel + " :End of NAMES list\r\n") //366
 
 /**
  *  ERRORS
@@ -32,10 +32,12 @@
 # define ERR_NONICKNAMEGIVEN() ":No nick given\r\n" //431
 # define ERR_ERRONEUSNICKNAME(nick) (nick + " :Erroneous nickname\r\n") //433
 # define ERR_NICKNAMEINUSE(nick) (nick + " :Nickname is already in use\r\n") //433
+# define ERR_NOTONCHANNEL(channel) (channel + " :You're not on that channel\r\n"); //442
 # define ERR_NOTREGISTERED() ":You have not registered\r\n" //451
 # define ERR_NEEDMOREPARAMS(command)  (command + " :Not enough parameters\r\n") //461
 # define ERR_ALREADYREGISTRED() ":Unauthorized command (already registered)\r\n" //462
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n") //464
+# define ERR_INVITEONLYCHAN(channel) (channel + ":Cannot join channel (+i)") // 473
 # define ERR_RESTRICTED() (":Your connection is restricted!\r\n") //484
 # define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag") //502
 

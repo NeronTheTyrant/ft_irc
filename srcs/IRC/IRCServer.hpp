@@ -52,11 +52,16 @@ public:
 	void	motd(User * user, std::vector<std::string> params);
 	void	ping(User * user, std::vector<std::string> params);
 	void	pong(User * user, std::vector<std::string> params);
+	void	part(User * user, std::vector<std::string> params);
 	void	away(User * user, std::vector<std::string> params);
 	void	die(User * user, std::vector<std::string> params);
 	void	kill(User * user, std::vector<std::string> params);
 	void	kick(User * user, std::vector<std::string> params);
 
+	/**
+	 * UTILS
+	 */
+	bool	checkTopicError(User * sender, std::vector<std::string> params);
 private:
 	std::string			_name;
 	std::string			_password;

@@ -11,6 +11,8 @@ ChannelMode::Mode	ChannelMode::translate(char c) {
 			return MODERATED;
 		case 't' :
 			return TOPIC;
+		case 'i' :
+			return INVITEONLY;
 		default:
 			return ERROR;
 	}
@@ -38,6 +40,8 @@ char	ChannelMode::translate(ChannelMode::Mode m) {
 			return 'm';
 		case TOPIC :
 			return 't';
+		case INVITEONLY :
+			return 'i';
 		case ERROR :
 			return '\0';
 	}
@@ -134,6 +138,10 @@ unsigned int	Channel::userCount() const {
 	return _userCount;
 }
 
+Channel::Invitations &	Channel::invitations() {
+	return _invitations;
+}
+
 /**
  * Setters
  */
@@ -158,6 +166,9 @@ void	Channel::addUser(User * u, MemberStatus s /*= MemberStatus(0)*/) {
 	_users[u] = s;
 	_userCount++;
 	u->setChannelCount(u->channelCount() + 1);
+	if (_invitations.find(u->nickname()) != _invitations.end()) {
+		_invitations.erase(u->nickname());
+	}
 }
 
 void	Channel::removeUser(User * u) {
@@ -280,5 +291,19 @@ void	Channel::send(std::string message, User * sender /* = NULL*/) {
 		if (sender == NULL || it->first != sender) {
 			it->first->send(message);
 		}
+	}
+}
+
+void	Channel::invite(User * user) {
+	_invitations.insert(user->nickname());
+}
+
+bool	Channel::isInvited(User * u) {
+	Invitations::iterator it = _invitations.find(u->nickname());
+	if (it == _invitations.end()) {
+		return false;
+	}
+	else {
+		return true;
 	}
 }
