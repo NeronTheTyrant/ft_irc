@@ -9,23 +9,29 @@ void	IRCServer::part(User *sender, std::vector<std::string> params) {
 	}
 	Channel *target;
 
-	if (params.size() < 1) {
+	if (params.size() < 2) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, sender, "PART")));
 		return ;
 	}
-	target = this->network().getChannelByName(params[1]);
-	if (target == u_nullptr) {
-		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, sender, params[1])));
-		return ;
-	}
-	else if (target->users().find(sender) == target->users().end()) {
-		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTONCHANNEL, sender, params[1])));
-		return ;
-	}
-	target->send(serverMessageBuilder(*sender, paramsToString(params)));
-	target->removeUser(sender);
-	if (target->userCount() == 0) {
-		this->network().remove(target);
-		delete target;
+	std::vector<std::string> channelList = ft_split(params[0], ",");
+	for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
+		if (!validChan(*it)) {
+			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, sender, *it)));
+			continue;
+		}
+		target = this->network().getChannelByName(*it);
+		if (target == u_nullptr) {
+			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, sender, *it)));
+			continue ;
+		}
+		else if (!target->isUser(sender)) {
+			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTONCHANNEL, sender, *it)));
+			continue ;
+		}
+		target->send(serverMessageBuilder(*sender, std::string("PART :") + *it + "\r\n"));
+		target->removeUser(sender);
+		if (target->userCount() == 0) {
+			this->network().remove(target);
+		}
 	}
 }

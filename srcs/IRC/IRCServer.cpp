@@ -9,8 +9,9 @@ IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const 
 	_commands["PRIVMSG"]	= &IRCServer::privmsg;
 //	_commands["NOTICE"]		= &IRCServer::notice;
 	_commands["JOIN"]		= &IRCServer::join;
+	_commands["INVITE"]		= &IRCServer::invite;
 //	_commands["LIST"]		= &IRCServer::list;
-//	_commands["NAMES"]		= &IRCServer::names;
+	_commands["NAMES"]		= &IRCServer::names;
 	_commands["MODE"]		= &IRCServer::mode;
 //	_commands["OPER"]		= &IRCServer::oper;
 	_commands["TOPIC"]		= &IRCServer::topic;
@@ -74,6 +75,8 @@ void	IRCServer::clearUser(User * u, std::string quitReason) {
 }
 
 void	IRCServer::execCommand(User * user, Command command) {
+	if (command.command().empty())
+		return ;
 	Commands::iterator it = _commands.find(command.command());
 	if (it == _commands.end()) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNCOMMAND, user, command.command())));

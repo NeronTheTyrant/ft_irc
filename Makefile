@@ -73,7 +73,9 @@ CMD_SOURCES		=	nick.cpp \
 					part.cpp \
 					join.cpp \
 					privmsg.cpp \
-					topic.cpp
+					topic.cpp \
+					names.cpp \
+					invite.cpp
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))
 
 SERVER_SOURCES	=	EpollHandler.cpp \

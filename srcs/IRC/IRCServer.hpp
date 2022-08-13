@@ -44,6 +44,7 @@ public:
 	void	privmsg(User * user, std::vector<std::string> params);
 	void	notice(User * user, std::vector<std::string> params);
 	void	join(User * user, std::vector<std::string> params);
+	void	invite(User * user, std::vector<std::string> params);
 	void	list(User * user, std::vector<std::string> params);
 	void	names(User * user, std::vector<std::string> params);
 	void	mode(User * user, std::vector<std::string> params);
@@ -71,5 +72,7 @@ private:
 	Commands			_commands;
 
 };
+
+bool	validChan(std::string chanName);
 
 #endif

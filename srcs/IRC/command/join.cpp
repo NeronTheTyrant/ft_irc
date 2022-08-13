@@ -11,7 +11,7 @@ bool	validChan(std::string chanName) {
 		return false;
 	if (chanName.find_first_of("\b ,") != std::string::npos)
 		return false;
-	return true;	
+	return true;
 }
 
 void	IRCServer::join(User *sender, std::vector<std::string> params) {
@@ -25,34 +25,39 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 	}
 	if (params[0] == "0") {
 		std::list<Channel *> channels = network().getUserChannelList(sender);
-		for (std::list<Channel *>::iterator it; it != channels.end(); it++) {
-			//replace with PART command maybe?
-			(*it)->removeUser(sender);
-			(*it)->send(serverMessageBuilder(*sender, std::string("PART :") + (*it)->name()));
+		for (std::list<Channel *>::iterator it = channels.begin(); it != channels.end(); it++) {
+			std::vector<std::string> params;
+			params.push_back((*it)->name());
+			params.push_back("Leaving");
+			part(sender, params);
 		}
-		//leave all channels
 	}
-	std::vector<std::string> channelList = ft_split(params[0], ",");
-	for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
-		std::cout << *it << "\n";
-		if (!validChan(*it)) {
-			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, sender, *it)));
-			continue;
-		}
-		Channel *	target = this->network().getChannelByName(*it);
-		if (target == u_nullptr) {
-			target = new Channel(*it, sender);
-			network().add(target);
-		}
-		else {
-			if (!target->isInvited(sender) && target->isModeSet(ChannelMode::INVITEONLY)) {
-				sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_INVITEONLYCHAN, sender, *it)));
+	else {
+		std::vector<std::string> channelList = ft_split(params[0], ",");
+		for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
+			std::cout << *it << "\n";
+			if (!validChan(*it)) {
+				sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, sender, *it)));
 				continue;
 			}
-			target->addUser(sender);
+			Channel *	target = this->network().getChannelByName(*it);
+			if (target == u_nullptr) {
+				target = new Channel(*it, sender);
+				network().add(target);
+			}
+			else {
+				if (!target->isInvited(sender) && target->isModeSet(ChannelMode::INVITEONLY)) {
+					sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_INVITEONLYCHAN, sender, *it)));
+					continue;
+				}
+				target->addUser(sender);
+			}
+			target->send(serverMessageBuilder(*sender, std::string("JOIN ") + target->name()));
+			std::vector<std::string>	param;
+			param.push_back(*it);
+			names(sender, param);
+//			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, sender, target->name(), target->userNickList())));
+//			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, sender, target->name())));
 		}
-		target->send(serverMessageBuilder(*sender, std::string("JOIN ") + target->name()));
-		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, sender, target->name(), target->userNickList())));
-		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, sender, target->name())));
 	}
 }

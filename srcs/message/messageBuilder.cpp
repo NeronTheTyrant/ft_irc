@@ -79,6 +79,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_NICKNAMEINUSE(arg1);
 		case 442:
 			return ret + ERR_NOTONCHANNEL(arg1);
+		case 443:
+			return ret + ERR_USERONCHANNEL(arg1, arg2);
 		case 451:
 			return ret + ERR_NOTREGISTERED();
 		case 461:
@@ -89,6 +91,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_PASSWDMISMATCH();
 		case 473:
 			return ret + ERR_INVITEONLYCHAN();
+		case 482:
+			return ret + ERR_CHANOPRIVSNEEDED(arg1);
 		case 484:
 			return ret + ERR_RESTRICTED();
 		case 501:
