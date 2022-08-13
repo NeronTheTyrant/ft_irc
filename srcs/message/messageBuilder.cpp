@@ -91,8 +91,12 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_ALREADYREGISTRED();
 		case 464:
 			return ret + ERR_PASSWDMISMATCH();
+		case 472:
+			return ret +  ERR_UNKNOWNMODE(arg1);
 		case 473:
 			return ret + ERR_INVITEONLYCHAN();
+		case 482:
+			return ret + ERR_CHANOPRIVSNEEDED(arg1);
 		case 484:
 			return ret + ERR_RESTRICTED();
 		case 501:
