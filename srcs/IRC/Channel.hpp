@@ -29,7 +29,7 @@ public:
 
 	static Mode	translate(char c);
 	static char	translate(Mode m);
-	std::string channelmodsToString(Channel & channel);
+	static std::string channelmodsToString(Channel & channel);
 };
 
 class MemberStatus : public Flag {
