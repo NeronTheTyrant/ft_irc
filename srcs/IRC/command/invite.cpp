@@ -26,9 +26,11 @@ void	IRCServer::invite(User * user, std::vector<std::string> params) {
 	}
 	if (target->isUser(invitee)) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_USERONCHANNEL, user, params[0], params[1])));
+		return;
+	}
 	if (target->isModeSet(ChannelMode::INVITEONLY) && !target->isStatusSet(user, MemberStatus::OPERATOR)) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, user, params[1])));
-		return ;
+		return;
 	}
 	target->invite(invitee);
 	invitee->send(serverMessageBuilder(*user, std::string("INVITE ") + paramsToString(params, 2)));

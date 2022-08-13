@@ -1,11 +1,15 @@
 #include "messageBuilder.hpp"
 
-std::string		paramsToString(std::vector<std::string> params)
-{
-	std::string ret("");
+std::string		paramsToString(std::vector<std::string> params, unsigned int n) {
+	std::string							ret("");
+	std::vector<std::string>::iterator	it = params.begin();
+	unsigned int						i = -1;
 
-	for (std::vector<std::string>::iterator it = params.begin(); it != params.end(); ++it)
+	while (++i < n && it != params.end())
+	{
 		ret += *it + " ";
+		it++;
+	}
 	return (ret);
 }
 
@@ -19,7 +23,10 @@ std::string		commandMessageBuilder(const	short code, User * user,
 		strCode = std::string(2, '0').append(ft_itos<short>(code));
 	ret = strCode;
 	ret += " ";
-	ret += user->nickname();
+	if (user->nickname().size())
+		ret += user->nickname();
+	else
+		ret += '*';
 	ret += " ";
 	switch (code)
 	{
@@ -89,6 +96,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_ALREADYREGISTRED();
 		case 464:
 			return ret + ERR_PASSWDMISMATCH();
+		case 472:
+			return ret +  ERR_UNKNOWNMODE(arg1, arg2);
 		case 473:
 			return ret + ERR_INVITEONLYCHAN();
 		case 482:

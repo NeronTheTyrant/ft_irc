@@ -39,6 +39,7 @@
 # define ERR_NEEDMOREPARAMS(command)  (command + " :Not enough parameters\r\n")						//461
 # define ERR_ALREADYREGISTRED() ":Unauthorized command (already registered)\r\n"					//462
 # define ERR_PASSWDMISMATCH() (":Password incorrect\r\n")											//464
+# define ERR_UNKNOWNMODE(c, channel) (c + " :is unknown mode char to me for " + channel + "\r\n")	//472
 # define ERR_INVITEONLYCHAN(channel) (channel + ":Cannot join channel (+i)\r\n")					//473
 # define ERR_CHANOPRIVSNEEDED(channel) (channel + ":You're not channel operator\r\n")				//482
 # define ERR_RESTRICTED() (":Your connection is restricted!\r\n")									//484

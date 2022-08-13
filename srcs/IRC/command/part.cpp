@@ -9,7 +9,7 @@ void	IRCServer::part(User *sender, std::vector<std::string> params) {
 	}
 	Channel *target;
 
-	if (params.size() < 2) {
+	if (params.size() < 1) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, sender, "PART")));
 		return ;
 	}
@@ -28,7 +28,12 @@ void	IRCServer::part(User *sender, std::vector<std::string> params) {
 			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOTONCHANNEL, sender, *it)));
 			continue ;
 		}
-		target->send(serverMessageBuilder(*sender, std::string("PART :") + *it + "\r\n"));
+		if (params.size() >= 2) {
+			target->send(serverMessageBuilder(*sender, std::string("PART ") + *it + " :" + params[1] + "\r\n"));
+		}
+		else {
+			target->send(serverMessageBuilder(*sender, std::string("PART ") + *it + " :" + sender->nickname() + "\r\n"));
+		}
 		target->removeUser(sender);
 		if (target->userCount() == 0) {
 			this->network().remove(target);

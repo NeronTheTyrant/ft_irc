@@ -15,7 +15,7 @@
 class IRCServer;
 class User;
 
-std::string		paramsToString(std::vector<std::string> params);
+std::string		paramsToString(std::vector<std::string> params, unsigned int n);
 std::string		commandMessageBuilder(const	short code, User * user, std::string const arg1 = std::string(), std::string const arg2 = std::string(), std::string const arg3 = std::string(), std::string const arg4 = std::string());
 
 std::string		serverMessageBuilder(User & user, std::string content);
