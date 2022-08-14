@@ -20,8 +20,8 @@ void	IRCServer::names(User * user, std::vector<std::string> params) {
 			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, user, *it)));
 			continue ;
 		}
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, user, target->name(), target->userNickList())));
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, user, target->name())));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, user, target->name(), target->userNickList(user))));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, user, target->name())));
 		if (target->userCount() == 0) {
 			this->network().remove(target);
 		}

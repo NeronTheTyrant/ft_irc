@@ -43,7 +43,7 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 		}
 		else { // Handling modstrings
 
-			if (channel->isStatusSet(user, MemberStatus::Status::OPERATOR) == false && channel->isStatusSet(user, MemberStatus::Status::CREATOR) == false) { // User doesn't have sufficient privileges to modify moddes
+			if (channel->isStatusSet(user, MemberStatus::Status::OPERATOR) == false) { // User doesn't have sufficient privileges to modify moddes
 				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, user, params[0])));
 			}
 			else { // Setting / Unsetting modes

@@ -2,10 +2,13 @@
 # define USER_HPP
 
 # include <iostream>
+# include <map>
 # include "Client.hpp"
 # include "Flag.hpp"
+# include "Channel.hpp"
 
 class User;
+class Channel;
 
 class UserRequirement: public Flag {
 public:
@@ -47,13 +50,14 @@ public:
 
 class	User : public Client {
 private:
-	std::string			_username;
-	std::string			_nickname;
-	std::string			_realname;
-	std::string			_awayMessage;
-	UserRequirement		_requirements;
-	UserMode			_mode;
-	unsigned int		_channelCount;
+	std::string							_username;
+	std::string							_nickname;
+	std::string							_realname;
+	std::string							_awayMessage;
+	UserRequirement						_requirements;
+	UserMode							_mode;
+	unsigned int						_channelCount;
+	std::map<std::string, Channel *>	_channelList;
 
 public:
 	User(int sd, uint32_t requirementFlags);
@@ -65,15 +69,16 @@ public:
 /**
  * Getters
  */
-	std::string			nickname() const;
-	std::string			username() const;
-	std::string			realname() const;
-	std::string			awayMessage() const;
-	UserRequirement &	requirements();
-	UserMode &			mode();
-	bool				isRegistered() const;
-	std::string			prefix() const;
-	unsigned int		channelCount() const;
+	std::string				nickname() const;
+	std::string				username() const;
+	std::string				realname() const;
+	std::string				awayMessage() const;
+	UserRequirement &		requirements();
+	UserMode &				mode();
+	bool					isRegistered() const;
+	std::string				prefix() const;
+	unsigned int			channelCount() const;
+	std::map<std::string, Channel *> &	channelList();
 
 /**
  * Setters
@@ -99,6 +104,9 @@ public:
 	void	setRequirement(UserRequirement::Requirement r);
 	void	unsetRequirement(UserRequirement::Requirement r);
 	bool	isRequirementSet(UserRequirement::Requirement r) const;
+
+	void	addChannel(Channel *toAdd);
+	bool	isRelated(User *toFind) const;
 
 };
 

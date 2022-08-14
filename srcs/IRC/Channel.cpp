@@ -18,6 +18,20 @@ ChannelMode::Mode	ChannelMode::translate(char c) {
 	}
 }
 
+char	ChannelMode::translate(ChannelMode::Mode m) {
+	switch (m) {
+		case MODERATED :
+			return 'm';
+		case TOPIC :
+			return 't';
+		case INVITEONLY :
+			return 'i';
+		case ERROR :
+			return '\0';
+	}
+	return '\0';
+}
+
 std::string ChannelMode::channelmodsToString(Channel & channel) {
 
 	std::string ret;
@@ -34,29 +48,13 @@ std::string ChannelMode::channelmodsToString(Channel & channel) {
 	return ret;
 }
 
-char	ChannelMode::translate(ChannelMode::Mode m) {
-	switch (m) {
-		case MODERATED :
-			return 'm';
-		case TOPIC :
-			return 't';
-		case INVITEONLY :
-			return 'i';
-		case ERROR :
-			return '\0';
-	}
-	return '\0';
-}
-
-MemberStatus::MemberStatus(uint32_t flag /*= 0*/)
+MemberStatus::MemberStatus(uint32_t flag)
 	: Flag(flag) {}
 
 MemberStatus::~MemberStatus() {}
 
 MemberStatus::Status	MemberStatus::translate(char c) {
 	switch (c) {
-		case 'O' :
-			return CREATOR;
 		case 'o' :
 			return OPERATOR;
 		case 'v' :
@@ -68,8 +66,6 @@ MemberStatus::Status	MemberStatus::translate(char c) {
 
 char	MemberStatus::translate(MemberStatus::Status s) {
 	switch (s) {
-		case CREATOR :
-			return 'O';
 		case OPERATOR :
 			return 'o';
 		case VOICE :
@@ -86,7 +82,7 @@ char	MemberStatus::translate(MemberStatus::Status s) {
 
 Channel::Channel(std::string name, User * creator)
 	: _name(name), _userCount(0) {
-	addUser(creator, MemberStatus(MemberStatus::CREATOR));
+	addUser(creator, MemberStatus(MemberStatus::OPERATOR));
 }
 
 /**
@@ -105,17 +101,26 @@ std::string	Channel::topic() const {
 	return _topic;
 }
 
-std::string	Channel::userNickList() const {
+std::string	Channel::userNickList(User *user) const {
 	std::string	ret("");
 	Users::const_iterator it = _users.begin();
 
+	bool firstPrint = true;
 	for (; it != _users.end(); ++it) {
-		if (isStatusSet(it->first, 'o'))
-			ret += "@";
-		ret += it->first->nickname();
-		Users::const_iterator temp = it;
-		if (++temp != _users.end())
-			ret += " ";
+		if (it->first->isModeSet(UserMode::Mode::INVISIBLE) == false || user->isRelated(it->first)) {
+			if (firstPrint == true) {
+				firstPrint = false;
+			}
+			else {
+				ret += ' ';
+			}
+			if (isStatusSet(it->first, 'o'))
+				ret += '@';
+			else if (isStatusSet(it->first, 'v')) {
+				ret += '+';
+			}
+			ret += it->first->nickname();
+		}
 	}
 	return ret;
 }

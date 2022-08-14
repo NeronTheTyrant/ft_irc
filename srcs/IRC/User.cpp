@@ -1,4 +1,5 @@
 #include "User.hpp"
+#include "utils.hpp"
 
 UserRequirement::UserRequirement(uint32_t flag /*= 0*/)
 	: Flag(flag) {}
@@ -120,6 +121,10 @@ UserMode &	User::mode() {
 	return _mode;
 }
 
+std::map<std::string, Channel *> &	User::channelList(){
+	return _channelList;
+}
+
 bool	User::isRegistered() const {
 	return !_requirements.flags();
 //	bool cond = isRequirementSet(UserRequirement::PASS) || isRequirementSet(UserRequirement::USER) || isRequirementSet(UserRequirement::NICK);
@@ -204,4 +209,22 @@ void	User::unsetRequirement(UserRequirement::Requirement r) {
 
 bool	User::isRequirementSet(UserRequirement::Requirement r) const {
 	return _requirements.isSet(r);
+}
+
+void	User::addChannel(Channel *toAdd) {
+	if (toAdd != u_nullptr && _channelList.find(toAdd->name()) == _channelList.end()) {
+		_channelList[toAdd->name()] = toAdd;
+	}
+}
+
+bool	User::isRelated(User *toFind) const {
+	if (_channelList.size() == 0) {
+		return false;
+	}
+	for (std::map<std::string, Channel *>::const_iterator it = _channelList.begin(); it != _channelList.end(); ++it) {
+		if (it->second->isUser(toFind) == true) {
+			return true;
+		}
+	}
+	return false;
 }

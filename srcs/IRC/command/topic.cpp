@@ -29,24 +29,21 @@ void	IRCServer::topic(User * sender, std::vector<std::string> params) {
 	if (checkTopicError(sender, params) == true)
 		return ;
 	target = this->network().getChannelByName(params[0]);
-	if (target->isModeSet('t') && params.size() == 1) {
+	if (params.size() == 1 && target->topic().size() > 0) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_TOPIC, sender, target->name(), target->topic())));
 		return ;
 	}
-	else if (target->isModeSet('t') == false && params.size() == 1) {
+	else if (params.size() == 1) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NOTOPIC, sender, target->name(), target->topic())));
 		return ;
 	}
-	else if (target->isModeSet('t') == true && params.size() == 2 && params[1] == "") {
-		sender->send(serverMessageBuilder(*sender, "TOPIC " + params[0] + " :"));
-		target->unsetMode('t');
-		target->setTopic("");
+	else if (target->isModeSet('t') == true && target->isStatusSet(sender, MemberStatus::Status::OPERATOR) == false) {
+		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, sender, target->name())));
+		return ;
 	}
-	else if (params.size() > 1) {
-		sender->send(serverMessageBuilder(*sender, "TOPIC " + paramsToString(params, 2)));
+	else {
+		target->send(serverMessageBuilder(*sender, "TOPIC " + paramsToString(params, 2)));
 		target->setTopic(params[1]);
-		if (target->isModeSet('t') == false)
-			target->setMode('t');
 		return ;
 	}
 }

@@ -17,8 +17,12 @@ void	IRCServer::privmsg(User *sender, std::vector<std::string> params) {
 		return ;
 	}
 	chan = network().getChannelByName(params[0]);
-	if (chan != u_nullptr) {
-		chan->send(serverMessageBuilder(*sender, "PRIVMSG " + paramsToString(params, 2)), sender);
+	if (chan != u_nullptr) { 
+		if (chan->isModeSet(ChannelMode::Mode::MODERATED) == false 
+			|| chan->isStatusSet(sender, MemberStatus::Status::VOICE) == true
+			|| chan->isStatusSet(sender, MemberStatus::Status::OPERATOR) == true) {
+			chan->send(serverMessageBuilder(*sender, "PRIVMSG " + paramsToString(params, 2)), sender);
+		}
 		return ;
 	}
 	target = network().getUserByName(params[0]);

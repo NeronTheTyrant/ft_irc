@@ -10,6 +10,7 @@
 # include "Flag.hpp"
 
 class Channel;
+class User;
 
 class ChannelMode : public Flag {
 public:
@@ -18,9 +19,9 @@ public:
 		ERROR = 0,
 		/* 'm' - moderated channel */
 		MODERATED = 1,
-		/* 't' - only channel creator can set topic */
+		/* 't' - only channel ops can set topic */
 		TOPIC = 1 << 1,
-		/* 'o' - invite only */
+		/* 'i' - invite only */
 		INVITEONLY = 1 << 2,
 	};
 
@@ -37,8 +38,6 @@ public:
 	enum Status {
 		/* Unknown status */
 		ERROR = 0,
-		/* 'O' - channel creator */
-		CREATOR = 1,
 		/* 'o' - channel operator */
 		OPERATOR = 1 << 1,
 		/* 'v' - member can speak in moderated or restricted channel */
@@ -76,7 +75,7 @@ public:
 		std::string		name() const;
 		std::string		password() const;
 		std::string		topic() const;
-		std::string		userNickList() const;
+		std::string		userNickList(User *user) const;
 		Users &			users();
 		MemberStatus	userStatus(User * u);
 		unsigned int	userCount() const;
