@@ -5,8 +5,8 @@
 # define RPL_YOURHOST(servername, version) (":Your host is " + servername + ", running version " + version + "\r\n") //2
 # define RPL_CREATED(date) (":This server was created " + date + "\r\n")							//3
 # define RPL_MYINFO(servername, version, usr_modes, chann_modes) (":" + servername + " " + version + " " + usr_modes + " " + chann_modes + "\r\n") //4
-# define RPL_UMODEIS(modes) (": +" + modes + "\r\n")												//221
-# define RPL_AWAY(pseudo, str) (pseudo + " " + str + "\r\n")										//301
+# define RPL_UMODEIS(modes) ("+" + modes + "\r\n")												//221
+# define RPL_AWAY(pseudo, str) (pseudo + " :" + str + "\r\n")										//301
 # define RPL_UNAWAY() (":You are no longer marked as being away\r\n")								//305
 # define RPL_NOWAWAY() (":You have been marked as being away\r\n")									//306
 # define RPL_WHOISUSER(nick, user, host, realname) (nick + " " + user + " " + host + " * :" + realname + "\r\n") //311
@@ -14,7 +14,7 @@
 # define RPL_ENDOFWHO(name) (name + " :End of WHO list\r\n")										//315
 # define RPL_WHOISIDLE(pseudo, idle, signon) (pseudo + " " + idle + " " + signon + " :seconds idle, signon time\r\n") //317
 # define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list\r\n")								//318
-# define RPL_CHANNELMODEIS(channel, mode, params) (channel + " " + mode + " " + params + "\r\n")	//324
+# define RPL_CHANNELMODEIS(channel, mode, params) (channel + " +" + mode + " " + params + "\r\n")	//324
 # define RPL_NOTOPIC(channel) (channel + " :No topic is set\r\n")									//331
 # define RPL_TOPIC(channel, topic) (channel + " :" + topic + "\r\n")								//332
 # define RPL_INVITING(channel, nick) (channel + " " + nick + "\r\n")								//341

@@ -21,15 +21,15 @@ void	IRCServer::privmsg(User *sender, std::vector<std::string> params) {
 		if (chan->isModeSet(ChannelMode::Mode::MODERATED) == false 
 			|| chan->isStatusSet(sender, MemberStatus::Status::VOICE) == true
 			|| chan->isStatusSet(sender, MemberStatus::Status::OPERATOR) == true) {
-			chan->send(serverMessageBuilder(*sender, "PRIVMSG " + paramsToString(params, 2)), sender);
+			chan->send(serverMessageBuilder(*sender, "PRIVMSG " + chan->name() + " :" + params[1]));
 		}
 		return ;
 	}
 	target = network().getUserByName(params[0]);
 	if (target != u_nullptr) {
 		if (target->isModeSet('a'))
-			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_AWAY, target, target->awayMessage())));
-		target->send(serverMessageBuilder(*sender, params[1]));
+			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_AWAY, sender, target->nickname(), target->awayMessage())));
+		target->send(serverMessageBuilder(*sender, "PRIVMSG " + target->nickname() + " :" + params[1]));
 	}
 	else
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, sender, params[0])));

@@ -154,6 +154,10 @@ void	User::setNickname(std::string nickname) {
 	_nickname = nickname;
 }
 
+void	User::setAwayMessage(std::string message) {
+	_awayMessage = message;
+}
+
 void	User::setChannelCount(unsigned int c) {
 	_channelCount = c;
 }
