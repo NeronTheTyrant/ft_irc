@@ -44,7 +44,6 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 			if (target == u_nullptr) {
 				target = new Channel(*it, sender);
 				network().add(target);
-				sender->addChannel(target);
 			}
 			else {
 				if (!target->isInvited(sender) && target->isModeSet(ChannelMode::INVITEONLY)) {
@@ -52,7 +51,6 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 					continue;
 				}
 				target->addUser(sender);
-				sender->addChannel(target);
 			}
 			target->send(serverMessageBuilder(*sender, std::string("JOIN ") + target->name()));
 			std::vector<std::string>	param;
