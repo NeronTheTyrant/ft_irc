@@ -62,6 +62,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + RPL_NOTOPIC(arg1);
 		case 332:
 			return ret + RPL_TOPIC(arg1, arg2);
+		case 341:
+			return ret + RPL_INVITING(arg1, arg2);
 		case 353:
 			return ret + RPL_NAMREPLY(arg1, arg2);
 		case 366:

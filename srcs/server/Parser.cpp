@@ -31,6 +31,9 @@ void	Parser::parseInput() {
 		_command.setSyntaxError(true);
 		return;
 	}
+	for (std::string::iterator it = toAdd.begin(); it != toAdd.end(); ++it) {
+		*it = std::toupper(*it);
+	}
 	_command.setCommand(toAdd);
 	if (nextSpace >= _input.size()) {
 		return;
