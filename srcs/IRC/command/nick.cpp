@@ -41,7 +41,8 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user, user->nickname())));
 		}
 	}
-	else {
+	else if (user->isRegistered()) {
+		user->send(message);
 		std::list<Channel *> channelList = network().getUserChannelList(user);
 		for (std::list<Channel *>::iterator it = channelList.begin(); it != channelList.end(); it++) {
 			(*it)->send(message, user);
