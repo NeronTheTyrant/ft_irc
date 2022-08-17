@@ -19,25 +19,25 @@ Network::UserSockets & Network::userSockets() {
 void	Network::add(User * user) {
 	_userSockets[user->sd()] = user;
 	if (user->nickname().size())
-		_users[user->nickname()] = user;
+		_users[strToUpper(user->nickname())] = user;
 }
 
 void	Network::add(Channel * channel) {
-	_channels[channel->name()] = channel;
+	_channels[strToUpper(channel->name())] = channel;
 }
 
 void	Network::remove(User * user) {
-	_users.erase(user->nickname());
+	_users.erase(strToUpper(user->nickname()));
 	_userSockets.erase(user->sd());
 }
 
 void	Network::remove(Channel * channel) {
-	_channels.erase(channel->name());
+	_channels.erase(strToUpper(channel->name()));
 	delete channel;
 }
 
 User *	Network::getUserByName(std::string const nickname) {
-	Users::iterator it = _users.find(nickname);
+	Users::iterator it = _users.find(strToUpper(nickname));
 	if (it == _users.end())
 		return u_nullptr;
 	else
@@ -53,7 +53,7 @@ User *	Network::getUserBySocket(int sd) {
 }
 
 Channel *	Network::getChannelByName(std::string const channelName) {
-	Channels::iterator it = _channels.find(channelName);
+	Channels::iterator it = _channels.find(strToUpper(channelName));
 	if (it == _channels.end())
 		return u_nullptr;
 	else
@@ -69,4 +69,3 @@ std::list<Channel *>	Network::getUserChannelList(User * u) {
 	}
 	return channelList;
 }
-

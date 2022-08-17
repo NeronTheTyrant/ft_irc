@@ -8,6 +8,7 @@
 
 # include "User.hpp"
 # include "Flag.hpp"
+# include "utils.hpp"
 
 class Channel;
 class User;
