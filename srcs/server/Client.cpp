@@ -34,7 +34,7 @@ void	Client::send(std::string data) const {
 }
 
 bool	Client::crlf() const {
-	if (_stock.find_first_of("\r\n") != std::string::npos)
+	if (_stock.size() > 0 && _stock.find_first_of("\r\n") != std::string::npos)
 		return true;
 	else
 		return false;
@@ -51,7 +51,7 @@ std::string	Client::line() const {
 	if (!crlf())
 		return std::string("");
 	size_t	pos = _stock.find_first_of("\r\n");
-	return _stock.substr(0, pos + 1);
+	return _stock.substr(0, pos);
 }
 
 /*
@@ -64,6 +64,7 @@ void	Client::clearLine() {
 	if (!crlf())
 		return ;
 	size_t	pos = _stock.find_first_of("\r\n");
-	bool	secondTerminator = (pos + 1 < _stock.size() && (_stock.at(pos + 1) == '\n' || _stock.at(pos + 1) == '\r'));
-	_stock.erase(0, pos + 1 + secondTerminator);
+	pos = _stock.find_first_not_of("\r\n", pos);
+	
+	_stock.erase(0, pos);
 }

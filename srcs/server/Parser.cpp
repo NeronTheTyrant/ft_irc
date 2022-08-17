@@ -23,13 +23,16 @@ void	Parser::parseInput() {
 
 	size_t nextSpace = _input.find(" ", index);
 	if (nextSpace == std::string::npos) {
-		nextSpace = _input.size() - 1;
+		nextSpace = _input.size();
 	}
 
 	std::string	toAdd = _input.substr(index, nextSpace - index);
 	if (!commandValid(toAdd)) {
 		_command.setSyntaxError(true);
 		return;
+	}
+	for (std::string::iterator it = toAdd.begin(); it != toAdd.end(); ++it) {
+		*it = std::toupper(*it);
 	}
 	_command.setCommand(toAdd);
 	if (nextSpace >= _input.size()) {
@@ -39,7 +42,7 @@ void	Parser::parseInput() {
 	while (index < _input.size()) {
 		nextSpace = _input.find(" ", index);
 		if (_input.at(index) == ':' || nextSpace == std::string::npos) {
-			nextSpace = _input.size() - 1;
+			nextSpace = _input.size();
 		}
 		if (_input.at(index) != ':') {
 			if (index != nextSpace) {

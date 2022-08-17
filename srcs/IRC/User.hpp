@@ -2,7 +2,7 @@
 # define USER_HPP
 
 # include <iostream>
-# include <map>
+# include <set>
 # include "Client.hpp"
 # include "Flag.hpp"
 # include "Channel.hpp"
@@ -57,7 +57,7 @@ private:
 	UserRequirement						_requirements;
 	UserMode							_mode;
 	unsigned int						_channelCount;
-	std::map<std::string, Channel *>	_channelList;
+	std::set<Channel *>					_channelList;
 
 public:
 	User(int sd, uint32_t requirementFlags);
@@ -78,7 +78,7 @@ public:
 	bool					isRegistered() const;
 	std::string				prefix() const;
 	unsigned int			channelCount() const;
-	std::map<std::string, Channel *> &	channelList();
+	std::set<Channel *> &	channelList();
 
 /**
  * Setters
@@ -106,6 +106,7 @@ public:
 	bool	isRequirementSet(UserRequirement::Requirement r) const;
 
 	void	addChannel(Channel *toAdd);
+	void	removeChannel(Channel *toRemove);
 	bool	isRelated(User *toFind) const;
 
 };

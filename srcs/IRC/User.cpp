@@ -121,7 +121,7 @@ UserMode &	User::mode() {
 	return _mode;
 }
 
-std::map<std::string, Channel *> &	User::channelList(){
+std::set<Channel *> &	User::channelList(){
 	return _channelList;
 }
 
@@ -216,8 +216,15 @@ bool	User::isRequirementSet(UserRequirement::Requirement r) const {
 }
 
 void	User::addChannel(Channel *toAdd) {
-	if (toAdd != u_nullptr && _channelList.find(toAdd->name()) == _channelList.end()) {
-		_channelList[toAdd->name()] = toAdd;
+	if (toAdd != u_nullptr && _channelList.find(toAdd) == _channelList.end()) {
+		_channelList.insert(toAdd);
+	}
+}
+
+void User::removeChannel(Channel *toRemove) {
+	std::set<Channel *>::const_iterator it = _channelList.find(toRemove);
+	if (it != _channelList.end()) {
+		_channelList.erase(it);
 	}
 }
 
@@ -225,8 +232,8 @@ bool	User::isRelated(User *toFind) const {
 	if (_channelList.size() == 0) {
 		return false;
 	}
-	for (std::map<std::string, Channel *>::const_iterator it = _channelList.begin(); it != _channelList.end(); ++it) {
-		if (it->second->isUser(toFind) == true) {
+	for (std::set<Channel *>::const_iterator it = _channelList.begin(); it != _channelList.end(); ++it) {
+		if ((*it)->isUser(toFind) == true) {
 			return true;
 		}
 	}

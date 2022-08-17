@@ -32,6 +32,9 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 			part(sender, params);
 		}
 	}
+	else if (params[0].size() == 0) {
+		return;
+	}
 	else {
 		std::vector<std::string> channelList = ft_split(params[0], ",");
 		for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
@@ -44,7 +47,9 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 			if (target == u_nullptr) {
 				target = new Channel(*it, sender);
 				network().add(target);
-				sender->addChannel(target);
+			}
+			else if (target->isUser(sender)) {
+				continue;
 			}
 			else {
 				if (!target->isInvited(sender) && target->isModeSet(ChannelMode::INVITEONLY)) {
@@ -52,7 +57,6 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 					continue;
 				}
 				target->addUser(sender);
-				sender->addChannel(target);
 			}
 			target->send(serverMessageBuilder(*sender, std::string("JOIN ") + target->name()));
 			std::vector<std::string>	param;

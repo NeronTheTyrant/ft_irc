@@ -171,12 +171,14 @@ void	Channel::addUser(User * u, MemberStatus s /*= MemberStatus(0)*/) {
 	_users[u] = s;
 	_userCount++;
 	u->setChannelCount(u->channelCount() + 1);
+	u->addChannel(this);
 	if (_invitations.find(u->nickname()) != _invitations.end()) {
 		_invitations.erase(u->nickname());
 	}
 }
 
 void	Channel::removeUser(User * u) {
+	u->removeChannel(this);
 	_users.erase(u);
 	_userCount--;
 	u->setChannelCount(u->channelCount() - 1);
