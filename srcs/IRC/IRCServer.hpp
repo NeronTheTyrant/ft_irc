@@ -19,7 +19,7 @@ class IRCServer {
 	typedef	std::map<std::string, void	(IRCServer::*) (User *, std::vector<std::string>)>	Commands;
 
 public:
-	IRCServer(uint16_t port, std::string const & name, std::string const & password);
+	IRCServer(uint16_t port, std::string const & name, std::string const & password, std::map<std::string, std::pair<std::string, std::vector<std::string> > > const & operatorList);
 	~IRCServer();
 
 	void		start();
@@ -64,12 +64,13 @@ public:
 	 */
 	bool	checkTopicError(User * sender, std::vector<std::string> params);
 private:
-	std::string			_name;
-	std::string			_password;
-	Network				_network;
-	EpollHandler		_epollHandler;
-	IRCEventListener *	_eventListener;
-	Commands			_commands;
+	std::string							_name;
+	std::string							_password;
+	std::map<std::string, std::pair<std::string, std::vector< std::string> > >	_operatorList;
+	Network								_network;
+	EpollHandler						_epollHandler;
+	IRCEventListener *					_eventListener;
+	Commands							_commands;
 
 };
 

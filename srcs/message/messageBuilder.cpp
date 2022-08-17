@@ -68,6 +68,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + RPL_NAMREPLY(arg1, arg2);
 		case 366:
 			return ret + RPL_ENDOFNAMES(arg1);
+		case 381:
+			return ret + RPL_YOUREOPER();
 		case 401:
 			return ret + ERR_NOSUCHNICK(arg1);
 		case 403:
@@ -106,6 +108,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_CHANOPRIVSNEEDED(arg1);
 		case 484:
 			return ret + ERR_RESTRICTED();
+		case 491:
+			return ret + ERR_NOOPERHOST();
 		case 501:
 			return ret + ERR_UMODEUNKNOWNFLAG();
 		case 502:

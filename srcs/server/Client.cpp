@@ -7,6 +7,7 @@ Client::Client(int sd)
 // Ask getsockname to fill in this socket's local address
 	getsockname(sd, reinterpret_cast<struct sockaddr*>(&client_addr), &len);
 	_hostname = inet_ntoa(client_addr.sin_addr);
+//	_hostname = "AHAH THIS IS NOT A VALID HOST";
 }
 
 Client::~Client() {
