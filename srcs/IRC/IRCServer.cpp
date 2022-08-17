@@ -58,7 +58,7 @@ void	IRCServer::disconnect(User * u, std::string quitReason) {
 }
 
 void	IRCServer::clearUser(User * u, std::string quitReason) {
-	std::string	quitMessage = serverMessageBuilder(*u, "QUIT :") + quitReason;
+	std::string	quitMessage = serverMessageBuilder(*u, std::string("QUIT :") + quitReason);
 
 	// iterate through channels, kick user from each channel
 	std::list<Channel *> chanList = network().getUserChannelList(u);
