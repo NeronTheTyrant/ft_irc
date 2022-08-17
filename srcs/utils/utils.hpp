@@ -34,4 +34,7 @@ bool			isCharset(char c, std::string charset);
 
 std::vector<std::string>	ft_split(std::string haystack, std::string needle);
 
+std::string	strToUpper(std::string s);
+std::string strToLower(std::string s);
+
 #endif

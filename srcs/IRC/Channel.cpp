@@ -302,11 +302,11 @@ void	Channel::send(std::string message, User * sender /* = NULL*/) {
 }
 
 void	Channel::invite(User * user) {
-	_invitations.insert(user->nickname());
+	_invitations.insert(strToUpper(user->nickname()));
 }
 
 bool	Channel::isInvited(User * u) {
-	Invitations::iterator it = _invitations.find(u->nickname());
+	Invitations::iterator it = _invitations.find(strToUpper(u->nickname()));
 	if (it == _invitations.end()) {
 		return false;
 	}
