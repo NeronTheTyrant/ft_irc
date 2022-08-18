@@ -6,25 +6,28 @@ void	IRCServer::names(User * user, std::vector<std::string> params) {
 		return;
 	}
 	if (params.size() == 0) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, user, "NAMES")));
-		return;
-	}
-	std::vector<std::string> channelList = ft_split(params[0], ",");
-	for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
-		if (!validChan(*it)) {
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, user, *it)));
-			continue;
-		}
-		Channel * target = this->network().getChannelByName(*it);
-		if (target == u_nullptr) {
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, user, *it)));
-			continue ;
-		}
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, user, target->name(), target->userNickList(user))));
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, user, target->name())));
-		if (target->userCount() == 0) {
-			this->network().remove(target);
-		}
-	}
+		for (Network::Channels::iterator it = network().channels().begin(); it != network().channels().end(); it++) {
+			Channel * target = it->second;
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, user, target->name(), target->userNickList(user))));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, user, target->name())));
 
+		}
+	}
+	else {
+	
+		std::vector<std::string> channelList = ft_split(params[0], ",");
+		for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
+			if (!validChan(*it)) {
+				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, user, *it)));
+				continue;
+			}
+			Channel * target = this->network().getChannelByName(*it);
+			if (target == u_nullptr) {
+				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, user, *it)));
+				continue ;
+			}
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, user, target->name(), target->userNickList(user))));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, user, target->name())));
+		}
+	}
 }

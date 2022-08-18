@@ -32,6 +32,7 @@ void	Network::remove(User * user) {
 }
 
 void	Network::remove(Channel * channel) {
+	channel->clearUsers();
 	_channels.erase(strToUpper(channel->name()));
 	delete channel;
 }
