@@ -14,6 +14,8 @@
 # define RPL_ENDOFWHO(name) (name + " :End of WHO list")															//315
 # define RPL_WHOISIDLE(pseudo, idle, signon) (pseudo + " " + idle + " " + signon + " :seconds idle, signon time")	//317
 # define RPL_ENDOFWHOIS(pseudo) (pseudo + " :End of /WHOIS list")													//318
+# define RPL_LIST(channel, visiblenb, topic) (channel + " " + visiblenb + " :" + topic)								//322
+# define RPL_LISTEND() (":End of LIST")		
 # define RPL_CHANNELMODEIS(channel, mode, params) (channel + " +" + mode + " " + params)							//324
 # define RPL_NOTOPIC(channel) (channel + " :No topic is set")														//331
 # define RPL_TOPIC(channel, topic) (channel + " :" + topic)															//332
