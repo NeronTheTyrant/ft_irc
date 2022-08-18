@@ -20,6 +20,7 @@
 # define RPL_INVITING(nick, channel) (nick + " " + channel)															//341
 # define RPL_NAMREPLY(channel, nick_list) ("= " + channel + " :" + nick_list)										//353
 # define RPL_ENDOFNAMES(channel) (channel + " :End of NAMES list")													//366
+# define RPL_YOUREOPER() (" :You are now an IRC Operator")															//381
 
 /**
  *  ERRORS
@@ -43,6 +44,7 @@
 # define ERR_INVITEONLYCHAN(channel) (channel + ":Cannot join channel (+i)")										//473
 # define ERR_CHANOPRIVSNEEDED(channel) (channel + ":You're not channel operator")									//482
 # define ERR_RESTRICTED() (":Your connection is restricted!")														//484
+# define ERR_NOOPERHOST() (":No 0-lines for your host")																//491
 # define ERR_UMODEUNKNOWNFLAG() (":Unknown MODE flag")																//501
 # define ERR_USERSDONTMATCH(nick) (nick + ":Cant change mode for other users")										//502
 

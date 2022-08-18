@@ -1,7 +1,7 @@
 #include "IRCServer.hpp"
 
-IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password) :
-	_name(name), _password(password), _epollHandler(port), _eventListener (NULL) {;
+IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password, std::map<std::string, std::pair<std::string, std::vector<std::string> > > const & operatorList) :
+	_name(name), _password(password), _operatorList(operatorList), _epollHandler(port), _eventListener (NULL) {;
 	_commands["PASS"]		= &IRCServer::pass;
 	_commands["NICK"]		= &IRCServer::nick;
 	_commands["USER"]		= &IRCServer::user;
@@ -13,7 +13,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const 
 //	_commands["LIST"]		= &IRCServer::list;
 	_commands["NAMES"]		= &IRCServer::names;
 	_commands["MODE"]		= &IRCServer::mode;
-//	_commands["OPER"]		= &IRCServer::oper;
+	_commands["OPER"]		= &IRCServer::oper;
 	_commands["TOPIC"]		= &IRCServer::topic;
 //	_commands["MOTD"]		= &IRCServer::motd;
 //	_commands["PING"]		= &IRCServer::ping;
