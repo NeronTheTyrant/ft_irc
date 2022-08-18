@@ -41,6 +41,7 @@ private:
 	void	raiseConnectEvent(int sd);
 	void	raiseDisconnectEvent(int sd, std::string notification);
 	void	raiseReceiveEvent(std::string data, int sd);
+	void	raiseLoopEndEvent();
 };
 
 #endif

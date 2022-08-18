@@ -32,6 +32,9 @@ public:
 	void	disconnect(User * u, std::string quitReason);
 	void	clearUser(User * u, std::string quitReason);
 
+	void	addToRemoveList(User * user);
+	void	clearRemoveList();
+
 	void	execCommand(User * u, Command command);
 
 	/**
@@ -64,6 +67,14 @@ public:
 	 */
 	bool	checkTopicError(User * sender, std::vector<std::string> params);
 private:
+	std::string			_name;
+	std::string			_password;
+	Network				_network;
+	EpollHandler		_epollHandler;
+	IRCEventListener *	_eventListener;
+	Commands			_commands;
+	std::list<User *>	_removeList;
+
 	std::string							_name;
 	std::string							_password;
 	std::map<std::string, std::pair<std::string, std::vector< std::string> > >	_operatorList;
@@ -71,6 +82,8 @@ private:
 	EpollHandler						_epollHandler;
 	IRCEventListener *					_eventListener;
 	Commands							_commands;
+  std::list<User *>	_removeList;
+
 
 };
 

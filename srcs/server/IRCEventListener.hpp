@@ -16,6 +16,7 @@ public:
 	void	onConnect(int sd);
 	void	onDisconnect(int sd, std::string notification);
 	void	onReceive(std::string data, int sd);
+	void	onLoopEnd();
 
 private:
 	IRCServer & server;

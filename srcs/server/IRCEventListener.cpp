@@ -18,7 +18,7 @@ void	IRCEventListener::onDisconnect(int sd, std::string notification) {
 	std::cout << "User disconnected: " << sd << std::endl;
 	User * user = server.network().getUserBySocket(sd);
 	server.clearUser(user, notification);
-	delete user;
+	server.addToRemoveList(user);
 }
 
 void	IRCEventListener::onReceive(std::string data, int sd) {
@@ -57,3 +57,9 @@ void	IRCEventListener::onReceive(std::string data, int sd) {
 		//other stuff
 	}
 }
+
+void	IRCEventListener::onLoopEnd() {
+	std::cout << "Loop End, clearing clients awaiting disconnection" << std::endl;
+	server.clearRemoveList();
+}
+
