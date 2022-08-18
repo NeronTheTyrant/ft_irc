@@ -29,7 +29,8 @@ public:
 	User *					getUserByName(std::string const nickname);
 	User *					getUserBySocket(int sd);
 	Channel *				getChannelByName(std::string const channelName);
-	std::list<Channel *>	getUserChannelList(User * u);
+	std::set<Channel *>		getUserChannelList(User * u);
+	std::string				getVisibleUsersNotInChan(User * u);
 
 private:
 	Users		_users;

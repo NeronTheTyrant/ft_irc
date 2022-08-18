@@ -43,8 +43,8 @@ void	IRCServer::nick(User * user, std::vector<std::string> params) {
 	}
 	else if (user->isRegistered()) {
 		user->send(message);
-		std::list<Channel *> channelList = network().getUserChannelList(user);
-		for (std::list<Channel *>::iterator it = channelList.begin(); it != channelList.end(); it++) {
+		std::set<Channel *> channelList = user->channelList();
+		for (std::set<Channel *>::iterator it = channelList.begin(); it != channelList.end(); it++) {
 			(*it)->send(message, user);
 		}
 	}
