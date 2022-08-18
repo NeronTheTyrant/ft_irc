@@ -18,10 +18,17 @@ void	IRCServer::privmsg(User *sender, std::vector<std::string> params) {
 	}
 	chan = network().getChannelByName(params[0]);
 	if (chan != u_nullptr) { 
+		if (!chan->isUser(sender)) {
+			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CANNOTSENDTOCHAN, sender, chan->name())));
+			return;
+		}
 		if (chan->isModeSet(ChannelMode::Mode::MODERATED) == false 
 			|| chan->isStatusSet(sender, MemberStatus::Status::VOICE) == true
 			|| chan->isStatusSet(sender, MemberStatus::Status::OPERATOR) == true) {
 			chan->send(serverMessageBuilder(*sender, "PRIVMSG " + chan->name() + " :" + params[1]));
+		}
+		else {
+			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CANNOTSENDTOCHAN, sender, chan->name())));
 		}
 		return ;
 	}

@@ -7,7 +7,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const 
 	_commands["USER"]		= &IRCServer::user;
 	_commands["QUIT"]		= &IRCServer::quit;
 	_commands["PRIVMSG"]	= &IRCServer::privmsg;
-//	_commands["NOTICE"]		= &IRCServer::notice;
+	_commands["NOTICE"]		= &IRCServer::notice;
 	_commands["JOIN"]		= &IRCServer::join;
 	_commands["INVITE"]		= &IRCServer::invite;
 //	_commands["LIST"]		= &IRCServer::list;

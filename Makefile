@@ -73,6 +73,7 @@ CMD_SOURCES		=	nick.cpp \
 					part.cpp \
 					join.cpp \
 					privmsg.cpp \
+					notice.cpp \
 					topic.cpp \
 					names.cpp \
 					oper.cpp \
