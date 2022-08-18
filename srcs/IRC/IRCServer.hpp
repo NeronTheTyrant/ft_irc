@@ -32,6 +32,9 @@ public:
 	void	disconnect(User * u, std::string quitReason);
 	void	clearUser(User * u, std::string quitReason);
 
+	void	addToRemoveList(User * user);
+	void	clearRemoveList();
+
 	void	execCommand(User * u, Command command);
 
 	/**
@@ -70,6 +73,7 @@ private:
 	EpollHandler		_epollHandler;
 	IRCEventListener *	_eventListener;
 	Commands			_commands;
+	std::list<User *>	_removeList;
 
 };
 

@@ -60,6 +60,7 @@ void	EpollHandler::run() {
 			else
 				handleClientActivity(n);
 		}
+		raiseLoopEndEvent();
 	}
 }
 
@@ -152,6 +153,11 @@ void	EpollHandler::raiseDisconnectEvent(int sd, std::string notification) {
 void	EpollHandler::raiseReceiveEvent(std::string data, int sd) {
 	for (std::size_t i = 0; i < event_listeners.size(); i++)
 		event_listeners[i]->onReceive(data, sd);
+}
+
+void	EpollHandler::raiseLoopEndEvent() {
+	for (std::size_t i = 0; i < event_listeners.size(); i++)
+		event_listeners[i]->onLoopEnd();
 }
 
 void	EpollHandler::addEventListener(IEventListener * listener) {

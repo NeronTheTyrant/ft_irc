@@ -84,3 +84,16 @@ void	IRCServer::execCommand(User * user, Command command) {
 	}
 	(this->*(it->second))(user, command.arguments());
 }
+
+void	IRCServer::addToRemoveList(User * user) {
+	_removeList.push_back(user);
+}
+
+void	IRCServer::clearRemoveList() {
+	if (_removeList.empty())
+		return ;
+	for (std::list<User *>::iterator it = _removeList.begin(); it != _removeList.end(); it++) {
+		delete *it;
+	}
+	_removeList.clear();
+}
