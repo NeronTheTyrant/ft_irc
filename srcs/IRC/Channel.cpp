@@ -147,6 +147,16 @@ Channel::Invitations &	Channel::invitations() {
 	return _invitations;
 }
 
+unsigned int	Channel::nbVisible(User * u) {
+	unsigned int ret = 0;
+	for (Users::iterator it = _users.begin(); it != _users.end(); ++it) {
+		if (it->first->isModeSet(UserMode::Mode::INVISIBLE) == false || u->isRelated(it->first)) {
+			ret++;
+		}
+	}
+	return ret;
+}
+
 /**
  * Setters
  */

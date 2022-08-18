@@ -56,6 +56,10 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + RPL_WHOISIDLE(arg1, arg2, arg3);
 		case 318:
 			return ret + RPL_ENDOFWHOIS(arg1);
+		case 321:
+			return ret + RPL_LIST(arg1, arg2, arg3);
+		case 322:
+			return ret + RPL_LISTEND();
 		case 324:
 			return ret + RPL_CHANNELMODEIS(arg1, arg2, arg3);
 		case 331:

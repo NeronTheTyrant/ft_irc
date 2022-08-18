@@ -24,8 +24,8 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 		return ;
 	}
 	if (params[0] == "0") {
-		std::list<Channel *> channels = network().getUserChannelList(sender);
-		for (std::list<Channel *>::iterator it = channels.begin(); it != channels.end(); it++) {
+		std::set<Channel *> channels = sender->channelList();
+		for (std::set<Channel *>::iterator it = channels.begin(); it != channels.end(); it++) {
 			std::vector<std::string> params;
 			params.push_back((*it)->name());
 			params.push_back("Leaving");

@@ -76,6 +76,7 @@ CMD_SOURCES		=	nick.cpp \
 					notice.cpp \
 					topic.cpp \
 					names.cpp \
+					list.cpp \
 					oper.cpp \
 					invite.cpp
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))

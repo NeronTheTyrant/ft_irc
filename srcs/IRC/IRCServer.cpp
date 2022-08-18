@@ -10,7 +10,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const 
 	_commands["NOTICE"]		= &IRCServer::notice;
 	_commands["JOIN"]		= &IRCServer::join;
 	_commands["INVITE"]		= &IRCServer::invite;
-//	_commands["LIST"]		= &IRCServer::list;
+	_commands["LIST"]		= &IRCServer::list;
 	_commands["NAMES"]		= &IRCServer::names;
 	_commands["MODE"]		= &IRCServer::mode;
 	_commands["OPER"]		= &IRCServer::oper;
@@ -61,8 +61,8 @@ void	IRCServer::clearUser(User * u, std::string quitReason) {
 	std::string	quitMessage = serverMessageBuilder(*u, std::string("QUIT :") + quitReason);
 
 	// iterate through channels, kick user from each channel
-	std::list<Channel *> chanList = network().getUserChannelList(u);
-	for (std::list<Channel *>::iterator it = chanList.begin(); u->channelCount() && it != chanList.end(); it++) {
+	std::set<Channel *> chanList = u->channelList();
+	for (std::set<Channel *>::iterator it = chanList.begin(); u->channelCount() && it != chanList.end(); it++) {
 		(*it)->send(quitMessage, u);
 		(*it)->removeUser(u);
 		// if channel is empty after this, delete channel

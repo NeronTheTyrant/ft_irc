@@ -61,12 +61,20 @@ Channel *	Network::getChannelByName(std::string const channelName) {
 		return it->second;
 }
 
-std::list<Channel *>	Network::getUserChannelList(User * u) {
-	std::list<Channel *>	channelList;
-	for (Channels::iterator it = channels().begin(); it != channels().end(); it++) {
-		if (it->second->isUser(u)) {
-			channelList.push_back(it->second);
+std::set<Channel *>	Network::getUserChannelList(User * u) {
+	return u->channelList();
+}
+
+std::string Network::getVisibleUsersNotInChan(User * u) {
+	std::string ret("");
+	for (Users::iterator it = users().begin(); it != users().end(); it++) {
+		if (u->channelCount() == 0
+				&& (it->second->isModeSet(UserMode::INVISIBLE) == false || u->isRelated(it->second))) {
+			if (it != users().begin()) {
+				ret += ' ';
+			}
+			ret += it->second->nickname();
 		}
 	}
-	return channelList;
+	return ret;
 }

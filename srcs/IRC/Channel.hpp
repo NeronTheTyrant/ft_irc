@@ -81,6 +81,7 @@ public:
 		MemberStatus	userStatus(User * u);
 		unsigned int	userCount() const;
 		Invitations &	invitations();
+		unsigned int	nbVisible(User * u);
 
 		/**
 		 *	Setters
