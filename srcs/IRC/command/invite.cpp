@@ -32,6 +32,9 @@ void	IRCServer::invite(User * user, std::vector<std::string> params) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, user, params[1])));
 		return;
 	}
+	if (invitee->isModeSet('a')) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_AWAY, user, invitee->nickname(), invitee->awayMessage())));
+	}
 	target->invite(invitee);
 	invitee->send(serverMessageBuilder(*user, std::string("INVITE ") + paramsToString(params, 2)));
 	user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_INVITING, user, params[0], params[1])));
