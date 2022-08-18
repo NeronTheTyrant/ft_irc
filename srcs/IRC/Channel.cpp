@@ -184,6 +184,12 @@ void	Channel::removeUser(User * u) {
 	u->setChannelCount(u->channelCount() - 1);
 }
 
+void	Channel::clearUsers() {
+	for (Users::iterator it = users().begin(); it != users().end(); it++) {
+		removeUser(it->first);
+	}
+}
+
 bool	Channel::isUser(User * u) {
 	Users::iterator it = _users.find(u);
 	if (it == _users.end()) {

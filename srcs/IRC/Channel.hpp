@@ -94,6 +94,7 @@ public:
 		 */
 		void	addUser(User * u, MemberStatus s = MemberStatus(0));
 		void	removeUser(User * u);
+		void	clearUsers();
 		bool	isUser(User * u);
 
 		void	setStatus(User * u, char c);
