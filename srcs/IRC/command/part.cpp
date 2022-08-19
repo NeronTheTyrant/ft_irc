@@ -29,10 +29,10 @@ void	IRCServer::part(User *sender, std::vector<std::string> params) {
 			continue ;
 		}
 		if (params.size() >= 2) {
-			target->send(serverMessageBuilder(*sender, std::string("PART ") + *it + " :" + params[1] + "\r\n"));
+			target->send(serverMessageBuilder(*sender, std::string("PART ") + *it + " :" + params[1]));
 		}
 		else {
-			target->send(serverMessageBuilder(*sender, std::string("PART ") + *it + " :" + sender->nickname() + "\r\n"));
+			target->send(serverMessageBuilder(*sender, std::string("PART ") + *it + " :" + sender->nickname()));
 		}
 		target->removeUser(sender);
 		if (target->userCount() == 0) {

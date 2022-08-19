@@ -92,6 +92,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_ERRONEUSNICKNAME(arg1);
 		case 433:
 			return ret + ERR_NICKNAMEINUSE(arg1);
+		case 441:
+			return ret + ERR_USERNOTINCHANNEL(arg1, arg2);
 		case 442:
 			return ret + ERR_NOTONCHANNEL(arg1);
 		case 443:
