@@ -20,6 +20,7 @@ public:
 
 	void	initMasterSocket();
 	void	run();
+	void	stop();
 
 	void	addEventListener(IEventListener * listener);
 	void	removeEventListener(IEventListener * listener);
@@ -33,7 +34,7 @@ private:
 
 	int				epollfd;
 	ServerSocket	master_socket;
-	bool			running;
+	bool			_running;
 
 	void	handleListenerActivity();
 	void	handleClientActivity(int index);

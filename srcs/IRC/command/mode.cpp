@@ -39,12 +39,12 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 		}
 
 		if (params.size() == 1) { // No modstrings given
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_CHANNELMODEIS, user, params[0], ChannelMode().channelmodsToString(*channel))));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_CHANNELMODEIS, user, channel->name(), ChannelMode::channelmodsToString(*channel))));
 		}
 		else { // Handling modstrings
 
 			if (channel->isStatusSet(user, MemberStatus::Status::OPERATOR) == false) { // User doesn't have sufficient privileges to modify moddes
-				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, user, params[0])));
+				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, user, channel->name())));
 			}
 			else { // Setting / Unsetting modes
 				for (std::string::iterator it = params[1].begin(); it != params[1].end(); ++it) {
@@ -123,18 +123,18 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 						}
 					}
 					else { // the modchar given was not valid we send back to the user the corresponding ERR
-						user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNMODE, user, std::string () + c)));
+						user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNMODE, user, std::string () + c, channel->name())));
 					}
 				} // end of modstrings parsing
 				if ( validMode == true && changeMade == false ) { // at least a valid mode (with valid argument if needed) were inputted but no modification were made, tht mean we need to send a RPL CHANNELMODEIS to the user
-					user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_CHANNELMODEIS, user, params[0], ChannelMode::channelmodsToString(*channel))));
+					user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_CHANNELMODEIS, user, channel->name(), ChannelMode::channelmodsToString(*channel))));
 				}
 				else if (changeMade == true) { // at least one modification were made so we send a MODE command to the channel with a modstring and a modstring arguments string corresponding to the effective modification(s)
 					std::string modstring ;
 					for (std::vector<std::string>::iterator it = mods.begin() ; it != mods.end() ; ++it) {
 						modstring += *it;
 					}
-					channel->send(serverMessageBuilder(*user, "MODE " + params[0] + " " + modstring + " " + arguments));
+					channel->send(serverMessageBuilder(*user, "MODE " + channel->name() + " " + modstring + " " + arguments));
 				}
 			}
 		}
@@ -144,18 +144,20 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 	**	User modes
 	*/
 	else { // requestion modification(s) on a user (server's scope)
-		if (network().getUserByName(params[0]) == u_nullptr) { // user doesnt exist, sending the corresponding ERR
+		User * target = network().getUserByName(params[0]);
+		if ( target == u_nullptr) { // user doesnt exist, sending the corresponding ERR
 			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHNICK, user, params[0])));
 			return ;
 		}
-		else if (user->nickname() != params[0]) { // tried to use mode on another user, sending the corresponing ERR
-			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_USERSDONTMATCH, user, params[0])));
+		else if (user->nickname() != target->nickname()) { // tried to use mode on another user, sending the corresponing ERR
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_USERSDONTMATCH, user, target->nickname())));
 			return ;
 		}
 		if (params.size() == 1 || params[1].size() == 0) { // no modstring were given, sening the UMODEIS RPL
 			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_UMODEIS, user, UserMode::usermodsToString(*user))));
 		}
 		else { // handling modstring
+			bool invalidMode = false;
 			for (std::string::iterator it = params[1].begin(); it != params[1].end(); ++it) {
 
 				char c = *it;
@@ -194,8 +196,8 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 						user->setMode(c);
 					}
 				}
-				else { // the modchar given was not valid we send back to the user the corresponding ERR
-					user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UNKNOWNMODE, user, std::string () + c)));
+				else if (invalidMode == false) { // the modchar given was not valid we set the invalidMode flag to true if needed
+					invalidMode = true;
 				}
 			}
 			if ( changeMade == false ) { // at least a valid mode (with valid argument if needed) were inputted but no modification were made, tht mean we need to send a RPL CHANNELMODEIS to the user
@@ -206,9 +208,11 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 				for (std::vector<std::string>::iterator it = mods.begin() ; it != mods.end() ; ++it) {
 					modstring += *it;
 				}
-				user->send(serverMessageBuilder(*user, "MODE " + params[0] + " " + modstring + " "));
+				user->send(serverMessageBuilder(*user, "MODE " + target->nickname() + " " + modstring + " "));
 			}
-
+			if (invalidMode == true) {
+				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_UMODEUNKNOWNFLAG, user)));
+			}
 		}
 	}
 }

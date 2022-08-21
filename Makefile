@@ -80,6 +80,7 @@ CMD_SOURCES		=	nick.cpp \
 					kill.cpp \
 					oper.cpp \
 					invite.cpp \
+					die.cpp \
 					kick.cpp
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))
 

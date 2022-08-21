@@ -46,8 +46,8 @@ void	EpollHandler::run() {
 		throw std::runtime_error("Could not add master socket to epoll interest list");
 
 	// event loop
-	running = 1;
-	while (running) {
+	_running = 1;
+	while (_running) {
 
 		// check for new events
 		int nfds = epoll_wait(epollfd, events, MAX_EVENTS, 60 * 3 * 1000);
@@ -64,6 +64,9 @@ void	EpollHandler::run() {
 	}
 }
 
+void	EpollHandler::stop() {
+	_running = false;
+}
 
 // function called when epoll signals an event on master_socket / listener
 
@@ -112,10 +115,6 @@ void	EpollHandler::handleClientActivity(int index) {
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, events[index].data.fd);
-			if (data == "close\r\n" || data == "close") {
-				disconnectClient(events[index].data.fd, "DEBUG CLOSE");
-				running = 0;
-			}
 		}
 	}
 	if (events[index].events & EPOLLOUT) {
