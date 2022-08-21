@@ -45,6 +45,7 @@
 # define ERR_PASSWDMISMATCH() (":Password incorrect")																//464
 # define ERR_UNKNOWNMODE(c, channel) (c + " :is unknown mode char to me for " + channel)							//472
 # define ERR_INVITEONLYCHAN(channel) (channel + ":Cannot join channel (+i)")										//473
+# define ERR_NOPRIVILEGES() (":Permission Denied- You're not an IRC operator")										//481
 # define ERR_CHANOPRIVSNEEDED(channel) (channel + ":You're not channel operator")									//482
 # define ERR_RESTRICTED() (":Your connection is restricted!")														//484
 # define ERR_NOOPERHOST() (":No 0-lines for your host")																//491

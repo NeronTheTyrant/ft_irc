@@ -110,6 +110,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret +  ERR_UNKNOWNMODE(arg1, arg2);
 		case 473:
 			return ret + ERR_INVITEONLYCHAN();
+		case 481:
+			return ret + ERR_CHANOPRIVSNEEDED();
 		case 482:
 			return ret + ERR_CHANOPRIVSNEEDED(arg1);
 		case 484:

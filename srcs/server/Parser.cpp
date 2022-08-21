@@ -64,6 +64,9 @@ void	Parser::parseInput() {
 				}
 				_command.addArgument(toAdd);
 			}
+			else {
+				_command.addArgument("");
+			}
 		}
 		if (nextSpace >= _input.size()) {
 			break;

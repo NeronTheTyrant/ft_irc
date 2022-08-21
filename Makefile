@@ -77,6 +77,7 @@ CMD_SOURCES		=	nick.cpp \
 					topic.cpp \
 					names.cpp \
 					list.cpp \
+					kill.cpp \
 					oper.cpp \
 					invite.cpp \
 					kick.cpp
