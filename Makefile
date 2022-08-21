@@ -79,7 +79,8 @@ CMD_SOURCES		=	nick.cpp \
 					list.cpp \
 					kill.cpp \
 					oper.cpp \
-					invite.cpp
+					invite.cpp \
+					kick.cpp
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))
 
 SERVER_SOURCES	=	EpollHandler.cpp \
