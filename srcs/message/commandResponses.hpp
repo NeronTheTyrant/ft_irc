@@ -36,6 +36,7 @@
 # define ERR_NONICKNAMEGIVEN() ":No nick given"																		//431
 # define ERR_ERRONEUSNICKNAME(nick) (nick + " :Erroneous nickname")													//433
 # define ERR_NICKNAMEINUSE(nick) (nick + " :Nickname is already in use")											//433
+# define ERR_USERNOTINCHANNEL(nick, channel) (nick + " " + channel + " :They aren't on that channel")				//441
 # define ERR_NOTONCHANNEL(channel) (channel + " :You're not on that channel");										//442
 # define ERR_USERONCHANNEL(user, channel) (user + " " + channel + " :is already on channel")						//443
 # define ERR_NOTREGISTERED() ":You have not registered"																//451
