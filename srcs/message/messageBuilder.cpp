@@ -111,7 +111,7 @@ std::string		commandMessageBuilder(const	short code, User * user,
 		case 473:
 			return ret + ERR_INVITEONLYCHAN();
 		case 481:
-			return ret + ERR_CHANOPRIVSNEEDED();
+			return ret + ERR_NOPRIVILEGES();
 		case 482:
 			return ret + ERR_CHANOPRIVSNEEDED(arg1);
 		case 484:
