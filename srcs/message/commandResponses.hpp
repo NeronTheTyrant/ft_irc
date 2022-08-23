@@ -22,17 +22,22 @@
 # define RPL_INVITING(nick, channel) (nick + " " + channel)															//341
 # define RPL_NAMREPLY(channel, nick_list) ("= " + channel + " :" + nick_list)										//353
 # define RPL_ENDOFNAMES(channel) (channel + " :End of NAMES list")													//366
+# define RPL_MOTD(message) (":- " + message)																		//372
+# define RPL_MOTDSTART(server) (":- " + server + " Message of the day")												//375
+# define RPL_ENDOFMOTD() (":End of MOTD command")																	//376
 # define RPL_YOUREOPER() (" :You are now an IRC Operator")															//381
 
 /**
  *  ERRORS
 */
 # define ERR_NOSUCHNICK(nick) (nick + " :No such nick/channel")														//401
+# define ERR_NOSUCHSERVER(server) (server + " :No such server")														//402
 # define ERR_NOSUCHCHANNEL(channel) (channel + " :No such channel")													//403
 # define ERR_CANNOTSENDTOCHAN(channel) (channel + " :Cannot send to channel")										//404
 # define ERR_NORECIPIENT(command) (":No recipient given " + command)												//411
 # define ERR_NOTEXTTOSEND() ":No text to send"																		//412
 # define ERR_UNKNOWNCOMMAND(command) (command + " :Unknown command")												//421
+# define ERR_NOMOTD() (" :MOTD File is missing")																	//422
 # define ERR_NONICKNAMEGIVEN() ":No nick given"																		//431
 # define ERR_ERRONEUSNICKNAME(nick) (nick + " :Erroneous nickname")													//433
 # define ERR_NICKNAMEINUSE(nick) (nick + " :Nickname is already in use")											//433
