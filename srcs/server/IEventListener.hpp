@@ -6,7 +6,7 @@
 class	IEventListener {
 public:
 	virtual void	onConnect(int sd) = 0;
-	virtual void	onDisconnect(int sd, std::string notification) = 0;
+	virtual void	onDisconnect(int sd, std::string notification, bool notify) = 0;
 	virtual void	onReceive(std::string data, int sd) = 0;
 	virtual void	onLoopEnd() = 0;
 };

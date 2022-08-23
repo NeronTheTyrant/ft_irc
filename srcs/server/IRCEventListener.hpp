@@ -14,7 +14,7 @@ public:
 	virtual ~IRCEventListener();
 
 	void	onConnect(int sd);
-	void	onDisconnect(int sd, std::string notification);
+	void	onDisconnect(int sd, std::string notification, bool notify);
 	void	onReceive(std::string data, int sd);
 	void	onLoopEnd();
 

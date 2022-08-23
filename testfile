@@ -1,7 +1,5 @@
 PASS chaussette
 USER mlebard mlebard localhost mlebard
 NICK Bonjour
-JOIN #salut,#bonjour,#guttentag
-PART #salut :Bye Bye
-
-NAMES #salut,#bonjour,#guttentag
+OPER Agathe Thepower
+RESTART

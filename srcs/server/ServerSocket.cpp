@@ -7,11 +7,17 @@ ServerSocket::ServerSocket(uint16_t port)
 	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)), port(port) {
 }
 
+void	ServerSocket::reinit() {
+	close(sd);
+	sd = socket(AF_INET, SOCK_STREAM, 0);
+	init();
+}
 
 /* setsockopt, fcntl (nonblockable) and bind */
 
 void	ServerSocket::init() {
 	try {
+
 		const int opt = 1;
 		int ret = setsockopt(sd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 		if (ret < 0)
