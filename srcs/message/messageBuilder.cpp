@@ -72,10 +72,18 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + RPL_NAMREPLY(arg1, arg2);
 		case 366:
 			return ret + RPL_ENDOFNAMES(arg1);
+		case 372:
+			return ret + RPL_MOTD(arg1);
+		case 375:
+			return ret + RPL_MOTDSTART(arg1);
+		case 376:
+			return ret + RPL_ENDOFMOTD();
 		case 381:
 			return ret + RPL_YOUREOPER();
 		case 401:
 			return ret + ERR_NOSUCHNICK(arg1);
+		case 402:
+			return ret + ERR_NOSUCHSERVER(arg1);
 		case 403:
 			return ret + ERR_NOSUCHCHANNEL(arg1);
 		case 404:
@@ -86,6 +94,8 @@ std::string		commandMessageBuilder(const	short code, User * user,
 			return ret + ERR_NOTEXTTOSEND();
 		case 421:
 			return ret + ERR_UNKNOWNCOMMAND(arg1);
+		case 422:
+			return ret + ERR_NOMOTD();
 		case 431:
 			return ret + ERR_NONICKNAMEGIVEN();
 		case 432:

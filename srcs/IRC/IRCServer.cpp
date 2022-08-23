@@ -15,7 +15,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const 
 	_commands["MODE"]		= &IRCServer::mode;
 	_commands["OPER"]		= &IRCServer::oper;
 	_commands["TOPIC"]		= &IRCServer::topic;
-//	_commands["MOTD"]		= &IRCServer::motd;
+	_commands["MOTD"]		= &IRCServer::motd;
 //	_commands["PING"]		= &IRCServer::ping;
 //	_commands["PONG"]		= &IRCServer::pong;
 	_commands["PART"]		= &IRCServer::part;

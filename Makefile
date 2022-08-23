@@ -46,6 +46,7 @@ DEPEND_UTILS	=	$(addprefix $(S_DIR)$(S_UTILS_DIR), \
 
 DEPEND_MESSAGE	=	$(addprefix $(S_DIR)$(S_MESSAGE_DIR), \
 					commandResponses.hpp \
+					Motd.hpp \
 					messageBuilder.hpp)
 
 DEPEND_CMD		=	$(DEPEND_IRC) \
@@ -81,6 +82,7 @@ CMD_SOURCES		=	nick.cpp \
 					oper.cpp \
 					invite.cpp \
 					die.cpp \
+					motd.cpp \
 					kick.cpp
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))
 
@@ -102,7 +104,8 @@ UTILS_SOURCES	=	Flag.cpp \
 					stringUtils.cpp
 UTILS_SRCS		=	$(addprefix $(S_DIR)$(S_UTILS_DIR), $(UTILS_SOURCES))
 
-MESSAGE_SOURCES	=	messageBuilder.cpp
+MESSAGE_SOURCES	=	messageBuilder.cpp \
+					Motd.cpp
 MESSAGE_SRCS	=	$(addprefix $(S_DIR)$(S_MESSAGE_DIR), $(MESSAGE_SOURCES))
 
 SOURCES			=	my_server.cpp
