@@ -1,7 +1,7 @@
 #include "IRCServer.hpp"
 
 IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password, std::map<std::string, std::pair<std::string, std::vector<std::string> > > const & operatorList) :
-	_name(name), _password(password), _operatorList(operatorList), _epollHandler(port), _eventListener (NULL) {;
+	_name(name), _password(password), _operatorList(operatorList), _epollHandler(port), _eventListener (NULL), _restartFlag(false) {;
 	_commands["PASS"]		= &IRCServer::pass;
 	_commands["NICK"]		= &IRCServer::nick;
 	_commands["USER"]		= &IRCServer::user;
@@ -23,6 +23,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const 
 	_commands["DIE"]		= &IRCServer::die;
 	_commands["KILL"]		= &IRCServer::kill;
 	_commands["KICK"]		= &IRCServer::kick;
+	_commands["RESTART"]	= &IRCServer::restart;
 };
 
 IRCServer::~IRCServer() {
@@ -30,11 +31,15 @@ IRCServer::~IRCServer() {
 		delete _eventListener;
 };
 
-void	IRCServer::start() {
+void	IRCServer::run() {
 	_epollHandler.initMasterSocket();
 	_eventListener = new IRCEventListener(*this);
 	_epollHandler.addEventListener(_eventListener);
 	_epollHandler.run();
+	while (_restartFlag) {
+		_restartFlag = false;
+		_epollHandler.restart();
+	}
 }
 
 std::string	IRCServer::name() {
@@ -53,17 +58,19 @@ EpollHandler &	IRCServer::epollHandler() {
 	return _epollHandler;
 }
 
-void	IRCServer::disconnect(User * u, std::string quitReason) {
-	epollHandler().disconnectClient(u->sd(), quitReason);
+void	IRCServer::disconnect(User * u, std::string quitReason, bool notify) {
+	epollHandler().disconnectClient(u->sd(), quitReason, notify);
 }
 
-void	IRCServer::clearUser(User * u, std::string quitReason) {
+void	IRCServer::clearUser(User * u, std::string quitReason, bool notify) {
 	std::string	quitMessage = serverMessageBuilder(*u, std::string("QUIT :") + quitReason);
 
 	// iterate through channels, kick user from each channel
 	std::set<Channel *> chanList = u->channelList();
 	for (std::set<Channel *>::iterator it = chanList.begin(); u->channelCount() && it != chanList.end(); it++) {
-		(*it)->send(quitMessage, u);
+		if (notify) {
+			(*it)->send(quitMessage, u);
+		}
 		(*it)->removeUser(u);
 		// if channel is empty after this, delete channel
 		if (!(*it)->userCount()) {

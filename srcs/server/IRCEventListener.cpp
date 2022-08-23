@@ -14,10 +14,10 @@ void	IRCEventListener::onConnect(int sd) {
 	server.network().add(user);
 }
 
-void	IRCEventListener::onDisconnect(int sd, std::string notification) {
+void	IRCEventListener::onDisconnect(int sd, std::string notification, bool notify) {
 	std::cout << "User disconnected: " << sd << std::endl;
 	User * user = server.network().getUserBySocket(sd);
-	server.clearUser(user, notification);
+	server.clearUser(user, notification, notify);
 	server.addToRemoveList(user);
 }
 

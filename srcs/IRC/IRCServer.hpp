@@ -23,15 +23,15 @@ public:
 	IRCServer(uint16_t port, std::string const & name, std::string const & password, std::map<std::string, std::pair<std::string, std::vector<std::string> > > const & operatorList);
 	~IRCServer();
 
-	void		start();
+	void		run();
 	std::string	name();
 	std::string password();
 	Network &	network();
 	EpollHandler &	epollHandler();
 
 
-	void	disconnect(User * u, std::string quitReason);
-	void	clearUser(User * u, std::string quitReason);
+	void	disconnect(User * u, std::string quitReason, bool notify = true);
+	void	clearUser(User * u, std::string quitReason, bool notify = true);
 
 	void	addToRemoveList(User * user);
 	void	clearRemoveList();
@@ -62,6 +62,7 @@ public:
 	void	die(User * user, std::vector<std::string> params);
 	void	kill(User * user, std::vector<std::string> params);
 	void	kick(User * user, std::vector<std::string> params);
+	void	restart(User * user, std::vector<std::string> params);
 
 	/**
 	 * UTILS
@@ -76,6 +77,7 @@ private:
 	IRCEventListener *					_eventListener;
 	Commands							_commands;
   	std::list<User *>					_removeList;
+	bool								_restartFlag;
 
 
 };

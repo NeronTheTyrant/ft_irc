@@ -22,6 +22,7 @@ public:
 	ServerSocket(uint16_t port);
 	
 	void	init();
+	void	reinit();
 	void	start();
 	int		accept();
 

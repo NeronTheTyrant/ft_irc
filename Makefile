@@ -14,7 +14,7 @@ O_DIR			=	bin/obj/
 
 # COMPILE
 CC			=	c++
-CFLAGS		=	-Werror -Wextra -Wall -I$(S_DIR)$(S_IRC_DIR) -I$(S_DIR)$(S_SERVER_DIR) -I$(S_DIR)$(S_UTILS_DIR) -I$(S_DIR)$(S_MESSAGE_DIR) -g3
+CFLAGS		=	-Werror -Wextra -Wall -I$(S_DIR)$(S_IRC_DIR) -I$(S_DIR)$(S_SERVER_DIR) -I$(S_DIR)$(S_UTILS_DIR) -I$(S_DIR)$(S_MESSAGE_DIR) -g3 -fsanitize=address
 LDFLAGS		=
 DBGFLAGS	=	-g3
 FDBGFLAGS	=	-g3 -fsanitize=address
@@ -82,8 +82,10 @@ CMD_SOURCES		=	nick.cpp \
 					oper.cpp \
 					invite.cpp \
 					die.cpp \
+					kick.cpp \
 					motd.cpp \
-					kick.cpp
+          restart.cpp
+
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))
 
 SERVER_SOURCES	=	EpollHandler.cpp \
