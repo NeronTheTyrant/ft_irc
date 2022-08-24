@@ -21,6 +21,7 @@ Motd::Motd() : _nomotd (true) {
 		_motd.push_back(line);
 	}
 	if (_motd.size() == 0) {
+		fileStream.close();
 		return;
 	}
 	if (_motd[_motd.size() - 1] == "") {

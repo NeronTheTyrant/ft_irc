@@ -20,7 +20,7 @@ class IRCServer {
 	typedef std::map<std::string, std::pair<std::string, std::vector<std::string> > >		Operators;
 
 public:
-	IRCServer(uint16_t port, std::string const & name, std::string const & password, std::map<std::string, std::pair<std::string, std::vector<std::string> > > const & operatorList);
+	IRCServer(uint16_t port, std::string const & password);
 	~IRCServer();
 
 	void		run();

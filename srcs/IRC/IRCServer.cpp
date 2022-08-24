@@ -1,7 +1,10 @@
 #include "IRCServer.hpp"
 
-IRCServer::IRCServer(uint16_t port, std::string const & name, std::string const & password, std::map<std::string, std::pair<std::string, std::vector<std::string> > > const & operatorList) :
-	_name(name), _password(password), _operatorList(operatorList), _epollHandler(port), _eventListener (NULL), _restartFlag(false) {;
+IRCServer::IRCServer(uint16_t port, std::string const & password) :
+	_name("chaussette.irc.net"), _password(password), _epollHandler(port), _eventListener (NULL), _restartFlag(false) {
+	
+	_operatorList["Agathe"] = std::make_pair("Thepower", std::vector<std::string> (1, "127.0.0.1") );
+	
 	_commands["PASS"]		= &IRCServer::pass;
 	_commands["NICK"]		= &IRCServer::nick;
 	_commands["USER"]		= &IRCServer::user;
@@ -77,7 +80,7 @@ void	IRCServer::clearUser(User * u, std::string quitReason, bool notify) {
 			network().remove(*it);
 		}
 	}
-	u->send(std::string("ERROR :") + "(" + quitReason + ")");
+	u->send(std::string("ERROR :") + "(" + quitReason + ")\r\n");
 	network().remove(u);
 }
 

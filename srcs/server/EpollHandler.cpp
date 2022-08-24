@@ -10,8 +10,11 @@ EpollHandler::EpollHandler(int16_t port)
 	: _epollfd(-1), _masterSocket(port) {};
 
 EpollHandler::~EpollHandler() {
-	if (_epollfd > 0)
+	if (_epollfd > 0) {
+		struct epoll_event	ev = {};
+		epoll_ctl(_epollfd, EPOLL_CTL_DEL, _epollfd, &ev);
 		close(_epollfd);
+	}
 }
 
 void	EpollHandler::initMasterSocket() {
@@ -34,6 +37,7 @@ void	EpollHandler::restart() {
 	reinitMasterSocket();
 	struct epoll_event	ev = {};
 	epoll_ctl(_epollfd, EPOLL_CTL_DEL, _epollfd, &ev);
+	close(_epollfd);
 	run();
 }
 
