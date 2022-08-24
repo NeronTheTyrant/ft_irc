@@ -1,6 +1,7 @@
 #include "messageBuilder.hpp"
 #include "IRCServer.hpp"
 #include <cstdlib>
+#include "Motd.hpp"
 
 void	IRCServer::user(User * user, std::vector<std::string> params) {
 	if (!user->isRequirementSet(UserRequirement::USER)) {
@@ -27,6 +28,11 @@ void	IRCServer::user(User * user, std::vector<std::string> params) {
 	}
 	user->unsetRequirement(UserRequirement::USER);
 	if (user->isRegistered()) {
+		Motd	motd;
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user, user->nickname())));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_YOURHOST, user, this->name(), "v1.337")));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_CREATED, user, this->creationTime())));
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_MYINFO, user, this->name(), "v1.337", "aiow", "ov mti")));
+		motd.sendMotd(user, this);
 	}
 }

@@ -3,6 +3,7 @@
 
 # include <map>
 # include <vector>
+# include <ctime>
 
 # include "Network.hpp"
 # include "EpollHandler.hpp"
@@ -23,9 +24,11 @@ public:
 	IRCServer(uint16_t port, std::string const & password);
 	~IRCServer();
 
+	void		initCreationTime();
 	void		run();
-	std::string	name();
-	std::string password();
+	std::string	creationTime() const;
+	std::string	name() const;
+	std::string password() const;
 	Network &	network();
 	EpollHandler &	epollHandler();
 
@@ -78,6 +81,7 @@ private:
 	Commands							_commands;
   	std::list<User *>					_removeList;
 	bool								_restartFlag;
+	std::string							_creationTime;
 
 
 };

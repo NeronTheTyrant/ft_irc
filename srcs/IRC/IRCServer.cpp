@@ -1,7 +1,8 @@
 #include "IRCServer.hpp"
+#include <ctime>
 
 IRCServer::IRCServer(uint16_t port, std::string const & password) :
-	_name("chaussette.irc.net"), _password(password), _epollHandler(port), _eventListener (NULL), _restartFlag(false) {
+	_name("chaussette.irc.net"), _password(password), _epollHandler(port), _eventListener (NULL), _restartFlag(false){
 	
 	_operatorList["Agathe"] = std::make_pair("Thepower", std::vector<std::string> (1, "127.0.0.1") );
 	
@@ -34,22 +35,38 @@ IRCServer::~IRCServer() {
 		delete _eventListener;
 };
 
+void	IRCServer::initCreationTime(){
+
+	time_t	tmpTime = time(NULL);
+	struct tm * timeinfo = localtime(&tmpTime);
+	_creationTime = asctime(timeinfo);
+	if (_creationTime.size() > 0) {
+		_creationTime.erase(_creationTime.size() - 1, 1);
+	}
+}
+
 void	IRCServer::run() {
+	initCreationTime();
 	_epollHandler.initMasterSocket();
 	_eventListener = new IRCEventListener(*this);
 	_epollHandler.addEventListener(_eventListener);
 	_epollHandler.run();
 	while (_restartFlag) {
+		initCreationTime();
 		_restartFlag = false;
 		_epollHandler.restart();
 	}
 }
 
-std::string	IRCServer::name() {
+std::string	IRCServer::creationTime() const {
+	return _creationTime;
+}
+
+std::string	IRCServer::name() const {
 	return _name;
 }
 
-std::string IRCServer::password() {
+std::string IRCServer::password() const {
 	return _password;
 }
 
