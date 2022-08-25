@@ -2,16 +2,21 @@
 #include <map>
 #include <vector>
 #include <cstdlib>
+#include <errno.h>
 
 int	main (int argc, char **argv) {
 	if (argc != 3) {
 		std::cout << "Need more arguments" << std::endl;
 		return 1;
 	}
-	long int port = strtol(argv[1], NULL, 10);
-	// des check
+	char *ptr = NULL;
+	errno = 0;
+	long int port = strtol(argv[1], &ptr, 10);
+	if (*ptr || errno != 0 || port < 1024 || port > 65535) {
+		std::cout << argv[1] << " is not a valid port\n";
+		return 2;
+	}
 	std::string password = argv[2];
-	// des check
 	IRCServer	server(port, password);
 	server.run();
 }
