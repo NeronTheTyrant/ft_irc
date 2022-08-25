@@ -11,12 +11,9 @@ void	IRCServer::die(User * sender, std::vector<std::string> params) {
 		return ;
 	}
 	else {
-		Network::Users users = network().users();
 		std::string reason = sender->nickname() + " has shutdown the server";
-		for (Network::Users::iterator it = users.begin(); it != users.end(); ++it) {
-			disconnect(it->second, reason);
-		}
-		_epollHandler.stop();
+		clear(reason);
+		stop();
 	}
 	(void)(params);
 }

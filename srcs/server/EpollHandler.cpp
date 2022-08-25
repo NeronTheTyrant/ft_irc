@@ -7,7 +7,7 @@
 #include <cerrno>
 
 EpollHandler::EpollHandler(int16_t port)
-	: _epollfd(-1), _masterSocket(port) {};
+	: _epollfd(-1), _masterSocket(port), _interrupt(false) {};
 
 EpollHandler::~EpollHandler() {
 	if (_epollfd > 0) {
@@ -15,6 +15,10 @@ EpollHandler::~EpollHandler() {
 		epoll_ctl(_epollfd, EPOLL_CTL_DEL, _epollfd, &ev);
 		close(_epollfd);
 	}
+}
+
+void	EpollHandler::setInterruptFlag() {
+	_interrupt = true;
 }
 
 void	EpollHandler::initMasterSocket() {
@@ -68,7 +72,7 @@ void	EpollHandler::run() {
 
 		// check for new.events
 		int nfds = epoll_wait(_epollfd, _events, MAX_EVENTS, 60 * 3 * 1000);
-		if (nfds == -1)
+		if (nfds == -1 && _interrupt == false)
 			throw std::runtime_error("epoll_wait() failed to wait for.events");
 
 		for (int n = 0; n < nfds; n++) {

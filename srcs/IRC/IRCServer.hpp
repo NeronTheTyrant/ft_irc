@@ -4,6 +4,7 @@
 # include <map>
 # include <vector>
 # include <ctime>
+# include <signal.h>
 
 # include "Network.hpp"
 # include "EpollHandler.hpp"
@@ -24,17 +25,22 @@ public:
 	IRCServer(uint16_t port, std::string const & password);
 	~IRCServer();
 
-	void		initCreationTime();
-	void		run();
 	std::string	creationTime() const;
 	std::string	name() const;
 	std::string password() const;
 	Network &	network();
 	EpollHandler &	epollHandler();
 
+	void		setInterruptFlag();
+
+	void		initCreationTime();
+	void		run();
+	void		stop();
 
 	void	disconnect(User * u, std::string quitReason, bool notify = true);
 	void	clearUser(User * u, std::string quitReason, bool notify = true);
+
+	void	clear(std::string reason);
 
 	void	addToRemoveList(User * user);
 	void	clearRemoveList();
@@ -88,5 +94,6 @@ private:
 };
 
 bool	validChan(std::string chanName);
+void	free_from_signal(IRCServer * ptr);
 
 #endif

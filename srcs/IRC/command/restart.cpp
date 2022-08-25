@@ -12,10 +12,8 @@ void	IRCServer::restart(User * user, std::vector<std::string> params) {
 	}
 	else {
 		std::string reason = user->nickname() + " is restarting the server";
-		for (Network::Users::iterator it = network().users().begin(); it != network().users().end(); ++it) {
-			disconnect(it->second, reason, false);
-		}
+		clear(reason);
 		_restartFlag = true;
-		_epollHandler.stop();
+		stop();
 	}
 }

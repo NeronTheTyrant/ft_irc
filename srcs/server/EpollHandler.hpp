@@ -12,6 +12,8 @@ public:
 	EpollHandler(int16_t port);
 	~EpollHandler();
 
+	void	setInterruptFlag();
+
 	void	initMasterSocket();
 	void	reinitMasterSocket();
 	void	run();
@@ -31,6 +33,7 @@ private:
 	int				_epollfd;
 	ServerSocket	_masterSocket;
 	bool			_running;
+	bool			_interrupt;
 
 	void	handleListenerActivity();
 	void	handleClientActivity(int index);

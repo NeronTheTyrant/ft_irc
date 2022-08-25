@@ -105,7 +105,8 @@ UTILS_SOURCES	=	Flag.cpp \
 					ft_isdigit.cpp \
 					ft_split.cpp \
 					isCharset.cpp \
-					stringUtils.cpp
+					stringUtils.cpp \
+					signals.cpp
 UTILS_SRCS		=	$(addprefix $(S_DIR)$(S_UTILS_DIR), $(UTILS_SOURCES))
 
 MESSAGE_SOURCES	=	messageBuilder.cpp \

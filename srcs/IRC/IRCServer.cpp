@@ -46,7 +46,18 @@ void	IRCServer::initCreationTime(){
 	}
 }
 
+void	IRCServer::setInterruptFlag() {
+	_epollHandler.setInterruptFlag();
+}
+
 void	IRCServer::run() {
+	free_from_signal(this);
+
+	struct sigaction	sa = {};
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = &IRCsigHandler;
+	sigaction(SIGINT, &sa, NULL);
+
 	initCreationTime();
 	_epollHandler.initMasterSocket();
 	_eventListener = new IRCEventListener(*this);
@@ -57,6 +68,10 @@ void	IRCServer::run() {
 		_restartFlag = false;
 		_epollHandler.restart();
 	}
+}
+
+void	IRCServer::stop() {
+	_epollHandler.stop();
 }
 
 std::string	IRCServer::creationTime() const {
@@ -102,6 +117,13 @@ void	IRCServer::clearUser(User * u, std::string quitReason, bool notify) {
 	network().remove(u);
 }
 
+void	IRCServer::clear(std::string reason) {
+	Network::Users users = network().users();
+	for (Network::Users::iterator it = users.begin(); it != users.end(); ++it) {
+		disconnect(it->second, reason);
+	}
+}
+
 void	IRCServer::execCommand(User * user, Command command) {
 	if (command.command().empty())
 		return ;
@@ -124,4 +146,17 @@ void	IRCServer::clearRemoveList() {
 		delete *it;
 	}
 	_removeList.clear();
+}
+
+void	free_from_signal(IRCServer * ptr) {
+	static IRCServer * mem = u_nullptr;
+
+	if (ptr != u_nullptr) {
+		mem = ptr;
+	}
+	else {
+		mem->clear("SIGINT is bad, mmkay?");
+		mem->stop();
+		mem->setInterruptFlag();
+	}
 }

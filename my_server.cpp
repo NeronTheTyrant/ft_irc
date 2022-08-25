@@ -18,5 +18,10 @@ int	main (int argc, char **argv) {
 	}
 	std::string password = argv[2];
 	IRCServer	server(port, password);
-	server.run();
+	try {
+		server.run();
+	}
+	catch (std::exception & e) {
+		std::cout << e.what() << std::endl;
+	}
 }
