@@ -9,8 +9,8 @@ void	IRCServer::ping(User * user, std::vector<std::string> params) {
 		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NEEDMOREPARAMS, user, "USER")));
 		return;
 	}
-	if (params[1] != _name) {
-		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHSERVER, user, params[1])));
+	if (params[0] != _name) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHSERVER, user, params[0])));
 		return;
 	}
 	user->send(serverMessageBuilder(*this, "PONG " + _name + " " + _name));
