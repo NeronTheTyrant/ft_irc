@@ -1,3 +1,5 @@
+#include "Command.hpp"
+#include "Parser.hpp"
 #include "IRCEventListener.hpp"
 #include <iostream>
 
@@ -7,31 +9,35 @@ IRCEventListener::IRCEventListener(IRCServer & server)
 IRCEventListener::~IRCEventListener() {}
 
 void	IRCEventListener::onConnect(int sd) {
-	std::cout << "New user connected: " << sd << std::endl;
 	User *	user = new User(sd, UserRequirement::ALL);
 	server.network().add(user);
 }
 
-void	IRCEventListener::onDisconnect(int sd) {
-	std::cout << "User disconnected: " << sd << std::endl;
+void	IRCEventListener::onDisconnect(int sd, std::string notification, bool notify) {
 	User * user = server.network().getUserBySocket(sd);
-	server.network().remove(user);
-	delete user;
-	// insert disconnection using IRCServer::disconnect method here
+	server.clearUser(user, notification, notify);
+	server.addToRemoveList(user);
 }
 
 void	IRCEventListener::onReceive(std::string data, int sd) {
-	std::cout << "Data received from " << sd << ": " << data << std::endl;
 	User * user = server.network().getUserBySocket(sd);
 	user->receive(data);
 	while (user->crlf()) {
 		std::string line = user->line();
-		std::cout << line << std::endl;
 		user->clearLine();
-		//parse(line);
-		//createMessage(line);
-		//executeCommand(line);
-		//other stuff
-		user->send(line);
+
+		Parser	lineParser (line);
+		lineParser.parseInput();
+
+		Command command = lineParser.command();
+		if (command.syntaxError() == true) {
+			continue ;
+		}
+		server.execCommand(user, command);
 	}
 }
+
+void	IRCEventListener::onLoopEnd() {
+	server.clearRemoveList();
+}
+

@@ -1,8 +1,6 @@
 #ifndef STREAMSOCKET_HPP
 #define STREAMSOCKET_HPP
 
-#include <cstdint>
-#include <cstdint>
 #include <string>
 #include <sys/types.h>
 #include <sys/socket.h>

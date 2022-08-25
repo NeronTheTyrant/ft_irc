@@ -1,46 +1,47 @@
 #ifndef EPOLLHANDLER_HPP
-#define EPOLLHANDLER_HPP
-
-#include <vector>
-#include <sys/epoll.h>
-#include "IEventListener.hpp"
-#include <iostream>
-#include "ServerSocket.hpp"
-
-/* I want this class to init the server socket by itself, and regularly call
- * accept() and whatever and epoll_ctl to add stuff. I also want to add automated
- * functions for stuff like closing connections. In fact I will have custom event listeners
- * to react to various things, everything will be handled automatically
-*/
+# define EPOLLHANDLER_HPP
+ 
+# include <vector>
+# include <sys/epoll.h>
+# include <iostream>
+# include "IEventListener.hpp"
+# include "ServerSocket.hpp"
 
 class EpollHandler {
 public:
 	EpollHandler(int16_t port);
 	~EpollHandler();
 
+	void	setInterruptFlag();
+
 	void	initMasterSocket();
+	void	reinitMasterSocket();
 	void	run();
+	void	stop();
+	void	restart();
 
 	void	addEventListener(IEventListener * listener);
 	void	removeEventListener(IEventListener * listener);
 	void	clearEventListeners();
+	void	disconnectClient(int sd, std::string notification, bool notify = false);
 
 private:
 	#define MAX_EVENTS	20
-	struct epoll_event			events[MAX_EVENTS];
-	std::vector<IEventListener *>	event_listeners;
+	struct epoll_event			_events[MAX_EVENTS];
+	std::vector<IEventListener *>	_eventListeners;
 
-	int				epollfd;
-	ServerSocket	master_socket;
-	bool			running;
+	int				_epollfd;
+	ServerSocket	_masterSocket;
+	bool			_running;
+	bool			_interrupt;
 
 	void	handleListenerActivity();
 	void	handleClientActivity(int index);
-	void	disconnectClient(int sd);
 
 	void	raiseConnectEvent(int sd);
-	void	raiseDisconnectEvent(int sd);
+	void	raiseDisconnectEvent(int sd, std::string notification, bool notify = false);
 	void	raiseReceiveEvent(std::string data, int sd);
+	void	raiseLoopEndEvent();
 };
 
 #endif

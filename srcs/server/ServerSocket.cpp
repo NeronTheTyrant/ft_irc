@@ -1,16 +1,23 @@
 #include "ServerSocket.hpp"
+#include <cerrno>
 
 /* ServerSocket */
 
-ServerSocket::ServerSocket(std::uint16_t port) 
+ServerSocket::ServerSocket(uint16_t port) 
 	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)), port(port) {
 }
 
+void	ServerSocket::reinit() {
+	close(sd);
+	sd = socket(AF_INET, SOCK_STREAM, 0);
+	init();
+}
 
 /* setsockopt, fcntl (nonblockable) and bind */
 
 void	ServerSocket::init() {
 	try {
+
 		const int opt = 1;
 		int ret = setsockopt(sd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
 		if (ret < 0)
@@ -18,7 +25,7 @@ void	ServerSocket::init() {
 		ret = fcntl(sd, F_SETFL, opt | O_NONBLOCK);
 		if (ret != 0)
 			throw std::runtime_error(std::string("fcntl failed: ") + strerror(errno));
-		struct sockaddr_in addr;
+		struct sockaddr_in addr = {};
 		addr.sin_family = AF_INET;
 		addr.sin_port = htons(port);
 		ret = bind(sd, reinterpret_cast<struct sockaddr *>(&addr), sizeof(addr));

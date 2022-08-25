@@ -2,8 +2,13 @@
 # define USER_HPP
 
 # include <iostream>
+# include <set>
 # include "Client.hpp"
 # include "Flag.hpp"
+# include "Channel.hpp"
+
+class User;
+class Channel;
 
 class UserRequirement: public Flag {
 public:
@@ -12,7 +17,7 @@ public:
 		NICK = 1 << 1,
 		USER = 1 << 2,
 		SKIP_PASS = NICK | USER,
-		ALL = PASS | NICK | USER,
+		ALL = PASS | NICK | USER
 	};
 
 	UserRequirement(uint32_t flag = 0);
@@ -31,6 +36,8 @@ public:
 		RESTRICTED = 1 << 2,
 		/* 'o' - User has operator privileges */
 		OPERATOR = 1 << 3,
+		/* 'w' - User receives wallops (see WALLOPS command) */
+		WALLOPS = 1 << 4
 	};
 
 	UserMode(uint32_t flag = 0);
@@ -38,17 +45,19 @@ public:
 
 	static Mode	translate(char c);
 	static char	translate(Mode m);
+	static std::string usermodsToString(User & user);
 };
 
 class	User : public Client {
 private:
-	std::string			_username;
-	std::string			_nickname;
-	std::string			_realname;
-	std::string			_hostname;
-	std::string			_awayMessage;
-	UserRequirement		_requirements;
-	UserMode			_mode;
+	std::string							_username;
+	std::string							_nickname;
+	std::string							_realname;
+	std::string							_awayMessage;
+	UserRequirement						_requirements;
+	UserMode							_mode;
+	unsigned int						_channelCount;
+	std::set<Channel *>					_channelList;
 
 public:
 	User(int sd, uint32_t requirementFlags);
@@ -60,21 +69,25 @@ public:
 /**
  * Getters
  */
-	std::string			nickname() const;
-	std::string			username() const;
-	std::string			realname() const;
-	std::string			hostname() const;
-	std::string			awayMessage() const;
-	UserRequirement &	requirements();
-	UserMode &			mode();
-	bool				isRegistered() const;
+	std::string				nickname() const;
+	std::string				username() const;
+	std::string				realname() const;
+	std::string				awayMessage() const;
+	UserRequirement &		requirements();
+	UserMode &				mode();
+	bool					isRegistered() const;
+	std::string				prefix() const;
+	unsigned int			channelCount() const;
+	std::set<Channel *> &	channelList();
 
 /**
  * Setters
  */
 	void	setUsername(std::string username);
+	void	setRealname(std::string realname);
 	void	setNickname(std::string nickname);
 	void	setAwayMessage(std::string message);
+	void	setChannelCount(unsigned int c);
 
 /**
  * Methods
@@ -85,12 +98,16 @@ public:
 	void	unsetMode(char c);
 	void	unsetMode(UserMode::Mode m);
 
-	bool	isModeSet(char c);
-	bool	isModeSet(UserMode::Mode m);
+	bool	isModeSet(char c) const;
+	bool	isModeSet(UserMode::Mode m) const;
 
 	void	setRequirement(UserRequirement::Requirement r);
 	void	unsetRequirement(UserRequirement::Requirement r);
-	bool	isRequirementSet(UserRequirement::Requirement r);
+	bool	isRequirementSet(UserRequirement::Requirement r) const;
+
+	void	addChannel(Channel *toAdd);
+	void	removeChannel(Channel *toRemove);
+	bool	isRelated(User *toFind) const;
 
 };
 

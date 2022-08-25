@@ -1,32 +1,58 @@
-#include "../../../includes/commandResponses.hpp"
-#include "../../../includes/code.hpp"
-#include "../../../includes/charset.hpp"
-#include "../../../includes/utils.hpp"
-#include "../IRCServer.hpp"
-#include "../User.hpp"
-#include <vector>
-#include <iostream>
+# include "messageBuilder.hpp"
+# include "IRCServer.hpp"
+#include "Motd.hpp"
 
-void	nickError(std::string nickname) {
+bool	validNick(std::string nickname) {
 	if (isCharset(nickname[0], SPECIAL) == false
 			&& isCharset(nickname[0], LETTER) == false)
-		return (
+		return false;
+	if (nickname.find_first_not_of(std::string(LETTER) + DIGIT + SPECIAL + "-") != std::string::npos)
+		return false;
+	return true;
 }
 
-void	IRCServer::nick(User & user, std::vector<std::string> params) {
-	if (params[0] == "") {
-		serverMessageBuilder(user.server, commandMessageBuilder(CODE_ERR_NONICKNAMEGIVEN));
+void	IRCServer::nick(User * user, std::vector<std::string> params) {
+	if (user->isRegistered() && user->isModeSet(UserMode::RESTRICTED)) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_RESTRICTED, user)));
+	}
+	if (!params.size() || params[0] == "") {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NONICKNAMEGIVEN, user)));
 		return ;
 	}
-	if (network().Users.find(user.nickname()) != network().Users.end()) {
-		serverMessageBuilder(user.server, commandMessageBuilder(CODE_ERR_NICKNAMEINUSE));
+	if (!validNick(params[0])) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_ERRONEUSNICKNAME, user, params[0])));
 		return ;
 	}
-	// NEED A METHOD TO CATCH ERRONEOUS NICKNAME
-	if (/*ERRONEOUS FONCTION CHECK*/) {
-		serverMessageBuilder(user.server, commandMessageBuilder(CODE_ERR_ERRONEUSNICKNAME));
+	if (network().getUserByName(params[0]) != u_nullptr) {
+		user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NICKNAMEINUSE, user, params[0])));
 		return ;
 	}
-	user.setNickname(params[0]);
+	std::string message = serverMessageBuilder(*user, std::string("NICK ") + params[0]);
+	network().remove(user);
+	user->setNickname(params[0]);
+	network().add(user);
+	if (user->isRequirementSet(UserRequirement::NICK)) {
+		if (user->isRequirementSet(UserRequirement::PASS)) {
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_PASSWDMISMATCH, user)));
+			disconnect(user, "Wrong Password");
+			return ;
+		}
+		user->unsetRequirement(UserRequirement::NICK);
+		if (user->isRegistered()) {
+			Motd	motd;
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_WELCOME, user, user->nickname())));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_YOURHOST, user, this->name(), "v1.337")));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_CREATED, user, this->creationTime())));
+			user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_MYINFO, user, this->name(), "v1.337", "aiow", "ov mti")));
+			motd.sendMotd(user, this);
+		}
+	}
+	else if (user->isRegistered()) {
+		user->send(message);
+		std::set<Channel *> channelList = user->channelList();
+		for (std::set<Channel *>::iterator it = channelList.begin(); it != channelList.end(); it++) {
+			(*it)->send(message, user);
+		}
+	}
 }
 

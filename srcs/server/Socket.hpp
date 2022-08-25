@@ -1,8 +1,6 @@
 #ifndef SOCKETS_HPP
 #define SOCKETS_HPP
 
-#include <cstdint>
-#include <cstdint>
 #include <string>
 #include <sys/types.h>
 #include <sys/socket.h>

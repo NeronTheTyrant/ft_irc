@@ -1,4 +1,5 @@
 #include "DataSocket.hpp"
+#include <cerrno>
 
 DataSocket::DataSocket()
 	: StreamSocket(socket(AF_INET, SOCK_STREAM, 0)) {}

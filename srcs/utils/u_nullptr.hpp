@@ -1,7 +1,7 @@
 #ifndef U_NULLPTR_HPP
 # define U_NULLPTR_HPP
 
-static class u_nullptr_t
+const class u_nullptr_t
 {
     public:
                template<class T>
