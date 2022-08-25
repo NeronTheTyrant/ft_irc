@@ -138,18 +138,6 @@ void	EpollHandler::handleClientActivity(int index) {
 			raiseReceiveEvent(data, _events[index].data.fd);
 		}
 	}
-	if (_events[index].events & EPOLLOUT) {
-		// ToDo Implement
-		std::cout << "EPOLLOUT" << std::endl;
-	}
-	if (_events[index].events & EPOLLRDHUP) {
-		// ToDo Implement
-		std::cout << "EPOLLRDHUP" << std::endl;
-	}
-	if (_events[index].events & EPOLLHUP) {
-		// ToDo Implement
-		std::cout << "EPOLLHUP" << std::endl;
-	}
 }
 
 void	EpollHandler::disconnectClient(int sd, std::string notification, bool notify) {

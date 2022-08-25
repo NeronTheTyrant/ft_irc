@@ -24,6 +24,8 @@ public:
 		TOPIC = 1 << 1,
 		/* 'i' - invite only */
 		INVITEONLY = 1 << 2,
+		/* 'n' - no external messages can be sent to this channel */
+		NOEXTERN = 1 << 3,
 	};
 
 	ChannelMode(uint32_t flag = 0);

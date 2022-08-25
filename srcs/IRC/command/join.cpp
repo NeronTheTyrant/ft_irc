@@ -38,7 +38,6 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 	else {
 		std::vector<std::string> channelList = ft_split(params[0], ",");
 		for (std::vector<std::string>::iterator it = channelList.begin(); it != channelList.end(); it++) {
-			std::cout << *it << "\n";
 			if (!validChan(*it)) {
 				sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_NOSUCHCHANNEL, sender, *it)));
 				continue;
@@ -62,8 +61,6 @@ void	IRCServer::join(User *sender, std::vector<std::string> params) {
 			std::vector<std::string>	param;
 			param.push_back(*it);
 			names(sender, param);
-//			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NAMREPLY, sender, target->name(), target->userNickList())));
-//			sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_ENDOFNAMES, sender, target->name())));
 		}
 	}
 }

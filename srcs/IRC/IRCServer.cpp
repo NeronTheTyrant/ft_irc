@@ -2,8 +2,8 @@
 #include <ctime>
 
 IRCServer::IRCServer(uint16_t port, std::string const & password) :
-	_name("chaussette.irc.net"), _password(password), _epollHandler(port), _eventListener (NULL), _restartFlag(false){
-	
+	_name("chaussette.irc.net"), _password(password), _epollHandler(port), _eventListener (NULL), _restartFlag(false) {
+
 	_operatorList["Agathe"] = std::make_pair("Thepower", std::vector<std::string> (1, "127.0.0.1") );
 
 	_commands["CAP"]		= &IRCServer::cap;	
@@ -146,6 +146,20 @@ void	IRCServer::clearRemoveList() {
 		delete *it;
 	}
 	_removeList.clear();
+}
+
+std::string	IRCServer::pingbotmsg(std::string str) {
+	std::string prefix;
+
+	prefix = ":pingbot!botman@chaussette.irc.net ";
+	return prefix + str + "\r\n";
+}
+
+std::string	IRCServer::pongbotmsg(std::string str) {
+	std::string prefix;
+
+	prefix = ":pongbot!botman@chaussette.irc.net ";
+	return prefix + str + "\r\n";
 }
 
 void	free_from_signal(IRCServer * ptr) {

@@ -47,6 +47,9 @@ public:
 
 	void	execCommand(User * u, Command command);
 
+	std::string pingbotmsg(std::string str);
+	std::string pongbotmsg(std::string str);
+
 	/**
 	 * COMMAND FUNCTION
 	*/
