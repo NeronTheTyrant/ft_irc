@@ -41,6 +41,7 @@ public:
 	/**
 	 * COMMAND FUNCTION
 	*/
+	void	cap(User * user, std::vector<std::string> params);
 	void	pass(User * user, std::vector<std::string> params);
 	void	nick(User * user, std::vector<std::string> params);
 	void	user(User * user, std::vector<std::string> params);
