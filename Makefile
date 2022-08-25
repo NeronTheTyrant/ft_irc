@@ -86,7 +86,8 @@ CMD_SOURCES		=	cap.cpp \
 					kick.cpp \
 					motd.cpp \
 					restart.cpp \
-					ping.cpp
+					ping.cpp \
+					wallops.cpp
 
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))
 
