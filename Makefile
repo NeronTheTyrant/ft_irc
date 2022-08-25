@@ -65,7 +65,8 @@ IRC_SOURCES		=	Channel.cpp \
 					User.cpp
 IRC_SRCS		=	$(addprefix $(S_DIR)$(S_IRC_DIR), $(IRC_SOURCES))
 
-CMD_SOURCES		=	nick.cpp \
+CMD_SOURCES		=	cap.cpp \
+					nick.cpp \
 					pass.cpp \
 					user.cpp \
 					quit.cpp \
@@ -84,7 +85,8 @@ CMD_SOURCES		=	nick.cpp \
 					die.cpp \
 					kick.cpp \
 					motd.cpp \
-					restart.cpp
+					restart.cpp \
+					ping.cpp
 
 CMD_SRCS		=	$(addprefix $(S_DIR)$(S_CMD_DIR), $(CMD_SOURCES))
 

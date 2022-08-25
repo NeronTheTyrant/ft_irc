@@ -5,7 +5,8 @@ IRCServer::IRCServer(uint16_t port, std::string const & password) :
 	_name("chaussette.irc.net"), _password(password), _epollHandler(port), _eventListener (NULL), _restartFlag(false){
 	
 	_operatorList["Agathe"] = std::make_pair("Thepower", std::vector<std::string> (1, "127.0.0.1") );
-	
+
+	_commands["CAP"]		= &IRCServer::cap;	
 	_commands["PASS"]		= &IRCServer::pass;
 	_commands["NICK"]		= &IRCServer::nick;
 	_commands["USER"]		= &IRCServer::user;
@@ -20,7 +21,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & password) :
 	_commands["OPER"]		= &IRCServer::oper;
 	_commands["TOPIC"]		= &IRCServer::topic;
 	_commands["MOTD"]		= &IRCServer::motd;
-//	_commands["PING"]		= &IRCServer::ping;
+	_commands["PING"]		= &IRCServer::ping;
 //	_commands["PONG"]		= &IRCServer::pong;
 	_commands["PART"]		= &IRCServer::part;
 	_commands["AWAY"]		= &IRCServer::away;
