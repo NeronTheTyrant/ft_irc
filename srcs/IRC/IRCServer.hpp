@@ -76,6 +76,7 @@ public:
 	void	kill(User * user, std::vector<std::string> params);
 	void	kick(User * user, std::vector<std::string> params);
 	void	restart(User * user, std::vector<std::string> params);
+	void	wallops(User * user, std::vector<std::string> params);
 
 	/**
 	 * UTILS
