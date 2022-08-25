@@ -29,6 +29,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & password) :
 	_commands["KILL"]		= &IRCServer::kill;
 	_commands["KICK"]		= &IRCServer::kick;
 	_commands["RESTART"]	= &IRCServer::restart;
+	_commands["WALLOPS"]	= &IRCServer::wallops;
 };
 
 IRCServer::~IRCServer() {
