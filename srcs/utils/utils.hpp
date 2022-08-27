@@ -36,6 +36,7 @@ std::vector<std::string>	ft_split(std::string haystack, std::string needle);
 
 std::string	strToUpper(std::string s);
 std::string	strToLower(std::string s);
+std::string	strReplaceAll(std::string str, std::string const toReplace, std::string const content);
 
 void	IRCsigHandler(int sig);
 

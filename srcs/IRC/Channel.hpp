@@ -26,6 +26,9 @@ public:
 		INVITEONLY = 1 << 2,
 		/* 'n' - no external messages can be sent to this channel */
 		NOEXTERN = 1 << 3,
+		/* 'c' custom chatbot */
+		CHATBOT = 1 << 4,
+
 	};
 
 	ChannelMode(uint32_t flag = 0);

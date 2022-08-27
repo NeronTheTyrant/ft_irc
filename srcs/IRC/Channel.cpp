@@ -15,6 +15,8 @@ ChannelMode::Mode	ChannelMode::translate(char c) {
 			return INVITEONLY;
 		case 'n' :
 			return NOEXTERN;
+		case 'c' :
+			return CHATBOT;
 		default:
 			return ERROR;
 	}
@@ -30,6 +32,8 @@ char	ChannelMode::translate(ChannelMode::Mode m) {
 			return 'i';
 		case NOEXTERN :
 			return 'n';
+		case CHATBOT:
+			return 'c';
 		case ERROR :
 			return '\0';
 	}

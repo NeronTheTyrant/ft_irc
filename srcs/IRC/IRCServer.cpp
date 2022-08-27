@@ -149,17 +149,10 @@ void	IRCServer::clearRemoveList() {
 	_removeList.clear();
 }
 
-std::string	IRCServer::pingbotmsg(std::string str) {
+std::string	IRCServer::botmsg(std::string botName, std::string str) {
 	std::string prefix;
 
-	prefix = ":pingbot!botman@chaussette.irc.net ";
-	return prefix + str + "\r\n";
-}
-
-std::string	IRCServer::pongbotmsg(std::string str) {
-	std::string prefix;
-
-	prefix = ":pongbot!botman@chaussette.irc.net ";
+	prefix = ":" + botName + "!botman@chaussette.irc.net ";
 	return prefix + str + "\r\n";
 }
 
