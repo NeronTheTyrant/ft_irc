@@ -144,8 +144,10 @@ void	EpollHandler::handleClientActivity(int index) {
 void	EpollHandler::disconnectClient(int sd, std::string notification, bool notify) {
 	struct epoll_event	ev = {};
 	int ret = epoll_ctl(_epollfd, EPOLL_CTL_DEL, sd, &ev);
-	if (ret < 0)
+	if (ret < 0) {
 		std::cout << "Could not delete client from epoll interest list" << std::endl;
+		return;
+	}
 	raiseDisconnectEvent(sd, notification, notify);
 }
 
