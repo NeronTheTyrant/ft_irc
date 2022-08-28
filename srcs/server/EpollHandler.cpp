@@ -122,6 +122,7 @@ void	EpollHandler::handleClientActivity(int index) {
 
 		// Read data from socket
 		char buffer[512] = {};
+		errno = 0;
 		int	received = recv(_events[index].data.fd, buffer, sizeof(buffer), 0);
 
 		if (received < 0) {

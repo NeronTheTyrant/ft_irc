@@ -23,7 +23,7 @@ public:
 	void	addEventListener(IEventListener * listener);
 	void	removeEventListener(IEventListener * listener);
 	void	clearEventListeners();
-	void	disconnectClient(int sd, std::string notification, bool notify = false);
+	void	disconnectClient(int sd, std::string notification, bool notify = true);
 
 private:
 	#define MAX_EVENTS	20
@@ -39,7 +39,7 @@ private:
 	void	handleClientActivity(int index);
 
 	void	raiseConnectEvent(int sd);
-	void	raiseDisconnectEvent(int sd, std::string notification, bool notify = false);
+	void	raiseDisconnectEvent(int sd, std::string notification, bool notify = true);
 	void	raiseReceiveEvent(std::string data, int sd);
 	void	raiseLoopEndEvent();
 };

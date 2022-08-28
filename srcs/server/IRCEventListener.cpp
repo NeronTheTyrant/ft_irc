@@ -15,8 +15,12 @@ void	IRCEventListener::onConnect(int sd) {
 
 void	IRCEventListener::onDisconnect(int sd, std::string notification, bool notify) {
 	User * user = server.network().getUserBySocket(sd);
+	if (user == u_nullptr) {
+		return;
+	}
 	server.clearUser(user, notification, notify);
 	server.addToRemoveList(user);
+	user->setQuit(true);
 }
 
 void	IRCEventListener::onReceive(std::string data, int sd) {
@@ -34,6 +38,9 @@ void	IRCEventListener::onReceive(std::string data, int sd) {
 			continue ;
 		}
 		server.execCommand(user, command);
+		if (user->quit()) {
+			break;
+		}
 	}
 }
 

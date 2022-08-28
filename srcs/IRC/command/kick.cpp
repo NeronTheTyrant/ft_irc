@@ -35,7 +35,8 @@ void	IRCServer::kick(User * user, std::vector<std::string> params) {
 				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_USERNOTINCHANNEL, user, *it, channels[0])));
 				continue;
 			}
-			chan->send(serverMessageBuilder(*user, std::string("KICK ") + *it + " :" + reason));
+			target->send(serverMessageBuilder(*target, std::string("PART ") + chan->name() + " :" + reason));
+			chan->send(serverMessageBuilder(*user, std::string("KICK ") + chan->name() + " " + target->nickname() + " :" + reason));
 			chan->removeUser(target);
 		}
 		if (chan->userCount() == 0) {
@@ -66,7 +67,8 @@ void	IRCServer::kick(User * user, std::vector<std::string> params) {
 				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_USERNOTINCHANNEL, user, users[index], channels[index])));
 				continue ;
 			}
-			chan->send(serverMessageBuilder(*user, std::string("KICK ") + users[index] + " :" + reason));
+			target->send(serverMessageBuilder(*target, std::string("PART ") + chan->name() + " :" + reason));
+			chan->send(serverMessageBuilder(*user, std::string("KICK ") + chan->name() + " " + users[index] + " :" + reason));
 			chan->removeUser(target);
 			if (chan->userCount() == 0) {
 				network().remove(chan);

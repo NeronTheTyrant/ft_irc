@@ -67,7 +67,7 @@ std::string UserMode::usermodsToString(User & user) {
  */
 
 User::User(int sd, uint32_t requirementFlags)
-	: Client(sd), _requirements(requirementFlags), _channelCount(0) {
+	: Client(sd), _requirements(requirementFlags), _channelCount(0), _quit(false) {
 };
 
 
@@ -139,6 +139,10 @@ unsigned int	User::channelCount() const {
 	return _channelCount;
 }
 
+bool	User::quit() const {
+	return _quit;
+}
+
 /**
  * Setter
  */
@@ -160,6 +164,10 @@ void	User::setAwayMessage(std::string message) {
 
 void	User::setChannelCount(unsigned int c) {
 	_channelCount = c;
+}
+
+void	User::setQuit(bool quit) {
+	_quit = quit;
 }
 
 /**

@@ -105,16 +105,17 @@ void	IRCServer::clearUser(User * u, std::string quitReason, bool notify) {
 	// iterate through channels, kick user from each channel
 	std::set<Channel *> chanList = u->channelList();
 	for (std::set<Channel *>::iterator it = chanList.begin(); u->channelCount() && it != chanList.end(); it++) {
-		if (notify) {
-			(*it)->send(quitMessage, u);
-		}
+		u->send(serverMessageBuilder(*u, std::string("PART ") + (*it)->name() + " :" + quitReason));
 		(*it)->removeUser(u);
-		// if channel is empty after this, delete channel
 		if (!(*it)->userCount()) {
 			network().remove(*it);
 		}
+		else if (notify) {
+			(*it)->send(quitMessage, u);
+		}
+		// if channel is empty after this, delete channel
 	}
-	u->send(std::string("ERROR :") + "(" + quitReason + ")\r\n");
+	u->send(serverMessageBuilder(*this, std::string("ERROR :") + "(" + quitReason + ")"));
 	network().remove(u);
 }
 

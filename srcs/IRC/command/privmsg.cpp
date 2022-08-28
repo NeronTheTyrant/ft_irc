@@ -25,7 +25,7 @@ void	IRCServer::privmsg(User *sender, std::vector<std::string> params) {
 		if (chan->isModeSet(ChannelMode::MODERATED) == false 
 			|| chan->isStatusSet(sender, MemberStatus::VOICE) == true
 			|| chan->isStatusSet(sender, MemberStatus::OPERATOR) == true) {
-			chan->send(serverMessageBuilder(*sender, "PRIVMSG " + chan->name() + " :" + params[1]));
+			chan->send(serverMessageBuilder(*sender, "PRIVMSG " + chan->name() + " :" + params[1]), sender);
 			if (chan->isModeSet(ChannelMode::CHATBOT)) {
 				if (params[1].find("ping") != std::string::npos) {
 					std::string pongmsg = strReplaceAll(params[1], "ping", "pong");

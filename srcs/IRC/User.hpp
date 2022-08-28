@@ -58,6 +58,7 @@ private:
 	UserMode							_mode;
 	unsigned int						_channelCount;
 	std::set<Channel *>					_channelList;
+	bool								_quit;
 
 public:
 	User(int sd, uint32_t requirementFlags);
@@ -79,6 +80,7 @@ public:
 	std::string				prefix() const;
 	unsigned int			channelCount() const;
 	std::set<Channel *> &	channelList();
+	bool					quit() const;
 
 /**
  * Setters
@@ -88,6 +90,7 @@ public:
 	void	setNickname(std::string nickname);
 	void	setAwayMessage(std::string message);
 	void	setChannelCount(unsigned int c);
+	void	setQuit(bool quit);
 
 /**
  * Methods
