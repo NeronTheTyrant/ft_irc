@@ -35,6 +35,7 @@ IRCServer::IRCServer(uint16_t port, std::string const & password) :
 IRCServer::~IRCServer() {
 	if (_eventListener)
 		delete _eventListener;
+	clear("Shutting Down");
 };
 
 void	IRCServer::initCreationTime(){
