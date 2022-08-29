@@ -59,6 +59,7 @@ void	IRCServer::run() {
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = &IRCsigHandler;
 	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGHUP, &sa, NULL);
 
 	initCreationTime();
 	_epollHandler.initMasterSocket();
@@ -165,7 +166,7 @@ void	free_from_signal(IRCServer * ptr) {
 		mem = ptr;
 	}
 	else {
-		mem->clear("SIGINT is bad, mmkay?");
+		mem->clear("Server closed by signal");
 		mem->stop();
 		mem->setInterruptFlag();
 	}
