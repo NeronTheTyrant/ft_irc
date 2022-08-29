@@ -60,6 +60,7 @@ void	IRCServer::run() {
 	sa.sa_handler = &IRCsigHandler;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGHUP, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 
 	initCreationTime();
 	_epollHandler.initMasterSocket();
