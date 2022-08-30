@@ -32,9 +32,9 @@ void	ServerSocket::init() {
 		if (ret != 0)
 			throw std::runtime_error(std::string("bind failed: ") + strerror(errno));
 	}
-	catch (const std::exception &) {
+	catch (const std::exception &e) {
 		close(sd);
-		throw;
+		throw e;
 	}
 }
 

@@ -8,7 +8,7 @@
 # include "u_nullptr.hpp"
 
 template <class T>
-std::string		ft_itos(T n, typename ft::enable_if<std::is_integral<T>::value, bool>::type = true)
+std::string		ft_itos(T n, typename ft::enable_if<ft::is_integral<T>::value, bool>::type = true)
 {
 	char		buffer[2];
 	std::string	ret;

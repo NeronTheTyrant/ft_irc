@@ -115,7 +115,7 @@ std::string	Channel::userNickList(User *user) const {
 
 	bool firstPrint = true;
 	for (; it != _users.end(); ++it) {
-		if (it->first->isModeSet(UserMode::Mode::INVISIBLE) == false || user->isRelated(it->first)) {
+		if (it->first->isModeSet(UserMode::INVISIBLE) == false || user->isRelated(it->first)) {
 			if (firstPrint == true) {
 				firstPrint = false;
 			}
@@ -158,7 +158,7 @@ Channel::Invitations &	Channel::invitations() {
 unsigned int	Channel::nbVisible(User * u) {
 	unsigned int ret = 0;
 	for (Users::iterator it = _users.begin(); it != _users.end(); ++it) {
-		if (it->first->isModeSet(UserMode::Mode::INVISIBLE) == false || u->isRelated(it->first)) {
+		if (it->first->isModeSet(UserMode::INVISIBLE) == false || u->isRelated(it->first)) {
 			ret++;
 		}
 	}

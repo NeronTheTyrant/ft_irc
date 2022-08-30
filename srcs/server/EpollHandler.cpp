@@ -127,17 +127,27 @@ void	EpollHandler::handleClientActivity(int index) {
 
 		if (received < 0) {
 			if (errno != EAGAIN && errno != EWOULDBLOCK) {
-				disconnectClient(_events[index].data.fd, "Error receiving data packet");
+				disconnectClient(_events[index].data.fd, "Error receiving data packet", false);
 				throw std::runtime_error("recv() failed");
 			}
 		}
 		else if (received == 0) { // Connection was closed remotey
-			disconnectClient(_events[index].data.fd, "Connection closed remotely");
+			std::cout << "connection closed remotely: " << _events[index].data.fd << std::endl;
+			disconnectClient(_events[index].data.fd, "Connection closed remotely", false);
 		}
 		else {
 			std::string	data(buffer);
 			raiseReceiveEvent(data, _events[index].data.fd);
 		}
+	}
+	if (_events[index].events & EPOLLPRI) {
+		std::cout << "EPOLLPRI" << std::endl;
+	}
+	if (_events[index].events & EPOLLERR) {
+		std::cout << "EPOLLERR" << std::endl;
+	}
+	if (_events[index].events & EPOLLHUP) {
+		std::cout << "EPOLLHUP" << std::endl;
 	}
 }
 
@@ -145,13 +155,15 @@ void	EpollHandler::disconnectClient(int sd, std::string notification, bool notif
 	struct epoll_event	ev = {};
 	int ret = epoll_ctl(_epollfd, EPOLL_CTL_DEL, sd, &ev);
 	if (ret < 0) {
-		std::cout << "Could not delete client from epoll interest list" << std::endl;
+		std::cout << "Could not delete client from epoll interest list: " << sd << std::endl;
 		return;
 	}
+	std::cout << "disconnecting " << sd << std::endl;
 	raiseDisconnectEvent(sd, notification, notify);
 }
 
 void	EpollHandler::raiseConnectEvent(int sd) {
+	std::cout << "connecting " << sd << std::endl;
 	for (std::size_t i = 0; i < _eventListeners.size(); i++)
 		_eventListeners[i]->onConnect(sd);
 }

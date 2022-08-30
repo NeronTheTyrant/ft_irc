@@ -37,7 +37,7 @@ void	IRCServer::topic(User * sender, std::vector<std::string> params) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_RPL_NOTOPIC, sender, target->name(), target->topic())));
 		return ;
 	}
-	else if (target->isModeSet('t') == true && target->isStatusSet(sender, MemberStatus::Status::OPERATOR) == false) {
+	else if (target->isModeSet('t') == true && target->isStatusSet(sender, MemberStatus::OPERATOR) == false) {
 		sender->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, sender, target->name())));
 		return ;
 	}

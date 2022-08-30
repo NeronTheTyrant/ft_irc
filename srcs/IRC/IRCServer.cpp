@@ -33,9 +33,9 @@ IRCServer::IRCServer(uint16_t port, std::string const & password) :
 };
 
 IRCServer::~IRCServer() {
+	clear("Shutting Down");
 	if (_eventListener)
 		delete _eventListener;
-	clear("Shutting Down");
 };
 
 void	IRCServer::initCreationTime(){
@@ -108,17 +108,21 @@ void	IRCServer::clearUser(User * u, std::string quitReason, bool notify) {
 	// iterate through channels, kick user from each channel
 	std::set<Channel *> chanList = u->channelList();
 	for (std::set<Channel *>::iterator it = chanList.begin(); u->channelCount() && it != chanList.end(); it++) {
-		u->send(serverMessageBuilder(*u, std::string("PART ") + (*it)->name() + " :" + quitReason));
+		if (notify) {
+			u->send(serverMessageBuilder(*u, std::string("PART ") + (*it)->name() + " :" + quitReason));
+		}
 		(*it)->removeUser(u);
 		if (!(*it)->userCount()) {
 			network().remove(*it);
 		}
-		else if (notify) {
+		else {
 			(*it)->send(quitMessage, u);
 		}
 		// if channel is empty after this, delete channel
 	}
-	u->send(serverMessageBuilder(*this, std::string("ERROR :") + "(" + quitReason + ")"));
+	if (notify) {
+		u->send(serverMessageBuilder(*this, std::string("ERROR :") + "(" + quitReason + ")"));
+	}
 	network().remove(u);
 }
 

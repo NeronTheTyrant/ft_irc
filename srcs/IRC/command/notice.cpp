@@ -16,9 +16,9 @@ void	IRCServer::notice(User *user, std::vector<std::string> params)
 		if (chan->isModeSet(ChannelMode::NOEXTERN) && !chan->isUser(user)) {
 			return;
 		}
-		if (chan->isModeSet(ChannelMode::Mode::MODERATED) == false 
-			|| chan->isStatusSet(user, MemberStatus::Status::VOICE) == true
-			|| chan->isStatusSet(user, MemberStatus::Status::OPERATOR) == true) {
+		if (chan->isModeSet(ChannelMode::MODERATED) == false 
+			|| chan->isStatusSet(user, MemberStatus::VOICE) == true
+			|| chan->isStatusSet(user, MemberStatus::OPERATOR) == true) {
 			chan->send(serverMessageBuilder(*user, "NOTICE " + chan->name() + " :" + params[1]), user);
 		}
 		return ;

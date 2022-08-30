@@ -43,7 +43,7 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 		}
 		else { // Handling modstrings
 
-			if (channel->isStatusSet(user, MemberStatus::Status::OPERATOR) == false) { // User doesn't have sufficient privileges to modify moddes
+			if (channel->isStatusSet(user, MemberStatus::OPERATOR) == false) { // User doesn't have sufficient privileges to modify moddes
 				user->send(serverMessageBuilder(*this, commandMessageBuilder(CODE_ERR_CHANOPRIVSNEEDED, user, channel->name())));
 			}
 			else { // Setting / Unsetting modes
@@ -66,7 +66,7 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 					if (c == '+' || c == '-') { // no need further processing of the char, we continue the loop
 						continue;
 					}
-					if (MemberStatus::translate(c) != MemberStatus::Status::ERROR) { // mode encountered is a MemberStatus
+					if (MemberStatus::translate(c) != MemberStatus::ERROR) { // mode encountered is a MemberStatus
 
 						if (currentParam == params.end()) { // no param were inputted for this mode, we just ignore it
 							continue ;
@@ -103,7 +103,7 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 						}
 						++currentParam;
 					}
-					else if (ChannelMode::translate(c) != ChannelMode::Mode::ERROR ) { // if the mode is a ChannelMode
+					else if (ChannelMode::translate(c) != ChannelMode::ERROR ) { // if the mode is a ChannelMode
 						if (validMode == false) { // as implemented Channel modes don't require arguments we set the validMode directly
 							validMode = true;
 						}
@@ -177,7 +177,7 @@ void	IRCServer::mode(User * user, std::vector<std::string> params) {
 				if (c == '+' || c == '-') { // no need further processing of the char, we continue the loop
 					continue;
 				}
-				if (UserMode::translate(c) != UserMode::Mode::ERROR) { // mode encountered is a valid UserMode
+				if (UserMode::translate(c) != UserMode::ERROR) { // mode encountered is a valid UserMode
 					if (removeMode == false && c == 'o') {
 						continue ;
 					}
