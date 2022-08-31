@@ -9,7 +9,10 @@ IRCEventListener::IRCEventListener(IRCServer & server)
 IRCEventListener::~IRCEventListener() {}
 
 void	IRCEventListener::onConnect(int sd) {
-	User *	user = new User(sd, UserRequirement::ALL);
+	uint32_t req =	server.password().empty() == false?
+								UserRequirement::ALL :
+								UserRequirement::SKIP_PASS;
+	User *	user = new User(sd, req);
 	server.network().add(user);
 }
 
