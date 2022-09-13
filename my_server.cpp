@@ -6,8 +6,12 @@
 
 int	main (int argc, char **argv) {
 	try {
-		if (argc != 3) {
+		if (argc < 3) {
 			std::cout << "Need more arguments" << std::endl;
+			return 1;
+		}
+		else if ( argc > 3) {
+			std::cout << "Need only 3 arguments" << std::endl;
 			return 1;
 		}
 		char *ptr = NULL;
